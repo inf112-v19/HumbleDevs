@@ -1,3 +1,6 @@
+# Group 4, Team 3
+
+
 # INF112 Maven template 
 Simple skeleton with libgdx. 
 
