@@ -6,4 +6,6 @@ public interface IPosition {
 
     int getY();
 
+    int getIndex();
+
 }
