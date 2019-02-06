@@ -37,8 +37,8 @@ Prioritert liste over hva som skal med i første iterasjon
 - Vegger
 
 Prosjektmetodikk: Kanban (med mulige modifiseringer)
-o  Parprogrammering på vanskelige/kritiske deler av spillet
-o  Testing underveis der det er nødvendig
+-  Parprogrammering på vanskelige/kritiske deler av spillet
+-  Testing underveis der det er nødvendig
 
 Organisering:
 I første omgang har vi tenkt å bruke Slack som vår kommunikasjonsverktøy.
