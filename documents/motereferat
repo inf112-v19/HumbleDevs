@@ -9,3 +9,14 @@ Vil ha brett på 12*12.
 Snakket også om hvordan roboten skulle implementeres.
 
 vi fant endelig gruppenavn. yoohoo
+
+Bendik tegnet på tavlen hvilke klasser vi skal ha med i begynnelsen:
+    Board:
+        - List<tile>
+    Tile:
+
+    Robot:
+        - int x
+        - int y
+        - Dir dir
+    GUI:

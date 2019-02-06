@@ -18,7 +18,8 @@ Bendik er komfortabel med java. Han er flink til å designe.
 
 Even er flink med java og har en stor arbeidskapasitet
 
-Amalie har informasjonsvitenskap i tilleg, og kan bidra med den delen. Kan bidra med rapportskriving. Kan bidra med organisering av gruppen.
+Amalie har informasjonsvitenskap i tilleg, og kan bidra på den delen om det trengs.
+Kan også skrive rapport, og bidra med organisering av gruppen.
 
 Linh kan programmere java. Hun er flink med database. Hun er en kritisk og ærlig person.
 
