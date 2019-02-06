@@ -49,7 +49,7 @@ public class Robot implements IRobot {
         case WEST: this.dir = Direction.SOUTH;
     	}
     }
-    
+
     @Override
     public void rotateRight() {
     	switch(this.dir) {
