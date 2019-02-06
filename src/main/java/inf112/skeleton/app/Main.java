@@ -3,7 +3,7 @@ package inf112.skeleton.app;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import inf112.skeleton.app.board.GUi_Board;
+import inf112.skeleton.app.board.GUI;
 
 
 public class Main {
@@ -12,6 +12,6 @@ public class Main {
         cfg.title = "hello-world";
         cfg.width = 800;
         cfg.height = 800;
-        new LwjglApplication(new GUi_Board(), cfg);
+        new LwjglApplication(new GUI(), cfg);
     }
 }
