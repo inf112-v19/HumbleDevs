@@ -16,28 +16,27 @@ Joachim er flink med java og skriving. Han har en positiv mentalitet
 
 Bendik er komfortabel med java. Han er flink til å designe.
 
-Even r flink med java og har en stor arbeidskapasitet
+Even er flink med java og har en stor arbeidskapasitet
 
-Amalie er flink med infomedia og rapport skriving. Hun er flink på organisering
+Amalie har informasjonsvitenskap i tilleg, og kan bidra med den delen. Kan bidra med rapportskriving. Kan bidra med organisering av gruppen.
 
-Linh kan programere java. Hun er flink med database. HUn er en kritisk og ærlig person.
+Linh kan programmere java. Hun er flink med database. Hun er en kritisk og ærlig person.
 
 
 <H3>Verktøy</H3>
 
-Slack (vår kommunikasjonsverktøy)
+Slack (vårt kommunikasjonsverktøy)
 
-Github projects (tekniske verktøy )
+Github projects (tekniske verktøy)
+Git (tekniske verktøy)
 
 Intellij (tekniske verktøy )
-
-Git (tekniske verktøy )
 
 
 <H2> Del 2 </H2> 
 
 Beskrivelse av mål:
-. Det overordnede målet vårt er å lage en representasjon av Robo Rally som kan spilles lokalt.
+Det overordnede målet vårt er å lage en representasjon av RoboRally som kan spilles lokalt.
 Vi skal også kunne skrive en ryddig og bærekraftig kode.
 
 
@@ -57,9 +56,9 @@ Prosjektmetodikk: Kanban (med mulige modifiseringer)
 
 <H3>Organisering</H3>
 
-I første omgang har vi tenkt å bruke Slack som vår kommunikasjonsverktøy.
-Møter  to ganger i uka, en på gruppe og en utenom.
-U utgangspunktet hver onsdag 16:30.
+I første omgang har vi tenkt å bruke Slack som vårt kommunikasjonsverktøy.
+Møter  to ganger i uka, en på gruppe og en på onsdager.
+I utgangspunktet hver onsdag 16:30.
 Møter skal skrives om til et møtereferat.
 
 
