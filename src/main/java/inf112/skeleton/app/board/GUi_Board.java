@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GUi_Board implements ApplicationListener {
     private SpriteBatch batch;
-    private Sprite sprite;
     private Texture texture;
     private TextureRegion mainBackground;
     
@@ -20,7 +19,6 @@ public class GUi_Board implements ApplicationListener {
         batch = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("Assets/board1.png"));
         mainBackground = new TextureRegion(texture, 0, 0, 1800, 1800);
-        batch = new SpriteBatch();
     }
 
     @Override

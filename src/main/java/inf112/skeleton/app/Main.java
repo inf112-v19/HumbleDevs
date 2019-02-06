@@ -10,8 +10,8 @@ public class Main {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "hello-world";
-        cfg.width = 1800;
-        cfg.height = 1800;
+        cfg.width = 800;
+        cfg.height = 800;
         new LwjglApplication(new GUi_Board(), cfg);
     }
 }
