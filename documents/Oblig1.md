@@ -1,66 +1,19 @@
-<H1> Oblig1 </H1> 
+Øvelse 2 - Robo Rally
 
-<H2> Del 1 </H2> 
+Del 1:
+Gruppenavnet vårt er HumbleDevs. Gruppen vår består av fem personer med litt ulik akademisk bakgrunn.  Vår selvvalgte teamleader er Amalie Rovik og hun går andreåret på  informasjon- og kommunikasjonsvitenskap. Amalie er god på organisering og interessert i prosjektledelse, og dette bidro til at  hun ble vår teamleder. Linh Nguyen er vår kundekontakt. Hun går tredje året på informatikk-matematikk-økonomi. Linh er en ærlig person og er villig til å gi oss konstruktive tilbakemeldinger som vil øke kunnskapen om oss selv. Dette vil gi oss en mulighet til å endre oss og oppmuntrer til utvikling. Joachim Morken går tredje året på informasjonsvitenskap. Joachim er flink med å programmere. Han er optimistisk og har en positiv mentalitet. Dette vil hjelpe oss til  å medvirke den positive stillingen i gruppearbeidet. Benedik Kvernevik går tredje året datateknologi. Han er flink til å programmere og designe. Dette kan hjelpe oss i oppgaven hvis vi ønsker å utvikle designet på  spillet. Even Korsgaard går andre året på datateknologi og er god på å programmere og har en god arbeidskapasitet.
 
-Gruppenavn:
+I første omgang har vi tenkt å bruke Slack som vårt kommunikasjonsverktøy. Slack er et flott sted for å koordinere og samarbeide, når alle ikke er tilstede. Slack er tilgjengelig både på mobilen og desktop som gjør det lettere for oss å kommunisere.  Av tekniske verktøy kommer vi til å bruke github project board.  Project board på github vil hjelpe oss med å ha en oversikt på hva som skal gjøres.  Med project board har man fleksibiliteten til å skape tilpassede arbeidsflyt som passer til våre behov. 
 
-Teamlead er Amalie Rovik
+Dette semesterets progamemringsproject er å lage en digital versjon av Robo Rally. Spillere er roboter og spillet går ut på å komme seg på førsteplass i et kappløp. Gjennom spillet kan man oppgradere roboten sin, mens samtidig sabotere andre roboter sine planer ved hjelp av kort. Det overordnede målet vårt er å lage en representasjon av Robo Rally som kan spilles lokalt. Vi skal også skrive en ryddig og velfungerende kode.
 
-Kundekontakt er Linh Nguyen
+Del 2
+Kravene vi har til systemet finner vi på mittUib. 
+Til den første innlevering skal vi implementere og tegne brettet samt plassere roboten på det. Vi ønsker også å danne oss et helhetlig bilde av prosjektet slik at vi kan få en oversikt over hva vi må gjøre i tiden fremover. For å skape dette bilde vil vi lage kode for de mest grunnleggende
+ klassene som vi måtte trenge. Dette vil for eksempel være en klasse som representerer en robot i spillet. 
+I tillegg til de prosjektspesifikke gjøremålene ønsker vi også å at gruppen blir bedre kjent for å kunne avdekke hverandres ferdigheter. Dette ønsker vi å få til for at vi senere skal kunne delegere “riktige” deloppgaver til de ulike gruppemedlemmene, og skape et godt arbeidsmiljø i gruppen.
 
-
-
-<H3>Kompentanse</H3>
-
-Joachim er flink med java og skriving. Han har en positiv mentalitet
-
-Bendik er komfortabel med java. Han er flink til å designe.
-
-Even er flink med java og har en stor arbeidskapasitet
-
-Amalie har informasjonsvitenskap i tilleg, og kan bidra på den delen om det trengs.
-Kan også skrive rapport, og bidra med organisering av gruppen.
-
-Linh kan programmere java. Hun er flink med database. Hun er en kritisk og ærlig person.
-
-
-<H3>Verktøy</H3>
-
-Slack (vårt kommunikasjonsverktøy)
-
-Github projects (tekniske verktøy)
-Git (tekniske verktøy)
-
-Intellij (tekniske verktøy )
-
-
-<H2> Del 2 </H2> 
-
-Beskrivelse av mål:
-Det overordnede målet vårt er å lage en representasjon av RoboRally som kan spilles lokalt.
-Vi skal også kunne skrive en ryddig og bærekraftig kode.
-
-
-<H2> Del 3 </H2> 
-Prioritert liste over hva som skal med i første iterasjon
-
-- Få i gang projectet ved å lage spillbrett
-- Brikke/Spiller
-- Bevegelsesfelt
-- Flagg
-- Vegger
-
-Prosjektmetodikk: Kanban (med mulige modifiseringer)
--  Parprogrammering på vanskelige/kritiske deler av spillet
--  Testing underveis der det er nødvendig
-
-
-<H3>Organisering</H3>
-
-I første omgang har vi tenkt å bruke Slack som vårt kommunikasjonsverktøy.
-Møter  to ganger i uka, en på gruppe og en på onsdager.
-I utgangspunktet hver onsdag 16:30.
-Møter skal skrives om til et møtereferat.
-
-
-
+ 
+Del 3:
+Vi begynner med kanban, og henter inn metodikker fra scrum eller XP, hvis vi merker at vi trenger mer struktur. Fordelen med Kanban er at vi får visualisert arbeidet, ved å bruke project board på github. Vi får også begrense “in progress”, og med det unngår vi at hver og en får for mye arbeid,
+ men også alle får deltatt. Med å bruke Kanban får  vi et stort fokus på fremgang fra uke til uke. Det er også rom for kontinuerlig forbedring, og med dette vil vi være mer effektive og få mer ut av arbeidet. Med å bruke Kanban vil det å se fremgangen være enkelt og vi får lettere kontroll på hva hver gruppemedlem jobber med. Hvert gruppemedlem kan under prosessene tilføye klistremerker i “to do”, “nice to have” og “in progress”. Når en er ferdig med sin oppgave i “in progress” markerer vi selv til “done”. Når vi fordeler arbeidsoppgaver deler vi det slik at alle er komfortable med det de skal jobbe med. Når vi arbeider sammen, skal det diskuteres hvordan vi skal løse problemer og skrive klasser, slik at det blir tett samarbeid. Vi tenker forøvrig ikke å ha parprogrammering, men kan brukes på vanskelige/kritiske deler av spillet. Det skal inngås testing underveis der det er nødvendig.Vi møtes to ganger  i uken, hver onsdag kl 16.30 og  på gruppetimen.  Møter skal skrives om til et møtereferat.
