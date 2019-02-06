@@ -16,6 +16,7 @@ import java.util.List;
 public class Board<T> implements IBoard<T> {
     protected final int width;
     protected final int height;
+    protected final int size;
     protected final List<Position> positions;
     private List<T> cells;
 
@@ -23,6 +24,7 @@ public class Board<T> implements IBoard<T> {
     public Board(int width, int height) {
         this.height = height;
         this.width = width;
+        this.size = height * width;
         positions = new ArrayList<>();
         cells = new ArrayList<>();
 
@@ -78,6 +80,11 @@ public class Board<T> implements IBoard<T> {
     @Override
     public int getWidth() {
         return width;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
     }
 
     @Override

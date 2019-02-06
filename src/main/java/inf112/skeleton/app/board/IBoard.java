@@ -40,6 +40,12 @@ public interface IBoard<T> {
      */
     int getWidth();
 
+    /**
+     * Get size of the board (height*width)
+     * @return
+     */
+    int getSize();
+
 
     /**
      * Clear board
