@@ -46,13 +46,13 @@ public class Board<T> implements IBoard<T> {
     }
 
     @Override
-    public void getElement(IPosition position) {
-        cells.get(position.getIndex());
+    public T getElement(IPosition position) {
+        return cells.get(position.getIndex());
     }
 
     @Override
-    public void getElement(int x, int y) {
-        cells.get(toIndex(x, y));
+    public T getElement(int x, int y) {
+        return cells.get(toIndex(x, y));
     }
 
     @Override

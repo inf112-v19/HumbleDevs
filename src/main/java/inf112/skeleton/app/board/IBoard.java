@@ -10,8 +10,8 @@ public interface IBoard<T> {
     /**
      * Get an element on the board
      */
-    void getElement(IPosition position);
-    void getElement(int x, int y);
+    T getElement(IPosition position);
+    T getElement(int x, int y);
 
     /**
      * Check if a location on the board is free (is null)
