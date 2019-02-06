@@ -47,6 +47,8 @@ public class Board<T> implements IBoard<T> {
         cells.add(toIndex(x, y), element);
     }
 
+    public void insertElement(int index, T element) { cells.add(index, element); }
+
     @Override
     public T getElement(IPosition position) {
         return cells.get(position.getIndex());
