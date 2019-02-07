@@ -19,8 +19,8 @@ public class GUI implements ApplicationListener {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        mainBackgroundImg = new Texture(Gdx.files.internal("Assets/board1.png"));
-        robotImg = new Texture((Gdx.files.internal("Assets/robot.png")));
+        mainBackgroundImg = new Texture(Gdx.files.internal("texture/board1.png"));
+        robotImg = new Texture((Gdx.files.internal("texture/robot.png")));
         mainBackground = new TextureRegion(mainBackgroundImg, 0, 0, 1800, 1800);
         robot = new TextureRegion(robotImg, 0, 0, 64, 64);
     }
