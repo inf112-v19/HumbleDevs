@@ -16,6 +16,7 @@ import java.util.List;
 public class Board<T> implements IBoard<T> {
     protected final int width;
     protected final int height;
+    protected final int size;
     protected final List<Position> positions;
     private List<T> cells;
 
@@ -23,6 +24,7 @@ public class Board<T> implements IBoard<T> {
     public Board(int width, int height) {
         this.height = height;
         this.width = width;
+        this.size = height * width;
         positions = new ArrayList<>();
         cells = new ArrayList<>();
 
@@ -45,14 +47,16 @@ public class Board<T> implements IBoard<T> {
         cells.add(toIndex(x, y), element);
     }
 
+    public void insertElement(int index, T element) { cells.add(index, element); }
+
     @Override
-    public void getElement(IPosition position) {
-        cells.get(position.getIndex());
+    public T getElement(IPosition position) {
+        return cells.get(position.getIndex());
     }
 
     @Override
-    public void getElement(int x, int y) {
-        cells.get(toIndex(x, y));
+    public T getElement(int x, int y) {
+        return cells.get(toIndex(x, y));
     }
 
     @Override
@@ -78,6 +82,11 @@ public class Board<T> implements IBoard<T> {
     @Override
     public int getWidth() {
         return width;
+    }
+
+    @Override
+    public int getSize() {
+        return size;
     }
 
     @Override

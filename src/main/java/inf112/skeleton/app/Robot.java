@@ -13,11 +13,9 @@ public class Robot implements IRobot {
         this.dir = dir;
         this.xPos = xPos;
         this.yPos = yPos;
-        this.health=health;
-        this.getLife=getLife;
-
+        this.health = health;
+        this.getLife = getLife;
     }
-
 
     @Override
     public void move(int i){
@@ -30,11 +28,9 @@ public class Robot implements IRobot {
                 case EAST: this.xPos++;
                 break;
                 case WEST: this.xPos--;
-
             }
         }
     }
-
 
     @Override
     public Direction getDirection(){
@@ -42,12 +38,29 @@ public class Robot implements IRobot {
     }
 
     @Override
-    public void rotate(){
+    public void rotateLeft(){
+    	switch(this.dir) {
+    	case NORTH: this.dir = Direction.WEST;
+        break;
+        case SOUTH: this.dir = Direction.EAST;
+        break;
+        case EAST: this.dir = Direction.NORTH;
+        break;
+        case WEST: this.dir = Direction.SOUTH;
+    	}
+    }
 
-
-
-
-
+    @Override
+    public void rotateRight() {
+    	switch(this.dir) {
+    	case NORTH: this.dir = Direction.EAST;
+        break;
+        case SOUTH: this.dir = Direction.WEST;
+        break;
+        case EAST: this.dir = Direction.SOUTH;
+        break;
+        case WEST: this.dir = Direction.NORTH;
+    	}
     }
 
     @Override
@@ -61,7 +74,7 @@ public class Robot implements IRobot {
     }
 
     @Override
-    public void makeDamage(){
+    public void takeDamage(){
         this.health--;
     }
 
@@ -74,7 +87,4 @@ public class Robot implements IRobot {
     public boolean isAlive(){
         return this.health > 0;
     }
-
-
-
 }
