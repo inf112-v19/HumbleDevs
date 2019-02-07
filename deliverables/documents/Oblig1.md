@@ -49,3 +49,32 @@ Det skal inngås testing underveis der det er nødvendig.Vi møtes to ganger  i 
 på gruppetimen.
 Det skrives møtereferat etter møtene.
 
+Oppsummering
+Vi er enige om at vi har hatt en moderat start på dette gruppeprosjektet. Det har gått mye tid på å sette seg inn programvare når vi har møttes, istedenfor produktivt arbeid med prosjektoppgaven. For eksempel hadde flertallet i gruppen for dårlig kompetanse i git og github, noe som har ført til at det har oppstått diverse problemer og mye tid har gått til lite. Heldigvis har dette gått helt fint og nå er alle i gruppen oppe på et tilfredstillende ferdighetsnivå i git og github.
+
+Vi har også kommet fram til at vi må bli flinkere til å bruke de verktøyene som har bestemt oss for å bruke. Project board i github har blitt brukt, men ofte blir det helt glemt. For at vi fremover skal lykkes med prosjektet må vi blir flinkere på å bruke project board og ha en mer åpen kommunikasjon på slack. 
+
+Vi har også hatt litt problemer med å forstå LibGdx, men dette begynner å løsne nå.
+
+Ellers så er vi fornøyde med hvordan vi har lagt opp dette prosjektarbeidet. Møtene er vellykket og når noen har problemer gjør vi en kollektiv innsats for å hjelpe til. Vi er positive til resten av prosjekttiden.
+
+Innhold i presentasjonen 19.02
+-	Presentasjon av gruppen
+-	Hovedresultater
+	o Tegning av brett
+	o	Hovedklasser
+	o	UML – diagram
+-	Utfordringer
+	o	Libgdx
+	o	Git og github
+-	Løsninger
+	o	Opplæring i git og github
+	o	Ansvar for Libgdx
+-	Forbedringer
+	o	Bruke verktøy mer aktivt
+	o	Mer åpen kommunikasjon
+	o	Bedre forberedelser
+-	Konklusjon
+	o	Dette fikser vi
+
+
