@@ -5,7 +5,7 @@ by HumbleDevs (group 4, team 3)
 #
 Our documentation (text submissions) through each iteration will can be found [here in deliverables](deliverables).
 Direct links:
-* [Exercise 2](deliverables/documents/Oblig1.md)
+* [Exercise 2](deliverables/documents/oblig2.md)
 
 ## Known bugs
 Currently throws "WARNING: An illegal reflective access operation has occurred", 
