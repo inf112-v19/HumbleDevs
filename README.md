@@ -3,7 +3,7 @@ by HumbleDevs (group 4, team 3)
 
 
 #
-Our documentation (text submissions) through each iteration will can be found [here in deliverables](deliverables).
+Our documentation (text submissions) through each iteration can be found [here in deliverables](deliverables).
 Direct links:
 * [Exercise 2](deliverables/documents/oblig2.md)
 
