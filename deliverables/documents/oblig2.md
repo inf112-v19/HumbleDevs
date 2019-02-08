@@ -8,7 +8,7 @@ Amalie er god på organisering og interessert i prosjektledelse, og dette bidro 
 Linh Nguyen er vår kundekontakt, og går tredje året på informatikk-matematikk-økonomi. Linh er en ærlig person og
 er villig til å gi oss konstruktive tilbakemeldinger som kan komme godt med. Joachim Morken går tredje året på 
 informasjonsvitenskap og er en dyktig programmerer. Han er optimistisk og har en positiv mentalitet. 
-Dette kan bidra til en positiv stilling i gruppearbeidet. Benedik Kvernevik går tredje året datateknologi
+Dette kan bidra til en positiv stilling i gruppearbeidet. Bendik Kvernevik går tredje året datateknologi
 og er flink til å programmere og designe. Han kan hjelpe oss i oppgaven hvis vi ønsker å utvikle designet
 på  spillet. Even Korsgaard går andre året på datateknologi og er god på å programmere og har en god arbeidskapasitet. 
 
