@@ -1,6 +1,7 @@
-Øvelse 2 - Robo Rally
+##Øvelse 2 - Robo Rally
 
-Del 1:
+**Del 1**
+
 Gruppenavnet vårt er HumbleDevs. Gruppen vår består av fem personer med litt ulik akademisk bakgrunn.
 Vår selvvalgte teamleader er Amalie Rovik og hun går andre året på  informasjon- og kommunikasjonsvitenskap.
 Amalie er god på organisering og interessert i prosjektledelse, og dette bidro til at  hun ble vår teamleder.
@@ -22,7 +23,8 @@ går ut på å være førstemann i et kappløp. Gjennom spillet kan man oppgrade
 sine planer ved hjelp av kort. Det overordnede målet er å lage en representasjon av Robo Rally som kan spilles lokalt.
 Vi skal også skrive en ryddig og velfungerende kode.
 
-Del 2
+**Del 2**
+
 Kravene vi har til systemet finner vi på mittUib. 
 Til den første innlevering skal vi implementere og tegne brettet samt plassere roboten på det.
 Vi ønsker også å danne oss et helhetlig bilde av prosjektet slik at vi kan få en oversikt over
@@ -33,7 +35,7 @@ hverandres ferdigheter. Dette ønsker vi å få til for at vi senere skal kunne 
 de ulike gruppemedlemmene, og skape et godt arbeidsmiljø i gruppen.
 
  
-Del 3:
+**Del 3**
 
 Vi begynner med kanban, og henter inn metodikker fra scrum eller XP, hvis vi merker at vi trenger mer struktur.
 Fordelen med Kanban er at vi får visualisert arbeidet, ved å bruke project board på github. Vi får også begrense
@@ -49,32 +51,46 @@ Det skal inngås testing underveis der det er nødvendig.Vi møtes to ganger  i 
 på gruppetimen.
 Det skrives møtereferat etter møtene.
 
-Oppsummering
-Vi er enige om at vi har hatt en moderat start på dette gruppeprosjektet. Det har gått mye tid på å sette seg inn programvare når vi har møttes, istedenfor produktivt arbeid med prosjektoppgaven. For eksempel hadde flertallet i gruppen for dårlig kompetanse i git og github, noe som har ført til at det har oppstått diverse problemer og mye tid har gått til lite. Heldigvis har dette gått helt fint og nå er alle i gruppen oppe på et tilfredstillende ferdighetsnivå i git og github.
+**Oppsummering**
 
-Vi har også kommet fram til at vi må bli flinkere til å bruke de verktøyene som har bestemt oss for å bruke. Project board i github har blitt brukt, men ofte blir det helt glemt. For at vi fremover skal lykkes med prosjektet må vi blir flinkere på å bruke project board og ha en mer åpen kommunikasjon på slack. 
+Vi er enige om at vi har hatt en moderat start på dette gruppeprosjektet. Det har gått mye tid på å sette seg inn 
+programvare når vi har møttes, istedenfor produktivt arbeid med prosjektoppgaven. For eksempel hadde flertallet i 
+gruppen for dårlig kompetanse i git og github, noe som har ført til at det har oppstått diverse problemer og mye tid 
+har gått til lite. Heldigvis har dette gått helt fint og nå er alle i gruppen oppe på et tilfredsstillende 
+ferdighetsnivå i git og github.
 
-Vi har også hatt litt problemer med å forstå LibGdx, men dette begynner å løsne nå.
+Vi har også kommet fram til at vi må bli flinkere til å bruke de verktøyene som har bestemt oss for å bruke. 
+Project board i github har blitt brukt, men ofte blir det helt glemt. 
+For at vi fremover skal lykkes med prosjektet må vi blir flinkere på å bruke project board, og ha en mer åpen 
+kommunikasjon på slack.
 
-Ellers så er vi fornøyde med hvordan vi har lagt opp dette prosjektarbeidet. Møtene er vellykket og når noen har problemer gjør vi en kollektiv innsats for å hjelpe til. Vi er positive til resten av prosjekttiden.
-
-Innhold i presentasjonen 19.02
--	Presentasjon av gruppen
--	Hovedresultater
-	o Tegning av brett
-	o	Hovedklasser
-	o	UML – diagram
--	Utfordringer
-	o	Libgdx
-	o	Git og github
--	Løsninger
-	o	Opplæring i git og github
-	o	Ansvar for Libgdx
--	Forbedringer
-	o	Bruke verktøy mer aktivt
-	o	Mer åpen kommunikasjon
-	o	Bedre forberedelser
--	Konklusjon
-	o	Dette fikser vi
+Vi har også hatt litt problemer med å forstå LibGdx, og finne ut av hvordan det er best å representere et 2D-grid med 
+dette biblioteket, men dette begynner å løsne nå.
+Ellers så er vi fornøyde med hvordan vi har lagt opp dette prosjektarbeidet. Møtene er vellykket og når noen har 
+problemer gjør vi en kollektiv innsats for å hjelpe til. Vi er positive til resten av prosjekttiden.
 
 
+**Innhold i presentasjonen 19.02**
+
+* Presentasjon av gruppen
+* Hovedresultater
+    * Tegning av brett
+    * Hovedklasser
+    * UML – diagram
+* Utfordringer
+    * Libgdx
+    * Git og github
+* Løsninger
+	* Opplæring i git og github
+	* Ansvar for Libgdx
+* Forbedringer
+	* Bruke verktøy mer aktivt
+	* Mer åpen kommunikasjon
+	* Bedre forberedelser
+* Konklusjon
+	* Dette fikser vi
+
+
+**Class Diagram**
+
+![Class diagram first iteration](classDiagramIteration1.png)
