@@ -7,10 +7,16 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
@@ -27,8 +33,27 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         camera.setToOrtho(false,w,h);
         camera.update();
         tiledMap = new TmxMapLoader().load("Assets/tilemap.tmx");
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+
+        Texture texture = new Texture(Gdx.files.internal("texture/robot.png"));
+        Sprite sprite = new Sprite(texture);
+
+        // Create a cell(tile) to add to the layer
+        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+
+        // The sprite/tilesheet behind our new layer is a single image (our sprite)
+        // Create a TextureRegion that is the entire size of our texture
+        TextureRegion textureRegion = new TextureRegion(texture,64,64);
+
+        // Now set the graphic for our cell to our newly created region
+        cell.setTile(new StaticTiledMapTile(textureRegion));
+
+        //place cell in (x,y) coordinate
+        layer.setCell(5,5, cell);
+
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
+
     }
 
     public void render () {
