@@ -14,4 +14,16 @@ public class Main {
         cfg.height = 800;
         new LwjglApplication(new GUI(), cfg);
     }
+    
+    
+    
+    public void setUpRound() {
+    	// Del ut kort og hver spiller må velge fem av de
+    }
+    
+    public void round() {
+    	for(int x = 0; x < 5; x++) {
+    		// Hver spiller gjør sitt trekk
+    	}
+    }
 }

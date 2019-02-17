@@ -1,33 +1,57 @@
 package inf112.skeleton.app;
 
-public class Robot implements IRobot {
+import java.util.Arrays;
+import java.util.Random;
+
+import inf112.skeleton.app.board.Position;
+
+public abstract class Robot implements IRobot {
 
     private Direction dir;
-    private int xPos;
-    private int yPos;
+    private Position pos;
     private int health;
-    private int getLife;
+    private Position backup;
+    private Card[] cards;
+    private int visitedFlags = 0;
 
-    public Robot (Direction dir, int xPos, int yPos, int health, int getLife){
+    public Robot (Direction dir, int xPos, int yPos, int health){
 
         this.dir = dir;
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.pos = new Position(xPos, yPos);
         this.health = health;
-        this.getLife = getLife;
+        this.backup = new Position(xPos, yPos);
     }
-
+    
+    public void chooseCards(Card[] pos_cards) {
+    	cards = new Card[5];
+    	Random rn = new Random();
+    	for(int x = 0; x < 5; x++) {
+    		Card s = pos_cards[rn.nextInt(9)];
+    		this.cards[x] = s;
+    	}
+    	
+    }
+    
+    public void doTurn(int turn) {
+    	if(!isAlive()) {
+    		return;
+    	}
+    	Card playCard = cards[turn];
+    	//playcard.doActivity(this);
+    	
+    }
+    // Må sjekke at det er et lovlig trekk
     @Override
     public void move(int i){
         for(int j = 0; j < i; j++){
             switch(this.dir){
-                case NORTH: this.yPos--;
+                case NORTH: this.pos.moveNorth();
                 break;
-                case SOUTH: this.yPos++;
+                case SOUTH: this.pos.moveSouth();
                 break;
-                case EAST: this.xPos++;
+                case EAST: this.pos.moveEast();
                 break;
-                case WEST: this.xPos--;
+                case WEST: this.pos.moveWest();
             }
         }
     }
@@ -35,6 +59,10 @@ public class Robot implements IRobot {
     @Override
     public Direction getDirection(){
         return this.dir;
+    }
+    
+    public void makeBackup(Position newBackup) {
+    	this.backup = newBackup;
     }
 
     @Override
@@ -65,12 +93,12 @@ public class Robot implements IRobot {
 
     @Override
     public int getX(){
-        return this.xPos;
+        return this.pos.getX();
     }
 
     @Override
     public int getY(){
-        return this.yPos;
+        return this.pos.getY();
     }
 
     @Override
@@ -80,11 +108,15 @@ public class Robot implements IRobot {
 
     @Override
     public void repairHealth(){
-        this.health=getLife;
+        this.health++;
     }
 
     @Override
     public boolean isAlive(){
         return this.health > 0;
+    }
+    
+    public Card[] getCards() {
+    	return cards;
     }
 }

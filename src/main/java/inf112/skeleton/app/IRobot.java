@@ -1,5 +1,7 @@
 package inf112.skeleton.app;
 
+import inf112.skeleton.app.board.Position;
+
 public interface IRobot {
 
 	/**
@@ -7,6 +9,12 @@ public interface IRobot {
 	 * @param i number of steps to move
 	 */
     void move(int i);
+    
+    /**
+     * Set a new backup for the robot
+     * @param newBackup is the position for the new backup
+     */
+    public void makeBackup(Position newBackup);
     
     /**
      * @return the direction the robot is facing

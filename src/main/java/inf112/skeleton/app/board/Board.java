@@ -3,6 +3,9 @@ package inf112.skeleton.app.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import inf112.skeleton.app.Item;
+import inf112.skeleton.app.Robot;
+
 /**
  * Board represented as a grid with width*height size.
  * Contains an element for each position.
@@ -17,56 +20,66 @@ public class Board<T> implements IBoard<T> {
     protected final int width;
     protected final int height;
     protected final int size;
-    protected final List<Position> positions;
-    private List<T> cells;
+    protected ArrayList<Square<T>> map;
 
 
-    public Board(int width, int height) {
+    public Board(int width, int height, ArrayList<String> outline) {
         this.height = height;
         this.width = width;
         this.size = height * width;
-        positions = new ArrayList<>();
-        cells = new ArrayList<>();
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                positions.add(new Position(x, y, (y * width) + x));
-                cells.add(null);
-            }
-        }
-
+        // Må lese inn instruksene til mapen som skal brukes
     }
 
     @Override
     public void insertElement(IPosition position, T element) {
-        cells.add(position.getIndex(), element);
+    	Square<T> sq = map.get(position.getIndex());
+    	sq.addElement(element);
     }
 
     @Override
     public void insertElement(int x, int y, T element) {
-        cells.add(toIndex(x, y), element);
+    	int index = toIndex(x,y);
+    	Square<T> sq = map.get(index);
+    	sq.addElement(element);
     }
 
-    public void insertElement(int index, T element) { cells.add(index, element); }
+    public void insertElement(int index, T element) {
+    	Square<T> sq = map.get(index);
+    	sq.addElement(element);
+    }
 
     @Override
     public T getElement(IPosition position) {
-        return cells.get(position.getIndex());
+    	Square<T> sq = map.get(position.getIndex());
+    	return (T) sq.getElement();
     }
 
     @Override
     public T getElement(int x, int y) {
-        return cells.get(toIndex(x, y));
+    	int index = toIndex(x,y);
+    	Square<T> sq = map.get(index);
+    	return (T) sq.getElement();
+    }
+    
+    public Robot getRobot(IPosition position) {
+    	if(!isFree(position)) {
+    		Square<T> sq = map.get(position.getIndex());
+    		return sq.getRobot();
+    	}
+    	return null;
     }
 
-    @Override
+    @Override// Sjekker for robot
     public boolean isFree(IPosition position) {
-        return cells.get(position.getIndex()) == null;
+    	Square<T> sq = map.get(position.getIndex());
+        return !sq.occupied();
     }
-
-    @Override
+    
+    @Override// Sjekker for robot
     public boolean isFree(int x, int y) {
-        return cells.get(toIndex(x, y)) == null;
+    	int index = toIndex(x,y);
+    	Square<T> sq = map.get(index);
+        return !sq.occupied();
     }
 
     @Override
@@ -91,6 +104,6 @@ public class Board<T> implements IBoard<T> {
 
     @Override
     public void clear() {
-        cells.clear();
+    	map.clear();
     }
 }
