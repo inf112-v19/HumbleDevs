@@ -1,4 +1,6 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.GameObjects;
+
+import inf112.skeleton.app.board.Direction;
 
 public interface IRobot {
 
