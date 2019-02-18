@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.gameObjects;
 
 public class Robot implements IRobot {
 

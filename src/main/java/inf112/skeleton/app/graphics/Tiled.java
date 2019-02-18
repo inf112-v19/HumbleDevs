@@ -1,4 +1,4 @@
-package inf112.skeleton.app.board;
+package inf112.skeleton.app.graphics;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -9,55 +9,49 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.*;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
-    Texture img;
+    Texture robotTexture;
     TiledMap tiledMap;
     OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
 
-    public void create () {
+    public void create() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,w,h);
+        camera.setToOrtho(false, w, h);
         camera.update();
-        tiledMap = new TmxMapLoader().load("Assets/multLayerMap/tileMapDualLayer.tmx");
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(1);
+        tiledMap = new TmxMapLoader().load("assets/maps/defaultMap.tmx");
 
-
-        Texture texture = new Texture(Gdx.files.internal("texture/robot.png"));
-        Sprite sprite = new Sprite(texture);
-
-        // Create a cell(tile) to add to the layer
-        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-
-
-        // The sprite/tilesheet behind our new layer is a single image (our sprite)
-        // Create a TextureRegion that is the entire size of our texture
-        TextureRegion textureRegion = new TextureRegion(texture,66,66);
-
-        // Now set the graphic for our cell to our newly created region
+        //Placing a player on the board
+        //Create a new texture with the robot picture
+        robotTexture = new Texture(Gdx.files.internal("texture/robot.png"));
+        //Create a TextureRegion that is the entire size of the texture
+        TextureRegion textureRegion = new TextureRegion(robotTexture, 66, 66);
+        //Create a cell(tile) to add to the layer
+        Cell cell = new Cell();
+        //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
-
-        //place cell in (x,y) coordinate
-        layer.setCell(5,5, cell);
+        //Get layer to put cell in
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(1);
+        //place cell on layer in (x,y) coordinate
+        layer.setCell(5, 5, cell);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
-
     }
 
-    public void render () {
+    public void render() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -71,17 +65,17 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
     }
 
     public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.LEFT)
-            camera.translate(-32,0);
-        if(keycode == Input.Keys.RIGHT)
-            camera.translate(32,0);
-        if(keycode == Input.Keys.UP)
-            camera.translate(0,-32);
-        if(keycode == Input.Keys.DOWN)
-            camera.translate(0,32);
-        if(keycode == Input.Keys.NUM_1)
+        if (keycode == Input.Keys.LEFT)
+            camera.translate(-32, 0);
+        if (keycode == Input.Keys.RIGHT)
+            camera.translate(32, 0);
+        if (keycode == Input.Keys.UP)
+            camera.translate(0, -32);
+        if (keycode == Input.Keys.DOWN)
+            camera.translate(0, 32);
+        if (keycode == Input.Keys.NUM_1)
             tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
-        if(keycode == Input.Keys.NUM_2)
+        if (keycode == Input.Keys.NUM_2)
             tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
         return false;
     }
@@ -110,7 +104,6 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
 
 
 }
