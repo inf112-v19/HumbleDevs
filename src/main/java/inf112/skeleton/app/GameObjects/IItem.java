@@ -14,6 +14,6 @@ public interface IItem {
     /*
      * When objects cause damage
      */
-    int getDamage():
+    int getDamage();
 
 }
