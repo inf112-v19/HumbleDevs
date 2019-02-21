@@ -1,4 +1,4 @@
-package inf112.skeleton.app.Item;
+package inf112.skeleton.app.GameObjects;
 
 
 /*
@@ -12,8 +12,8 @@ public interface IItem {
     int getSpeed();
 
     /*
-     *
+     * When objects cause damage
      */
-
+    int getDamage():
 
 }
