@@ -1,4 +1,4 @@
-package inf112.skeleton.app.GameObjects;
+package inf112.skeleton.app.gameObjects;
 
 import inf112.skeleton.app.board.Direction;
 

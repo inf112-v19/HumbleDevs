@@ -1,6 +1,4 @@
-package inf112.skeleton.app.GameObjects;
-
-import inf112.skeleton.app.GameObjects.IProgramCard;
+package inf112.skeleton.app.gameObjects;
 
 public class ProgramCard implements IProgramCard {
     private int move;
@@ -8,7 +6,7 @@ public class ProgramCard implements IProgramCard {
     private int priority;
 
     public ProgramCard(int move, int rotate, int priority){
-        this.move=move;pa
+        this.move=move;
         this.rotate=rotate;
         this.priority=priority;
     }
