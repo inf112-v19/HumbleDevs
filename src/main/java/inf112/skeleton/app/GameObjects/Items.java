@@ -1,4 +1,4 @@
-package inf112.skeleton.app.Item;
+package inf112.skeleton.app.GameObjects;
 
 public class Items {
 
