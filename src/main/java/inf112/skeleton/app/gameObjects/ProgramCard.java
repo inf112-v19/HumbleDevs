@@ -1,6 +1,6 @@
 package inf112.skeleton.app.gameObjects;
 
-public class ProgramCard implements IProgramCard{
+public class ProgramCard implements IProgramCard {
     private int move;
     private int rotate;
     private int priority;
