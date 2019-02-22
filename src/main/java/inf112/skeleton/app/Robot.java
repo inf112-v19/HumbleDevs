@@ -31,15 +31,7 @@ public abstract class Robot implements IRobot {
     	}
     	
     }
-    
-    public void doTurn(int turn) {
-    	if(!isAlive()) {
-    		return;
-    	}
-    	Card playCard = cards[turn];
-    	//playcard.doActivity(this);
-    	
-    }
+
     // Må sjekke at det er et lovlig trekk
     @Override
     public void move(int i){
@@ -60,6 +52,11 @@ public abstract class Robot implements IRobot {
     public Direction getDirection(){
         return this.dir;
     }
+    
+    public Position getPosition() {
+    	return pos;
+    }
+    
     
     public void makeBackup(Position newBackup) {
     	this.backup = newBackup;
