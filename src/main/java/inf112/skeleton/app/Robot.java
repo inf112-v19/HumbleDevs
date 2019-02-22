@@ -47,6 +47,18 @@ public abstract class Robot implements IRobot {
             }
         }
     }
+    
+    public void move(Direction dir) {
+    	switch(dir) {
+    	case NORTH: this.pos.moveNorth();
+        break;
+        case SOUTH: this.pos.moveSouth();
+        break;
+        case EAST: this.pos.moveEast();
+        break;
+        case WEST: this.pos.moveWest();
+    	}
+    }
 
     @Override
     public Direction getDirection(){
@@ -115,5 +127,8 @@ public abstract class Robot implements IRobot {
     
     public Card[] getCards() {
     	return cards;
+    }
+    public void die() {
+    	this.health = 0;
     }
 }

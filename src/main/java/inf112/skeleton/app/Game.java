@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -13,6 +14,13 @@ import java.util.TreeMap;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Position;
 
+/**
+ * The game class that controls most of the game. The game class is the class that always
+ * keeps track of everything that happens.
+ * @author Even Kolsgaard
+ *
+ * @param <T>
+ */
 public class Game<T> {
 	private static Random rng;
 	private static Board board;
@@ -40,14 +48,15 @@ public class Game<T> {
 		}
 	}
 	/**
-	 * Starts one phase
+	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
+	 * is going to be used this round. For every robot the robotDoTurn - method is called.
 	 * @param nr the number of the phase in this round
 	 */
 	public void phase(int nr) {
 		ArrayList prio = (ArrayList) findPriority(nr);
 		for(int x = 0; x < robots.length; x++) {
 			int robot = (int) prio.get(x);
-			robotDoTurn(robots[robot]);
+			robotDoTurn(robots[robot],nr);
 		}
 		// gjør alle aktivitetene på brettet
 		// Sjekk om noen roboter står på noe, hvis dette er tilfellet må aktiviteten utføres
@@ -57,6 +66,13 @@ public class Game<T> {
 		// Sjekk om noen har vært på alle flagg, hvis ja --> den har vunnet
 	}
 	
+	/**
+	 * This method makes the robot do one turn. It checks the card and does what it says.
+	 * If it's a move card, then it's created a temporary position which is the robots new
+	 * position if it moves. This position is checked for items and other robots.
+	 * @param rob The robot that are going to do its turn
+	 * @param nr The phase number
+	 */
 	public void robotDoTurn(Robot rob,int nr) {
 		Card c = rob.getCards()[nr];
 		if(card instanceof /***/) {
@@ -75,6 +91,12 @@ public class Game<T> {
 		}
 	}
 	// Problem: pos peker på den virkelige posisjonen til robot ? ev lag ny posisjon
+	/**
+	 * This method 
+	 * @param rob
+	 * @param dir
+	 * @return
+	 */
 	public boolean robotMove(Robot rob, Direction dir) {
 		Position pos = rob.getPosition();
 		switch(dir) {
@@ -87,6 +109,12 @@ public class Game<T> {
 		case SOUTH: pos.moveSouth();
 		break;
 		}
+		int xPos = pos.getX();
+		int yPos = pos.getY();
+		if(xPos > board.getWidth() || xPos < 0 || yPos < 0 || yPos > board.getHeight()) {
+			rob.die();
+			return true;
+		}
 		T it = (T) board.getElement(pos);
 		if(it instanceof /* hull */) {
 			//roboten dør
@@ -96,37 +124,35 @@ public class Game<T> {
 			return false;
 		}
 		if(board.isFree(pos)) {
-			rob.move(1);
+			rob.move(dir);
 			return true;
 		}
 		Robot rob2 = board.getRobot(pos);
 		boolean moved = robotMove(rob2,dir);
-		if(moved) {
-			rob.move(1);
+		if(!moved) {
+			return false;
 		}
+		rob.move(dir);
 		return true;
 	}
 	
 	// Find rekkefølgen på robotenes doTurn()
-	public List findPriority(int cardnr) {
-		class pri{
-			public int priority;
-			public int robot;
-			public pri(int pri, int rob) {
-				this.priority = pri;
-				this.robot = rob;
-			}
-			public int getPri() {
-				return priority;
-			}
-		}
-		Map<Integer, pri> pri_card = new HashMap<>();
+	public int[] findPriority(int cardnr) {
+		double[][] pri = new double[robots.length][2];
 		for(int x = 0; x < robots.length; x++) {
-			pri d = new pri(robots[x].getCards()[cardnr].getPriority(),x);
-			pri_card.put(robots[x].getCards()[cardnr].getPriority(), d);
+			pri[x][1] = x;
+			pri[x][0] = robots[x].getCards()[cardnr].getPriority();
 		}
-		List<pri> sdf = new ArrayList<>(pri_card.values());
-		Collections.sort(sdf, Comparator.comparing(pri::getPri));
+		java.util.Arrays.sort(pri, new java.util.Comparator<double[]>() {
+		    public int compare(double[] a, double[] b) {
+		        return Double.compare(a[0], b[0]);
+		    }
+		});
+		int[] prio = new int[robots.length];
+		for(int x = 0; x < robots.length; x++) {
+			prio[x] = (int) pri[x][1];
+		}
+		return prio;
 	}
 	
 	/**

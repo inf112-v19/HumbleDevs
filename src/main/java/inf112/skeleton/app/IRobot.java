@@ -55,6 +55,11 @@ public interface IRobot {
 	 * Rotate the robot right
 	 */
 	void rotateRight();
+	
+	/**
+	 * Kill the robot
+	 */
+	void die();
 
 
 

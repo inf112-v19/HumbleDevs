@@ -14,8 +14,6 @@ import inf112.skeleton.app.board.IBoard;
 
 public class GameTest {
 	
-	
-	
 	@Test
 	public void testFindPriority() {
 		ArrayList<String> test = new ArrayList<String>();
@@ -28,7 +26,8 @@ public class GameTest {
 		Card[] s = fysj.shuffleCards();
 		assertEquals(9, s.length);
 		fysj.startRound();
-		ArrayList li = (ArrayList) fysj.findPriority(0);
+		int[] sa = new int[3];
+		int[] li = fysj.findPriority(0);
 		
 	}
 
