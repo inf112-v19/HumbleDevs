@@ -60,6 +60,31 @@ public interface IRobot {
 	 * Kill the robot
 	 */
 	void die();
+	
+	/**
+	 * @return the number of flags the robot has visited
+	 */
+	int visitedFlags();
+	
+	/**
+	 * @return the respawn position
+	 */
+	Position respawn();
+
+	/**
+	 * Visit a flag. Flags visited must increments and the backup - position is updated
+	 */
+	void visitFlag();
+
+	/**
+	 * @return the robots cards for one round
+	 */
+	Card[] getCards();
+
+	/**
+	 * @return the position of the robot
+	 */
+	Position getPosition();
 
 
 

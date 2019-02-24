@@ -29,7 +29,6 @@ public abstract class Robot implements IRobot {
     		Card s = pos_cards[rn.nextInt(9)];
     		this.cards[x] = s;
     	}
-    	
     }
 
     // Må sjekke at det er et lovlig trekk
@@ -128,7 +127,21 @@ public abstract class Robot implements IRobot {
     public Card[] getCards() {
     	return cards;
     }
+    
     public void die() {
     	this.health = 0;
+    }
+    
+    public void visitFlag() {
+    	this.visitedFlags++;
+    	makeBackup(this.pos);
+    }
+    
+    public Position respawn() {
+    	return this.backup;
+    }
+    
+    public int visitedFlags() {
+    	return this.visitedFlags;
     }
 }

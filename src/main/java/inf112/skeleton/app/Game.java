@@ -47,25 +47,56 @@ public class Game<T> {
 			robots[x].chooseCards(newCards);
 		}
 	}
+	
+	public void round() {
+		for (int x = 0; x < 5; x++) {
+			phase(x);
+			activateBoard();
+		}
+	}
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
 	 * is going to be used this round. For every robot the robotDoTurn - method is called.
 	 * @param nr the number of the phase in this round
 	 */
 	public void phase(int nr) {
-		ArrayList prio = (ArrayList) findPriority(nr);
+		int[] prio = findPriority(nr);
 		for(int x = 0; x < robots.length; x++) {
-			int robot = (int) prio.get(x);
+			int robot = prio[x];
 			robotDoTurn(robots[robot],nr);
 		}
-		// gjør alle aktivitetene på brettet
-		// Sjekk om noen roboter står på noe, hvis dette er tilfellet må aktiviteten utføres
-		// Robotene skyter, når???
 		// Sjekk om noen roboter står noe som gir en ny backup
 		// Registrere flagg
 		// Sjekk om noen har vært på alle flagg, hvis ja --> den har vunnet
 	}
-	
+	/**
+	 * Method that does the activities on the board e.g. laser and does the routines
+	 */
+	public void activateBoard() {
+		for(int x = 0; x < robots.length; x++) {
+			Robot rob = robots[x];
+			if(!rob.isAlive()) continue;
+			Position pos = rob.getPosition();
+			T s = (T) board.getElement(pos);
+			if(s.equals(null)); continue;
+			if(s instanceof /*rullebånd*/) {
+				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
+			} else if (s instanceof /*laser*/) {
+				/* Finn antall lasere og la roboten ta skade*/
+			} else if (s instanceof /*flagg*/) {
+				rob.visitFlag();
+			} else if (s instanceof /*skrutrekker*/) {
+			}
+		}
+	}
+	public Robot finished() {
+		for(int x = 0; x < robots.length; x++) {
+			if(robots[x].visitedFlags() == 3) {
+				return robots[x];
+			}
+		}
+		return null;
+	}
 	/**
 	 * This method makes the robot do one turn. It checks the card and does what it says.
 	 * If it's a move card, then it's created a temporary position which is the robots new
@@ -75,10 +106,14 @@ public class Game<T> {
 	 */
 	public void robotDoTurn(Robot rob,int nr) {
 		Card c = rob.getCards()[nr];
-		if(card instanceof /***/) {
-			Direction dir = card.getRotate();
+		if(card instanceof rotateleftcard) {
 			rob.rotateLeft();
-		} else if (card instanceof /***/) {
+		} else if(card instanceof rotaterightcard) {
+			rob.rotateRight();
+		} else if (card instanceof rotateU) {
+			rob.rotateRight();
+			rob.rotateRight();
+		} else if (card instanceof movecard) {
 			int move = card.getMove();
 			while(move > 0) {
 				if(!rob.isAlive()) {
@@ -90,12 +125,13 @@ public class Game<T> {
 			}
 		}
 	}
-	// Problem: pos peker på den virkelige posisjonen til robot ? ev lag ny posisjon
 	/**
-	 * This method 
-	 * @param rob
-	 * @param dir
-	 * @return
+	 * Method that moves the robot. Checks the new position and depending on that, the robot will
+	 * either move or stand still. If there is a robot in the way, this method is used again on 
+	 * that robot.
+	 * @param rob the robot that are going to be moved
+	 * @param dir the direction of the movement
+	 * @return True if the robot is moved, false otherwise
 	 */
 	public boolean robotMove(Robot rob, Direction dir) {
 		Position pos = rob.getPosition();
@@ -136,7 +172,12 @@ public class Game<T> {
 		return true;
 	}
 	
-	// Find rekkefølgen på robotenes doTurn()
+	/**
+	 * The method that orders the robots with respect to the priority of the card that each robot
+	 * is going to play this turn
+	 * @param cardnr the number of the phase
+	 * @return an array with the right order
+	 */
 	public int[] findPriority(int cardnr) {
 		double[][] pri = new double[robots.length][2];
 		for(int x = 0; x < robots.length; x++) {
