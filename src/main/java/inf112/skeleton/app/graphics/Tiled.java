@@ -9,16 +9,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.*;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import inf112.skeleton.app.board.Board;
+
+import java.util.Arrays;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
@@ -35,39 +34,17 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         camera.setToOrtho(false, w, h);
         camera.update();
         tiledMap = new TmxMapLoader().load("assets/maps/namedLayersMap.tmx");
-
-        //Placing a player on the board
-        //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal("texture/robot.png"));
-        //Create a TextureRegion that is the entire size of the texture
-        TextureRegion textureRegion = new TextureRegion(robotTexture, 66, 66);
-        //Create a cell(tile) to add to the layer
-        Cell cell = new Cell();
-        //Set the graphic for the new cell
-        cell.setTile(new StaticTiledMapTile(textureRegion));
-        //Get layer to put cell in
-        TiledMapTileLayer layer1 = (TiledMapTileLayer) tiledMap.getLayers().get(2);
-        //place cell on layer in (x,y) coordinate
-        layer1.setCell(5, 5, cell);
-        layer1.getCell(5,5).getTile().getId();
-
-        Actor actor = new Actor();
-
-
-
-
-
-        //retrieving information about objects in tilemap
-        MapLayer gameObjects = tiledMap.getLayers().get("gameObjects");
-
-        MapProperties properties = gameObjects.getProperties();
-        System.out.println(properties.get("direction"));
-        System.out.println("# of objects: " + gameObjects.getObjects().getCount());
-
+        createGrid(tiledMap);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
     }
+
+    public void createGrid(TiledMap map) {
+        Grid grid = new Grid(map);
+    }
+
+
 
     public void render() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
