@@ -1,4 +1,5 @@
 package inf112.skeleton.app.GameObjects;
+import inf112.skeleton.app.Direction;
 
 
 /*
@@ -7,13 +8,22 @@ package inf112.skeleton.app.GameObjects;
 public interface IItem {
 
     /*
-     * If the item have any speed
+     * Return the Item type
      */
-    int getSpeed();
+    IItem getType();
 
     /*
-     * When objects cause damage
+     * Return the name of the item
      */
-    int getDamage();
+    String getName();
 
+    /*
+     * Returns the symbol of the item
+     */
+    String getSymbol();
+
+    /*
+     * Returns the direction of the item
+     */
+    Direction getDirection();
 }
