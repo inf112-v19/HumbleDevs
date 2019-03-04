@@ -3,6 +3,9 @@ import java.util.Stack;
 
 public interface IDeck {
 
+    /*
+    randomize stack of cards
+     */
     void shuffle();
 
     ProgramCard getCard();
@@ -11,6 +14,9 @@ public interface IDeck {
 
     void addCard(ProgramCard card);
 
+    /*
+    number of cards in the stack
+     */
     int size();
 
 
