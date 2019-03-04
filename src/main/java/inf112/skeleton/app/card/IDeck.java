@@ -5,9 +5,13 @@ public interface IDeck {
 
     void shuffle();
 
-    Stack<ProgramCard> draw (int n);
+    ProgramCard getCard();
 
     boolean isEmpty();
+
+    void addCard(ProgramCard card);
+
+    int size();
 
 
 
