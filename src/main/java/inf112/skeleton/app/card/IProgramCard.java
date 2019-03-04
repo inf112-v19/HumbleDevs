@@ -13,5 +13,7 @@ public interface IProgramCard {
      */
     int getPriority();
 
+    Movement getTurn();
+
 
 }
