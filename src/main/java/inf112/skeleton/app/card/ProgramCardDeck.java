@@ -41,8 +41,6 @@ public class ProgramCardDeck implements IDeck{
         Collections.shuffle(moveCard);
 
     }
-    
-
 
 
     @Override
@@ -59,6 +57,17 @@ public class ProgramCardDeck implements IDeck{
         }
 
         return drawn;
+    }
+
+    @Override
+    public void addCard(ProgramCard card){
+        moveCard.add(card);
+    }
+
+    @Override
+    public int size(){
+        return moveCard.size();
+
     }
 
     @Override
