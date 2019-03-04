@@ -48,16 +48,14 @@ public class ProgramCardDeck implements IDeck{
         Collections.shuffle(moveCard);
     }
 
+
     @Override
-    public Stack<ProgramCard> draw(int n){
-        Stack<ProgramCard> drawn = new Stack<>();
-        for (int i =0; i <n; i++){
-           drawn.add(moveCard.pop());
-
-        }
-
-        return drawn;
+    public ProgramCard getCard(){
+        ProgramCard card = moveCard.get(0);
+        moveCard.remove(0);
+        return card;
     }
+
 
     @Override
     public void addCard(ProgramCard card){
