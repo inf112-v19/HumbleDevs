@@ -1,10 +1,15 @@
 package inf112.skeleton.app;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import inf112.skeleton.app.board.Position;
 
+/**
+ * The class that represents a robot. It's abstract because this makes it easier to make a robot
+ * that is controlled by the computer.
+ * @author Even Kolsgaard
+ *
+ */
 public abstract class Robot implements IRobot {
 
     private Direction dir;
@@ -15,7 +20,6 @@ public abstract class Robot implements IRobot {
     private int visitedFlags = 0;
 
     public Robot (Direction dir, int xPos, int yPos, int health){
-
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
         this.health = health;
@@ -49,13 +53,13 @@ public abstract class Robot implements IRobot {
     
     public void move(Direction dir) {
     	switch(dir) {
-    	case NORTH: this.pos.moveNorth();
-        break;
-        case SOUTH: this.pos.moveSouth();
-        break;
-        case EAST: this.pos.moveEast();
-        break;
-        case WEST: this.pos.moveWest();
+	    	case NORTH: this.pos.moveNorth();
+	        break;
+	        case SOUTH: this.pos.moveSouth();
+	        break;
+	        case EAST: this.pos.moveEast();
+	        break;
+	        case WEST: this.pos.moveWest();
     	}
     }
 
@@ -64,11 +68,12 @@ public abstract class Robot implements IRobot {
         return this.dir;
     }
     
+    @Override
     public Position getPosition() {
     	return pos;
     }
     
-    
+    @Override
     public void makeBackup(Position newBackup) {
     	this.backup = newBackup;
     }
@@ -123,24 +128,24 @@ public abstract class Robot implements IRobot {
     public boolean isAlive(){
         return this.health > 0;
     }
-    
+    @Override
     public Card[] getCards() {
     	return cards;
     }
-    
+    @Override
     public void die() {
     	this.health = 0;
     }
-    
+    @Override
     public void visitFlag() {
     	this.visitedFlags++;
     	makeBackup(this.pos);
     }
-    
+    @Override
     public Position respawn() {
     	return this.backup;
     }
-    
+    @Override
     public int visitedFlags() {
     	return this.visitedFlags;
     }

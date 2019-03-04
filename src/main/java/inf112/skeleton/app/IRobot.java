@@ -3,7 +3,7 @@ package inf112.skeleton.app;
 import inf112.skeleton.app.board.Position;
 
 public interface IRobot {
-
+	
 	/**
 	 * Move the robot i steps
 	 * @param i number of steps to move

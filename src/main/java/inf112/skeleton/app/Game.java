@@ -65,12 +65,9 @@ public class Game<T> {
 			int robot = prio[x];
 			robotDoTurn(robots[robot],nr);
 		}
-		// Sjekk om noen roboter står noe som gir en ny backup
-		// Registrere flagg
-		// Sjekk om noen har vært på alle flagg, hvis ja --> den har vunnet
 	}
 	/**
-	 * Method that does the activities on the board e.g. laser and does the routines
+	 * Method that does the activities on the board e.g. laser
 	 */
 	public void activateBoard() {
 		for(int x = 0; x < robots.length; x++) {
@@ -89,6 +86,10 @@ public class Game<T> {
 			}
 		}
 	}
+	/**
+	 * Checks if any robots have visited all flags
+	 * @return the robot that have visited all flags, returns null if nobody has done it yet.
+	 */
 	public Robot finished() {
 		for(int x = 0; x < robots.length; x++) {
 			if(robots[x].visitedFlags() == 3) {
@@ -99,12 +100,15 @@ public class Game<T> {
 	}
 	/**
 	 * This method makes the robot do one turn. It checks the card and does what it says.
-	 * If it's a move card, then it's created a temporary position which is the robots new
-	 * position if it moves. This position is checked for items and other robots.
+	 * If it's a move card, the robotMove - method is called. If it's a rotate card, the robot will
+	 * rotate.
 	 * @param rob The robot that are going to do its turn
 	 * @param nr The phase number
 	 */
 	public void robotDoTurn(Robot rob,int nr) {
+		if(!rob.isAlive()) {
+			return;
+		}
 		Card c = rob.getCards()[nr];
 		if(card instanceof rotateleftcard) {
 			rob.rotateLeft();
@@ -136,14 +140,14 @@ public class Game<T> {
 	public boolean robotMove(Robot rob, Direction dir) {
 		Position pos = rob.getPosition();
 		switch(dir) {
-		case NORTH: pos.moveNorth();
-		break;
-		case EAST: pos.moveEast();
-		break;
-		case WEST: pos.moveWest();
-		break;
-		case SOUTH: pos.moveSouth();
-		break;
+			case NORTH: pos.moveNorth();
+			break;
+			case EAST: pos.moveEast();
+			break;
+			case WEST: pos.moveWest();
+			break;
+			case SOUTH: pos.moveSouth();
+			break;
 		}
 		int xPos = pos.getX();
 		int yPos = pos.getY();
@@ -153,7 +157,7 @@ public class Game<T> {
 		}
 		T it = (T) board.getElement(pos);
 		if(it instanceof /* hull */) {
-			//roboten dør
+			rob.die();
 			return true;
 		}
 		if(it instanceof /* vegg*/) {
