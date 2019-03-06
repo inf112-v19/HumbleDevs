@@ -7,24 +7,24 @@ package inf112.skeleton.app.board;
  * The index is calculated as: (y * width) + x
  */
 public class Position implements IPosition {
-    private final int x;
-    private final int y;
-    private final int index;
+    private int xPos;
+    private int yPos;
+    private int index;
 
-    public Position(int x, int y, int index) {
-        this.x = x;
-        this.y = y;
-        this.index = index;
+    public Position(int x, int y) {
+        this.xPos = x;
+        this.yPos = y;
+        this.index = (y*12)+x;
     }
 
     @Override
     public int getX() {
-        return x;
+        return xPos;
     }
 
     @Override
     public int getY() {
-        return y;
+        return yPos;
     }
 
     @Override
@@ -32,12 +32,28 @@ public class Position implements IPosition {
         return index;
     }
 
-
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
         if (that == null || getClass() != that.getClass()) return false;
         Position position = (Position) that;
-        return x == position.x && y == position.y;
+        return xPos == position.xPos && yPos == position.yPos;
     }
+    public void moveEast() {
+		this.xPos++;
+		this.index++;
+	}
+	public void moveWest() {
+		this.xPos--;
+		this.index--;
+	}
+	public void moveNorth() {
+		this.yPos++;
+		this.index= this.index + 7;
+	}
+	public void moveSouth() {
+		this.yPos--;
+		this.index = this.index - 7;
+	}
+
 }

@@ -4,9 +4,5 @@ package inf112.skeleton.app.card;
  */
 
 public enum Movement {
-    RIGHT,
-    LEFT,
-    U_TURN,
-    NONE;
-
+	LEFT, RIGHT, UTURN, MOVEFORWARD, MOVEBACKWARD;
 }
