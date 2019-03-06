@@ -19,14 +19,25 @@ public class Grid {
         objectLayer = (TiledMapTileLayer) map.getLayers().get(2);
         grid = new ArrayList[WIDTH][HEIGHT];
 
-        for (int r = 0; r < HEIGHT; r++) {
-            for (int c = 0; c < WIDTH; c++) {
+        for (int l = 0; l < map.getLayers().size(); l++) {
+            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(l);
+            for (int r = 0; r < HEIGHT; r++) {
+                for (int c = 0; c < WIDTH; c++) {
                 // Each cell has a list of items/objects
                 ArrayList<Items> list = new ArrayList<>();
-                grid[r][c] = list;
-                //Fill list with objects!!
-
+                    //Fill list with objects!!
+                    grid[r][c] = list;
+                    //ID of a given cell at a given layer
+                    int id = layer.getCell(r, c).getTile().getId();
+                    if (id != 0) {
+                        Items item = createObjectFromId(id);
+                        list.add(item);
+                    }
+                }
              }
         }
+    }
+    public Items createObjectFromId (int id) {
+        return new Items(id);
     }
 }
