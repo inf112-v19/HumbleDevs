@@ -2,10 +2,15 @@ package inf112.skeleton.app.GameObjects;
 
 import inf112.skeleton.app.board.Direction;
 
-public class Laser implements IItem{
+public class LaserShoot implements IItem {
 
     private Direction dir;
-    private int damageMultiplier;
+    private int harm;
+
+    public LaserShoot(Direction dir, int harm) {
+        this.dir = dir;
+        this.harm = harm;
+    }
 
     @Override
     public IItem getType() {
@@ -14,16 +19,20 @@ public class Laser implements IItem{
 
     @Override
     public String getName() {
-        return "Laser";
+        return "LaserShoot";
     }
 
     @Override
     public char getSymbol() {
-        return '-';
+        return '>';
     }
 
     @Override
     public Direction getDirection() {
         return dir;
+    }
+
+    public int getHarm() {
+        return harm;
     }
 }
