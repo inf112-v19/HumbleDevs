@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-import inf112.skeleton.app.Movement;
+
 import inf112.skeleton.app.GameObjects.IItem;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
+import inf112.skeleton.app.card.Movement;
 import inf112.skeleton.app.card.ProgramCard;
 
 /**
