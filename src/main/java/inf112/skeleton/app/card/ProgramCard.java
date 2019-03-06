@@ -1,4 +1,6 @@
-package inf112.skeleton.app.gameObjects;
+package inf112.skeleton.app.card;
+
+import inf112.skeleton.app.card.IProgramCard;
 
 public class ProgramCard implements IProgramCard {
     private int move;

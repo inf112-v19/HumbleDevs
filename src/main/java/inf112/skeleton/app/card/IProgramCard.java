@@ -1,4 +1,5 @@
-package inf112.skeleton.app.gameObjects;
+package inf112.skeleton.app.card;
+
 
 public interface IProgramCard {
 
