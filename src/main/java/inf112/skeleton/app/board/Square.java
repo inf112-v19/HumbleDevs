@@ -3,12 +3,11 @@ package inf112.skeleton.app.board;
 import inf112.skeleton.app.Robot;
 
 public class Square<T> implements ISquare<T>{
-	private final Position pos;
 	private Robot robot;
 	private T elem;
 	
-	public Square(Position pos, T elem) {
-		this.pos = pos;
+	
+	public Square(T elem) {
 		this.robot = null;
 		this.elem = elem;
 	}

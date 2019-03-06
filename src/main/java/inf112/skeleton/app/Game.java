@@ -21,7 +21,7 @@ import inf112.skeleton.app.board.Position;
  *
  * @param <T>
  */
-public class Game<T> {
+public class Game {
 	private static Random rng;
 	private static Board board;
 	private static Robot[] robots;
@@ -74,13 +74,13 @@ public class Game<T> {
 			Robot rob = robots[x];
 			if(!rob.isAlive()) continue;
 			Position pos = rob.getPosition();
-			T s = (T) board.getElement(pos);
+			IItem s = (IItem) board.getElement(pos);
 			if(s.equals(null)); continue;
 			if(s instanceof /*rullebånd*/) {
 				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
 			} else if (s instanceof /*laser*/) {
 				/* Finn antall lasere og la roboten ta skade*/
-			} else if (s instanceof /*flagg*/) {
+			} else if (s instanceof Flag) {
 				rob.visitFlag();
 			} else if (s instanceof /*skrutrekker*/) {
 			}
@@ -109,21 +109,32 @@ public class Game<T> {
 		if(!rob.isAlive()) {
 			return;
 		}
-		Card c = rob.getCards()[nr];
-		if(card instanceof rotateleftcard) {
+		Card card = rob.getCards()[nr];
+		Movement mov = c.getMovement();
+		if(mov == Movement.LEFT) {
 			rob.rotateLeft();
-		} else if(card instanceof rotaterightcard) {
+		} else if(mov == Movement.RIGHT) {
 			rob.rotateRight();
-		} else if (card instanceof rotateU) {
+		} else if (mov == Movement.UTURN) {
 			rob.rotateRight();
 			rob.rotateRight();
-		} else if (card instanceof movecard) {
+		} else if (mov == Movement.MOVEFORWARD) {
 			int move = card.getMove();
 			while(move > 0) {
 				if(!rob.isAlive()) {
 					break;
 				}
 				if(!robotMove(rob,rob.getDirection())) {
+					break;
+				}
+			}
+		} else {
+			int move = card.getMove();
+			while(move > 0) {
+				if(!rob.isAlive()) {
+					break;
+				}
+				if(!robotMove(rob,rob.getDirection().getOppositeDirection())) {
 					break;
 				}
 			}
@@ -155,7 +166,7 @@ public class Game<T> {
 			rob.die();
 			return true;
 		}
-		T it = (T) board.getElement(pos);
+		IItem it = (IItem) board.getElement(pos);
 		if(it instanceof /* hull */) {
 			rob.die();
 			return true;

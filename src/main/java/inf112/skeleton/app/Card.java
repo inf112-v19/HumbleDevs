@@ -2,6 +2,7 @@ package inf112.skeleton.app;
 
 public class Card {
 	private int priority;
+	private Movement mov;
 	
 	
 	public Card(int p) {
@@ -10,5 +11,8 @@ public class Card {
 	
 	public int getPriority() {
 		return priority;
+	}
+	public Movement getMovement() {
+		return this.mov;
 	}
 }
