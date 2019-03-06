@@ -5,9 +5,9 @@ public interface IProgramCard {
 
     int getMove();
 
-    int getRotate();
-
     int getPriority();
+
+    Action getAction();
 
 
 }

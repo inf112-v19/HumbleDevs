@@ -6,11 +6,7 @@ import inf112.skeleton.app.board.Direction;
  * Interface for cards and items
  */
 public interface IItem {
-    int getId();
 
-    void setId(int id);
-
-    void createItem(int id);
     /*
      * Return the Item type
      */

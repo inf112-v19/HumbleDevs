@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package inf112.skeleton.app.game;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -16,3 +17,5 @@ public class Main {
         new LwjglApplication(new Tiled(), cfg);
     }
 }
+=======
+>>>>>>> master
