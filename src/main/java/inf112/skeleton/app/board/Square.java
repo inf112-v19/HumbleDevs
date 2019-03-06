@@ -1,6 +1,6 @@
 package inf112.skeleton.app.board;
 
-import inf112.skeleton.app.Robot;
+import inf112.skeleton.app.GameObjects.Robot;
 
 public class Square<T> implements ISquare<T>{
 	private Robot robot;

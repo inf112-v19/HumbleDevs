@@ -1,15 +1,10 @@
-<<<<<<< HEAD:src/main/java/inf112/skeleton/app/GameObjects/Robot.java
 package inf112.skeleton.app.GameObjects;
-import inf112.skeleton.app.Direction;
-=======
-package inf112.skeleton.app.gameObjects;
-
 import inf112.skeleton.app.board.Direction;
->>>>>>> master:src/main/java/inf112/skeleton/app/gameObjects/Robot.java
 
 import java.util.Random;
 
 import inf112.skeleton.app.board.Position;
+import inf112.skeleton.app.card.ProgramCard;
 
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
@@ -23,7 +18,7 @@ public abstract class Robot implements IRobot {
     private Position pos;
     private int health;
     private Position backup;
-    private Card[] cards;
+    private ProgramCard[] cards;
     private int visitedFlags = 0;
 
     public Robot (Direction dir, int xPos, int yPos, int health){
@@ -33,11 +28,11 @@ public abstract class Robot implements IRobot {
         this.backup = new Position(xPos, yPos);
     }
     
-    public void chooseCards(Card[] pos_cards) {
-    	cards = new Card[5];
+    public void chooseCards(ProgramCard[] pos_cards) {
+    	cards = new ProgramCard[5];
     	Random rn = new Random();
     	for(int x = 0; x < 5; x++) {
-    		Card s = pos_cards[rn.nextInt(9)];
+    		ProgramCard s = pos_cards[rn.nextInt(9)];
     		this.cards[x] = s;
     	}
     }
@@ -136,7 +131,7 @@ public abstract class Robot implements IRobot {
         return this.health > 0;
     }
     @Override
-    public Card[] getCards() {
+    public ProgramCard[] getCards() {
     	return cards;
     }
     @Override

@@ -1,6 +1,6 @@
 package inf112.skeleton.app.board;
 
-import inf112.skeleton.app.Robot;
+import inf112.skeleton.app.GameObjects.Robot;
 
 /**
  * The interface of a square on the map

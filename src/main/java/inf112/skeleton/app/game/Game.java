@@ -1,4 +1,5 @@
-package inf112.skeleton.app;
+
+package inf112.skeleton.app.game;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,26 +11,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-
+import inf112.skeleton.app.Movement;
+import inf112.skeleton.app.GameObjects.IItem;
+import inf112.skeleton.app.GameObjects.Player;
+import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
+import inf112.skeleton.app.card.ProgramCard;
 
 /**
  * The game class that controls most of the game. The game class is the class that always
  * keeps track of everything that happens.
  * @author Even Kolsgaard
  *
- * @param <T>
  */
 public class Game {
 	private static Random rng;
 	private static Board board;
 	private static Robot[] robots;
-	private static Card[] cardPack;
+	private static ProgramCard[] cardPack;
 	private static int round;
 	
 	
-	public Game(Board board, Card[] cards, int players) {
+	public Game(Board board, ProgramCard[] cards, int players) {
 		this.board = board;
 		this.cardPack = cards;
 		this.round = 1;
@@ -43,7 +48,7 @@ public class Game {
 	 */
 	public void startRound() {
 		for(int x = 0; x < robots.length; x++) {
-			Card[] newCards = shuffleCards();
+			ProgramCard[] newCards = shuffleCards();
 			robots[x].chooseCards(newCards);
 		}
 	}
@@ -109,8 +114,8 @@ public class Game {
 		if(!rob.isAlive()) {
 			return;
 		}
-		Card card = rob.getCards()[nr];
-		Movement mov = c.getMovement();
+		ProgramCard card = rob.getCards()[nr];
+		Movement mov = card.getMovement();
 		if(mov == Movement.LEFT) {
 			rob.rotateLeft();
 		} else if(mov == Movement.RIGHT) {
@@ -215,8 +220,8 @@ public class Game {
 	 * Chooses cards from the card pack
 	 * @return array with 9 random playing cards
 	 */
-	public Card[] shuffleCards() {
-		Card[] newCards = new Card[9];
+	public ProgramCard[] shuffleCards() {
+		ProgramCard[] newCards = new ProgramCard[9];
 		for(int x = 0; x < 9; x++) {
 			int rand = rng.nextInt(cardPack.length);
 			newCards[x] = cardPack[rand];

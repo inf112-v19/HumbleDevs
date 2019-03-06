@@ -3,7 +3,8 @@ package inf112.skeleton.app.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import inf112.skeleton.app.IItem;
+import inf112.skeleton.app.GameObjects.Robot;
+
 
 /**
  * Board represented as a grid with width*height size.

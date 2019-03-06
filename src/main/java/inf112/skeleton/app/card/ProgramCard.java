@@ -7,9 +7,7 @@ public class ProgramCard implements IProgramCard {
     private int rotate;
     private int priority;
 
-    public ProgramCard(int move, int rotate, int priority){
-        this.move=move;
-        this.rotate=rotate;
+    public ProgramCard(int priority){
         this.priority=priority;
     }
 
