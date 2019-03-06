@@ -7,6 +7,7 @@ import inf112.skeleton.app.graphics.Tiled;
 
 
 public class Main {
+
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "hello-robot";
