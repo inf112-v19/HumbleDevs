@@ -1,4 +1,11 @@
-package inf112.skeleton.app;
+<<<<<<< HEAD:src/main/java/inf112/skeleton/app/GameObjects/IRobot.java
+package inf112.skeleton.app.GameObjects;
+import inf112.skeleton.app.Direction;
+=======
+package inf112.skeleton.app.gameObjects;
+
+import inf112.skeleton.app.board.Direction;
+>>>>>>> master:src/main/java/inf112/skeleton/app/gameObjects/IRobot.java
 
 import inf112.skeleton.app.board.Position;
 

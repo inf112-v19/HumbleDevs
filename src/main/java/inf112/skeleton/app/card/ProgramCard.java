@@ -1,6 +1,8 @@
-package inf112.skeleton.app;
+package inf112.skeleton.app.card;
 
-public class ProgramCard implements IProgramCard{
+import inf112.skeleton.app.card.IProgramCard;
+
+public class ProgramCard implements IProgramCard {
     private int move;
     private int rotate;
     private int priority;

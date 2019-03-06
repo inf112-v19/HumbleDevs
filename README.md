@@ -1,9 +1,11 @@
-# Group 4, Team 3
+# INF112 team project
+by HumbleDevs (group 4, team 3)
 
 
-# INF112 Maven template 
-Simple skeleton with libgdx. 
-
+#
+Our documentation (text submissions) through each iteration can be found [here in deliverables](deliverables).
+Direct links:
+* [Exercise 2](deliverables/documents/oblig2.md)
 
 ## Known bugs
 Currently throws "WARNING: An illegal reflective access operation has occurred", 
