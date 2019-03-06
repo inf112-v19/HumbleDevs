@@ -20,7 +20,7 @@ public interface IItem {
     /*
      * Returns the symbol of the item
      */
-    String getSymbol();
+    char getSymbol();
 
     /*
      * Returns the direction of the item

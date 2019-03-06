@@ -18,7 +18,7 @@ import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
-import inf112.skeleton.app.card.Movement;
+import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 
 /**
@@ -116,15 +116,15 @@ public class Game {
 			return;
 		}
 		ProgramCard card = rob.getCards()[nr];
-		Movement mov = card.getMovement();
-		if(mov == Movement.LEFT) {
+		Action action = card.getAction();
+		if(action == Action.LEFT) {
 			rob.rotateLeft();
-		} else if(mov == Movement.RIGHT) {
+		} else if(action == Action.RIGHT) {
 			rob.rotateRight();
-		} else if (mov == Movement.UTURN) {
+		} else if (action == Action.UTURN) {
 			rob.rotateRight();
 			rob.rotateRight();
-		} else if (mov == Movement.MOVEFORWARD) {
+		} else if (action == Action.MOVEFORWARD) {
 			int move = card.getMove();
 			while(move > 0) {
 				if(!rob.isAlive()) {
@@ -133,6 +133,7 @@ public class Game {
 				if(!robotMove(rob,rob.getDirection())) {
 					break;
 				}
+				move--;
 			}
 		} else {
 			int move = card.getMove();
@@ -143,6 +144,7 @@ public class Game {
 				if(!robotMove(rob,rob.getDirection().getOppositeDirection())) {
 					break;
 				}
+				move--;
 			}
 		}
 	}
