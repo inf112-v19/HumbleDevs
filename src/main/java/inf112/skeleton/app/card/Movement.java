@@ -7,6 +7,7 @@ public enum Movement {
     RIGHT,
     LEFT,
     U_TURN,
+    Move,
     NONE;
 
 }

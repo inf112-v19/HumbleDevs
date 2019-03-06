@@ -4,32 +4,24 @@ import inf112.skeleton.app.card.IProgramCard;
 
 public class ProgramCard implements IProgramCard {
     private int move;
-    private int rotate;
     private int priority;
-    private Movement turn;
+    private Movement movement;
 
-    public ProgramCard(int move, int rotate, int priority, Movement turn){
+    public ProgramCard(int move, int priority, Movement movement){
         this.move=move;
-        this.rotate=rotate;
         this.priority=priority;
-        this.turn=turn;
+        this.movement=movement;
     }
-
 
     @Override
     public int getMove(){ return this.move; }
 
     @Override
-    public int getRotate() { return rotate; }
-
-    @Override
     public int getPriority(){ return priority; }
 
     @Override
-    public Movement getTurn(){
-        return this.turn;
+    public Movement getMovement(){
+        return this.movement;
     }
-
-
 
 }

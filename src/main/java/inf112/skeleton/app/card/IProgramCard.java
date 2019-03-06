@@ -6,14 +6,9 @@ public interface IProgramCard {
 
     int getRotate();
 
-
-    /**
-     *
-     *
-     */
     int getPriority();
 
-    Movement getTurn();
+   Movement getMovement();
 
 
 }
