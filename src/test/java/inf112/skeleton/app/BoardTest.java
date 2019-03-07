@@ -4,6 +4,8 @@ import inf112.skeleton.app.board.Board;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class BoardTest {
@@ -11,14 +13,14 @@ public class BoardTest {
 
     @Before
     public void setUp() {
-        board = new Board(4,4);
+        board = new Board(4,4, new ArrayList<String>());
     }
 
 
     @Test
     public void boardHasCorrectDimensions() {
         for (int i = 0; i < 20; i++) {
-            board = new Board(i,i);
+            board = new Board(i,i, new ArrayList<String>());
             assertEquals(i, board.getHeight());
             assertEquals(i, board.getWidth());
         }
