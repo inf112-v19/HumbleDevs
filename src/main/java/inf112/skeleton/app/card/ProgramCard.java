@@ -5,12 +5,12 @@ import inf112.skeleton.app.card.IProgramCard;
 public class ProgramCard implements IProgramCard {
     private int move;
     private int priority;
-    private Movement movement;
+    private Action action;
 
-    public ProgramCard(int move, int priority, Movement movement){
+    public ProgramCard(int move, int priority, Action action){
         this.move=move;
         this.priority=priority;
-        this.movement=movement;
+        this.action=action;
     }
 
     @Override
@@ -20,8 +20,8 @@ public class ProgramCard implements IProgramCard {
     public int getPriority(){ return priority; }
 
     @Override
-    public Movement getMovement(){
-        return this.movement;
+    public Action getAction(){
+        return this.action;
     }
 
 }
