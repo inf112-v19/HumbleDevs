@@ -12,9 +12,4 @@ public class Player extends Robot {
 		super(dir, xPos, yPos);
 		this.name = name;
 	}
-    
-    @Override
-    public void chooseCards(ProgramCard[] cards) {
-    	
-    }
 }

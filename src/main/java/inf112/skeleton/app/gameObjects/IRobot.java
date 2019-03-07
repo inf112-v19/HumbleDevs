@@ -3,20 +3,30 @@ package inf112.skeleton.app.GameObjects;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
-
+/**
+ * Interface for the robot class
+ * @author Even Kolsgaard
+ *
+ */
 public interface IRobot {
 	
 	/**
-	 * Move the robot i steps
+	 * Move the robot i steps in the direction that the robot is facing
 	 * @param i number of steps to move
 	 */
     void move(int i);
     
     /**
+     * Move the robot one step in the given direction
+     * @param dir
+     */
+    void move(Direction dir);
+    
+    /**
      * Set a new backup for the robot
      * @param newBackup is the position for the new backup
      */
-    public void makeBackup(Position newBackup);
+    void makeBackup(Position newBackup);
     
     /**
      * @return the direction the robot is facing
@@ -69,9 +79,9 @@ public interface IRobot {
 	int visitedFlags();
 	
 	/**
-	 * @return the respawn position
+	 * @return the respawn the robot, its new position will be the last backup
 	 */
-	Position respawn();
+	void respawn();
 
 	/**
 	 * Visit a flag. Flags visited must increments and the backup - position is updated

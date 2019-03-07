@@ -37,7 +37,7 @@ public abstract class Robot implements IRobot {
     	cards = new ProgramCard[5];
     	Random rn = new Random();
     	for(int x = 0; x < 5; x++) {
-    		ProgramCard s = pos_cards[rn.nextInt(9)];
+    		ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
     		this.cards[x] = s;
     	}
     }
@@ -56,7 +56,7 @@ public abstract class Robot implements IRobot {
             }
         }
     }
-    
+    @Override
     public void move(Direction dir) {
     	switch(dir) {
 	    	case NORTH: this.pos.moveNorth();
@@ -137,9 +137,9 @@ public abstract class Robot implements IRobot {
     	makeBackup(this.pos);
     }
     @Override
-    public Position respawn() {
+    public void respawn() {
     	this.destroyed = false;
-    	return this.backup;
+    	this.pos = backup;
     }
     @Override
     public int visitedFlags() {

@@ -35,7 +35,7 @@ public class Game {
 	private static int round;
 	
 	
-	public Game(Board board, ProgramCard[] cards, int players) {
+	public Game(Board board, int players) {
 		this.board = board;
 		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
@@ -73,7 +73,7 @@ public class Game {
 	 */
 	public void phase(int nr) {
 		int[] prio = findPriority(nr);
-		for(int x = 0; x < robots.length; x++) {
+		for(int x = robots.length-1; x >= 0 ; x--) {
 			int robot = prio[x];
 			robotDoTurn(robots[robot],nr);
 		}
@@ -299,6 +299,14 @@ public class Game {
 		for(int x = 0; x < numb; x++) {
 			Player per = new Player(Direction.NORTH, 2, 2, "Robot");
 			robots[x] = per;
+		}
+	}
+	public Robot[] getRobots() {
+		return this.robots;
+	}
+	public void updateBoard() {
+		for(int x = 0; x < robots.length; x++) {
+			
 		}
 	}
 

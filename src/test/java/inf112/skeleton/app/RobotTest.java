@@ -37,5 +37,15 @@ public class RobotTest {
 		rob.die();
 		assertTrue(rob.gameOver());
 	}
+	@Test
+	public void testBackup() {
+		Player rob = new Player(Direction.NORTH, 0,0,"Odin");
+		Position pos = new Position(5,5);
+		rob.makeBackup(pos);
+		rob.die();
+		rob.respawn();
+		assertEquals(pos,rob.getPosition());
+		
+	}
 
 }

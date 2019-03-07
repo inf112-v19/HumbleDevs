@@ -25,8 +25,7 @@ public class ProgramCard implements IProgramCard {
 
     /**
      *
-     * @return the move value, if it is positive, move forward
-     *                         if it is negative, move backward
+     * @return the move value
      */
     @Override
     public int getMove(){ return this.move; }
