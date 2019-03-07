@@ -34,11 +34,11 @@ public class ProgramCardDeck implements IDeck{
         }
 
         for(int l = 0; l < 18; l ++) { //move forward 1
-            cardDeck[l+54]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD );
+            cardDeck[l+42]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD);
         }
 
         for(int m = 0; m < 12; m ++) { //move forward 2
-            cardDeck[m+66] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD );
+            cardDeck[m+60] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD);
         }
 
         for(int n = 0; n < 6; n ++) { //move forward 3
@@ -60,12 +60,14 @@ public class ProgramCardDeck implements IDeck{
         Random rng = new Random();
         ProgramCard[] playingCards = new ProgramCard[9];
         for(int i = 0; i < playingCards.length; i++){
-            int random = rng.nextInt(cardDeck.length);
-            playingCards[i] = cardDeck[random];
+            int random = rng.nextInt(cardDeck.length); // can be same number twice,
+            playingCards[i] = cardDeck[random];        // thereby giving two of same card to on person
 
         }
         return playingCards;
     }
+
+
 
     /**
      * the size of the deck
@@ -75,5 +77,12 @@ public class ProgramCardDeck implements IDeck{
         return cardDeck.length;
 
     }
+
+    @Override
+    public ProgramCard[] getCards() {
+        return cardDeck;
+    }
+
+
 
 }
