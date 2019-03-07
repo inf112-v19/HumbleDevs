@@ -16,7 +16,7 @@ Customer contact: Linh
 
 Libgdx (frontend): Joachim and Bendik
 
-Player maker: Even
+Game logic: Even
 
 
 
