@@ -1,9 +1,18 @@
 package inf112.skeleton.app;
 
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import inf112.skeleton.app.GameObjects.Items.DefaultTile;
 import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.board.Square;
+import inf112.skeleton.app.graphics.Tiled;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -61,6 +70,14 @@ public class BoardTest {
                 assertNull(board.getElement(x, y));
             }
         }
+    }
+    @Test
+    public void itemFactoryCreatesDefaultTile() {
+
+        TiledMap tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
+        board = new Board(tiledMap);
+        Square sq = board.getSquare(0, 0);
+        assertTrue(sq.getListOfItems().get(0) instanceof DefaultTile);
     }
 
 }

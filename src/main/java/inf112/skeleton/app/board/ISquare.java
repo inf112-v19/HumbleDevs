@@ -14,8 +14,7 @@ public interface ISquare<T> {
  * Method that checks if there are any elemtns on this particular square
  * @return the element if there is one, otherwise null
  */
-public T getElement();
-	
+
 /**
  * Checks if there already is a robot on this square
  * @return True if there is a robot on the square, otherwise False
@@ -44,7 +43,6 @@ public void removeRobot();
 /**
  * Method to remove element from the square
  */
-public void removeElement();
 
 /**
  * @return the robot if there is one, otherwise return null

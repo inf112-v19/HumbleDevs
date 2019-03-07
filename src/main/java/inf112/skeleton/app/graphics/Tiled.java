@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import inf112.skeleton.app.board.Board;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
@@ -32,6 +33,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         camera.setToOrtho(false, w, h);
         camera.update();
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
+        Board board = new Board(tiledMap);
 
         //Placing a player on the board
         //Create a new texture with the robot picture
@@ -103,6 +105,10 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
 
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
     }
 
 

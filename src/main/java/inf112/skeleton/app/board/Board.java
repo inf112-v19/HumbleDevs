@@ -3,6 +3,10 @@ package inf112.skeleton.app.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import inf112.skeleton.app.GameObjects.Items.IItem;
+import inf112.skeleton.app.GameObjects.Items.ItemFactory;
 import inf112.skeleton.app.GameObjects.Robot;
 
 
@@ -20,7 +24,8 @@ public class Board<T> implements IBoard<T> {
     protected final int width;
     protected final int height;
     protected final int size;
-    protected ArrayList<Square<T>> map;
+    protected final int[][] grid = null;
+    private ArrayList<Square<T>> map;
 
 
     public Board(int width, int height, ArrayList<String> outline) {
@@ -29,6 +34,48 @@ public class Board<T> implements IBoard<T> {
         this.size = height * width;
         // Må lese inn instruksene til mapen som skal brukes
     }
+
+    public Board(TiledMap tiledMap) {
+        if (tiledMap == null) {
+            System.out.println("fucku");
+        }
+
+        this.height = (int) tiledMap.getProperties().get("height");
+        this.width = (int) tiledMap.getProperties().get("width");
+        this.size = height * width;
+        map = new ArrayList<>();
+
+
+        for (int i = 0; i < height;i++) {
+            for (int j = 0; j < width; j++) {
+                map.add(new Square<T>(null));
+            }
+        }
+
+
+        for (int l = 0; l < tiledMap.getLayers().size(); l++) {
+            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(l);
+            for (int r = 0; r < height; r++) {
+                for (int c = 0; c < width; c++) {
+                    if(layer.getCell(r, c) == null) {
+                        continue;
+                    }
+                    int id = layer.getCell(r, c).getTile().getId();
+                    IItem item = createItemFromId(id);
+
+                    if (item != null) {
+                        getSquare(r, c).addElement(item);
+                    }
+                    System.out.println(getSquare(r,c).getListOfItems().size());
+                }
+            }
+        }
+    }
+
+    private IItem createItemFromId(int id) {
+        return ItemFactory.getItem(id);
+    }
+
 
     @Override
     public void insertElement(IPosition position, T element) {
@@ -48,17 +95,22 @@ public class Board<T> implements IBoard<T> {
     	sq.addElement(element);
     }
 
+    public Square<IItem> getSquare(int x, int y) {
+        Square<IItem> sq = (Square<IItem>) map.get(toIndex(x, y));
+        return sq;
+    }
+
     @Override
     public T getElement(IPosition position) {
     	Square<T> sq = map.get(position.getIndex());
-    	return (T) sq.getElement();
+    	return (T) sq.getListOfItems();
     }
 
     @Override
     public T getElement(int x, int y) {
     	int index = toIndex(x,y);
     	Square<T> sq = map.get(index);
-    	return (T) sq.getElement();
+    	return (T) sq.getListOfItems();
     }
     
     public Robot getRobot(IPosition position) {
