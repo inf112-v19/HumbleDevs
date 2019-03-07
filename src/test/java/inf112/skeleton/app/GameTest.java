@@ -32,5 +32,3 @@ public class GameTest {
 		int[] li = fysj.findPriority(0);
 		
 	}
-
-}
