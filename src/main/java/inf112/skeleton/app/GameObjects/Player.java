@@ -8,7 +8,7 @@ public class Player extends Robot {
 	private ProgramCard[] cards;
 	
 	
-    public Player(Direction dir, int xPos, int yPos, int health, String name) {
+    public Player(Direction dir, int xPos, int yPos, String name) {
 		super(dir, xPos, yPos);
 		this.name = name;
 	}

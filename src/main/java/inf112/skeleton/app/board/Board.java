@@ -49,9 +49,9 @@ public class Board<T> implements IBoard<T> {
     }
 
     @Override
-    public T getElement(IPosition position) {
+    public ArrayList<T> getElement(IPosition position) {
     	Square<T> sq = map.get(position.getIndex());
-    	return (T) sq.getElement();
+    	return (ArrayList<T>) sq.getElement();
     }
 
     @Override

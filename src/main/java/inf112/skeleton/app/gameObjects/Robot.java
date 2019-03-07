@@ -86,28 +86,12 @@ public abstract class Robot implements IRobot {
 
     @Override
     public void rotateLeft(){
-    	switch(this.dir) {
-    	case NORTH: this.dir = Direction.WEST;
-        break;
-        case SOUTH: this.dir = Direction.EAST;
-        break;
-        case EAST: this.dir = Direction.NORTH;
-        break;
-        case WEST: this.dir = Direction.SOUTH;
-    	}
+    	this.dir = dir.left();
     }
 
     @Override
     public void rotateRight() {
-    	switch(this.dir) {
-    	case NORTH: this.dir = Direction.EAST;
-        break;
-        case SOUTH: this.dir = Direction.WEST;
-        break;
-        case EAST: this.dir = Direction.SOUTH;
-        break;
-        case WEST: this.dir = Direction.NORTH;
-    	}
+    	this.dir = dir.right();
     }
 
     @Override
@@ -123,6 +107,10 @@ public abstract class Robot implements IRobot {
     @Override
     public void takeDamage(){
         this.damageTokens++;
+        if(this.damageTokens == 10) {
+        	this.die();
+        	damageTokens = 0;
+        }
     }
 
     @Override

@@ -1,13 +1,18 @@
 
 package inf112.skeleton.app.game;
 
+import inf112.skeleton.app.GameObjects.Items.CollectionBand;
 import inf112.skeleton.app.GameObjects.Items.Flag;
+import inf112.skeleton.app.GameObjects.Items.Gear;
 import inf112.skeleton.app.GameObjects.Items.Hammer;
 import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.GameObjects.Items.Laser;
 import inf112.skeleton.app.GameObjects.Items.Pit;
 import inf112.skeleton.app.GameObjects.Items.Wall;
 import inf112.skeleton.app.GameObjects.Items.Wrench;
+
+import java.util.ArrayList;
+
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
@@ -82,11 +87,22 @@ public class Game {
 			if(!rob.isDestroyed()) continue;
 			Position pos = rob.getPosition();
 			IItem s = (IItem) board.getElement(pos);
-			if(s.equals(null)); continue;
-			if(s instanceof /*rullebånd*/) {
-				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
+			if(s.equals(null)) {
+				continue;
+			}
+			// Implementation is, for now, only for single collectionbands
+			if(s instanceof CollectionBand) {
+				//int steps = ((CollectionBand) s).getMovement();
+				Action rotation = ((CollectionBand) s).getRotation();
+				if(rotation.equals(Action.LEFT)) {
+					rob.rotateLeft();
+					rob.move(((CollectionBand) s).getDirection().left());
+				} else if(rotation.equals(Action.RIGHT)) {
+					rob.move(((CollectionBand) s).getDirection().right());
+					rob.rotateRight();
+				}
 			} else if (s instanceof Gear) {
-				Action rotation = s.getMovement;
+				Action rotation = ((Gear) s).getAction();
 				if(rotation == Action.LEFT) {
 					rob.rotateLeft();
 				} else {
@@ -105,11 +121,11 @@ public class Game {
 	public void activatePassiveItems() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			IItems[] items = board.getElement(robots[x].getPosition());
-			for(int y = 0; y < items.length; y++) {
-				IItem item = items[y];
+			ArrayList<IItem> items = board.getElement(robots[x].getPosition());
+			for(int y = 0; y < items.size(); y++) {
+				IItem item = items.get(y);
 				if(item instanceof Laser) {
-					
+					// To do
 				} else if(item instanceof Flag) {
 					rob.visitFlag();
 				} else {
@@ -120,7 +136,7 @@ public class Game {
 	}
 	
 	public void shootLasers() {
-		
+		// To do
 	}
 	
 	/**
@@ -140,9 +156,9 @@ public class Game {
 	public void assessDamage() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			IItems[] items = board.getElement(rob.getPosition());
-			for(int y = 0; y < items.length; y++) {
-				IItem item = items[y];
+			ArrayList<IItem> items = board.getElement(rob.getPosition());
+			for(int y = 0; y < items.size(); y++) {
+				IItem item = items.get(y);
 				if(item instanceof Wrench) {
 					rob.repairDamage();
 				} else if(item instanceof Hammer){
@@ -281,7 +297,7 @@ public class Game {
 	
 	public void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
-			Player per = new Player(Direction.NORTH, 2, 2, 10, "Robot");
+			Player per = new Player(Direction.NORTH, 2, 2, "Robot");
 			robots[x] = per;
 		}
 	}

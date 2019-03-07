@@ -90,14 +90,15 @@ public class ItemTest {
     @Test
     public void TestThatWeCanMakeACollectionBand() {
         int movement = 1;
-        int rotation = 2;
+        Action rotation = Action.LEFT;
+        Direction dir = Direction.EAST;
 
-        CollectionBand cb = new CollectionBand(movement, rotation);
+        CollectionBand cb = new CollectionBand(movement, rotation, dir);
 
         // Test to check symbol
         assertEquals(cb.getSymbol(), '_');
         //Test to check rotation
-        assertEquals(rotation, 2);
+        assertEquals(rotation, Direction.EAST);
         //Test to check movement
         assertEquals(movement, 1);
         // Test name

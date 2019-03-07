@@ -1,5 +1,8 @@
 package inf112.skeleton.app.GameObjects.Items;
 
+import inf112.skeleton.app.board.Direction;
+import inf112.skeleton.app.card.Action;
+
 /**
  * CollectionBand that gives info to the game class on the movement and possibly rotation.
  * @author Amalie Rovik
@@ -8,11 +11,13 @@ package inf112.skeleton.app.GameObjects.Items;
 public class CollectionBand implements IItem {
 
     private int movement;
-    private int rotation;
+    private Action rotation;
+    private Direction dir;
 
-    public CollectionBand(int movement, int rotation) {
+    public CollectionBand(int movement, Action rotation, Direction dir) {
         this.movement = movement;
         this.rotation = rotation;
+        this.dir = dir;
     }
 
     @Override
@@ -31,10 +36,13 @@ public class CollectionBand implements IItem {
     }
 
     public int getMovement() {
-        return movement;
+        return this.movement;
     }
 
-    public int rotation() {
-        return rotation;
+    public Action getRotation() {
+        return this.rotation;
+    }
+    public Direction getDirection() {
+    	return this.dir;
     }
 }

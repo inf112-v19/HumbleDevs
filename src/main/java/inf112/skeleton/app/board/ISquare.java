@@ -1,5 +1,7 @@
 package inf112.skeleton.app.board;
 
+import java.util.ArrayList;
+
 import inf112.skeleton.app.GameObjects.Robot;
 
 /**
@@ -14,7 +16,7 @@ public interface ISquare<T> {
  * Method that checks if there are any elemtns on this particular square
  * @return the element if there is one, otherwise null
  */
-public T getElement();
+public ArrayList<T> getElement();
 	
 /**
  * Checks if there already is a robot on this square
