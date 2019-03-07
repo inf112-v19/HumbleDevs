@@ -10,7 +10,7 @@ package inf112.skeleton.app.card;
 public interface IDeck {
 
     /**
-     * Chooses card from the card pack
+     * Chooses random card from the card pack
      */
     ProgramCard[] getRandomCards();
 
@@ -20,7 +20,12 @@ public interface IDeck {
     int size();
 
 
-
+    /**
+     * gets the current cards
+     *
+     * @return cards
+     */
+    ProgramCard[] getCards();
 
 
 }

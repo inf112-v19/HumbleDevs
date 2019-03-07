@@ -2,6 +2,7 @@ package inf112.skeleton.app.card;
 
 /**
  * An implementation of the IProgramCard interface
+ *
  * @author Linh Nguyen
  */
 
@@ -46,5 +47,7 @@ public class ProgramCard implements IProgramCard {
     public Action getAction(){
         return this.action;
     }
+
+
 
 }
