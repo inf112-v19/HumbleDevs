@@ -28,11 +28,11 @@ public class ProgramCardDeck implements IDeck{
         }
 
         for(int m = 0; m < 12; m ++) { //move forward 2
-            cardDeck[m+66] = new ProgramCard(1, 670+10*m,Action.MOVEFORWARD );
+            cardDeck[m+66] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD );
         }
 
         for(int n = 0; n < 6; n ++) { //move forward 3
-            cardDeck[n +72]= new ProgramCard(1 , 790+10*n, Action.MOVEFORWARD);
+            cardDeck[n +72]= new ProgramCard(3 , 790+10*n, Action.MOVEFORWARD);
         }
 
         for(int o = 0; o < 6; o ++) { //move backward
