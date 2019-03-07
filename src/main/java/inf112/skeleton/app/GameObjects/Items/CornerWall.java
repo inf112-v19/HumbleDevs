@@ -23,7 +23,7 @@ public class CornerWall implements IItem {
 
     @Override
     public String getName() {
-        return "cornerWall";
+        return "CornerWall";
     }
 
     @Override
