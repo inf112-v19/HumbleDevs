@@ -16,16 +16,21 @@ public abstract class Robot implements IRobot {
 
     private Direction dir;
     private Position pos;
-    private int health;
+    private int lifeTokens;
     private Position backup;
     private ProgramCard[] cards;
     private int visitedFlags = 0;
+    private int damageTokens;
+    private boolean destroyed;
+    private boolean poweredDown;
 
-    public Robot (Direction dir, int xPos, int yPos, int health){
+    public Robot (Direction dir, int xPos, int yPos){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
-        this.health = health;
+        this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
+        this.damageTokens = 0;
+        this.poweredDown = false;
     }
     
     public void chooseCards(ProgramCard[] pos_cards) {
@@ -37,7 +42,6 @@ public abstract class Robot implements IRobot {
     	}
     }
 
-    // Må sjekke at det er et lovlig trekk
     @Override
     public void move(int i){
         for(int j = 0; j < i; j++){
@@ -118,17 +122,17 @@ public abstract class Robot implements IRobot {
 
     @Override
     public void takeDamage(){
-        this.health--;
+        this.damageTokens++;
     }
 
     @Override
-    public void repairHealth(){
-        this.health++;
+    public void repairDamage(){
+        this.damageTokens--;
     }
 
     @Override
-    public boolean isAlive(){
-        return this.health > 0;
+    public boolean gameOver(){
+        return !(this.lifeTokens > 0);
     }
     @Override
     public ProgramCard[] getCards() {
@@ -136,7 +140,8 @@ public abstract class Robot implements IRobot {
     }
     @Override
     public void die() {
-    	this.health = 0;
+    	this.destroyed = true;
+    	this.lifeTokens--;
     }
     @Override
     public void visitFlag() {
@@ -145,10 +150,21 @@ public abstract class Robot implements IRobot {
     }
     @Override
     public Position respawn() {
+    	this.destroyed = false;
     	return this.backup;
     }
     @Override
     public int visitedFlags() {
     	return this.visitedFlags;
     }
+    @Override
+    public void powerDown() {
+    	this.damageTokens = 0;
+    	this.poweredDown = true;
+    }
+    
+    public boolean isDestroyed() {
+    	return this.destroyed;
+    }
+    
 }

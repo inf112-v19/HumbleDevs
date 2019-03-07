@@ -1,9 +1,13 @@
 
 package inf112.skeleton.app.game;
-import java.util.Random;
 
 import inf112.skeleton.app.GameObjects.Items.Flag;
+import inf112.skeleton.app.GameObjects.Items.Hammer;
 import inf112.skeleton.app.GameObjects.Items.IItem;
+import inf112.skeleton.app.GameObjects.Items.Laser;
+import inf112.skeleton.app.GameObjects.Items.Pit;
+import inf112.skeleton.app.GameObjects.Items.Wall;
+import inf112.skeleton.app.GameObjects.Items.Wrench;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
@@ -14,13 +18,12 @@ import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 
 /**
- * The game class that controls most of the game. The game class is the class that always
+ * The game class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
  * @author Even Kolsgaard
  *
  */
 public class Game {
-	private static Random rng;
 	private static Board board;
 	private static Robot[] robots;
 	private ProgramCardDeck cardPack;
@@ -31,7 +34,6 @@ public class Game {
 		this.board = board;
 		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
-		rng = new Random();
 		robots = new Robot[players];
 		initializePlayers(players);	
 	}
@@ -46,11 +48,18 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Calls the methods to that makes up a round
+	 */
 	public void round() {
 		for (int x = 0; x < 5; x++) {
 			phase(x);
-			activateBoard();
+			activateMovement();
+			activatePassiveItems();
+			shootLasers();
 		}
+		assessDamage();
+		respawnRobots();
 	}
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
@@ -65,23 +74,82 @@ public class Game {
 		}
 	}
 	/**
-	 * Method that does the activities on the board e.g. laser
+	 * Method that does the movement actions on the board e.g. gear
 	 */
-	public void activateBoard() {
+	public void activateMovement() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			if(!rob.isAlive()) continue;
+			if(!rob.isDestroyed()) continue;
 			Position pos = rob.getPosition();
 			IItem s = (IItem) board.getElement(pos);
 			if(s.equals(null)); continue;
-//			if(s instanceof /*rullebånd*/) {
-//				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
-//			} else if (s instanceof /*laser*/) {
-//				/* Finn antall lasere og la roboten ta skade*/
-//			} else if (s instanceof Flag) {
-//				rob.visitFlag();
-//			} else if (s instanceof /*skrutrekker*/) {
-//			}
+			if(s instanceof /*rullebånd*/) {
+				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
+			} else if (s instanceof Gear) {
+				Action rotation = s.getMovement;
+				if(rotation == Action.LEFT) {
+					rob.rotateLeft();
+				} else {
+					rob.rotateRight();
+				}
+			} else {
+				continue;
+			}
+		}
+	}
+	
+	/**
+	 * Method that activates the activities on the board that doesn't change the robots placement
+	 * or/and rotation e.g. laser
+	 */
+	public void activatePassiveItems() {
+		for(int x = 0; x < robots.length; x++) {
+			Robot rob = robots[x];
+			IItems[] items = board.getElement(robots[x].getPosition());
+			for(int y = 0; y < items.length; y++) {
+				IItem item = items[y];
+				if(item instanceof Laser) {
+					
+				} else if(item instanceof Flag) {
+					rob.visitFlag();
+				} else {
+					continue;
+				}
+			}
+		}
+	}
+	
+	public void shootLasers() {
+		
+	}
+	
+	/**
+	 * Respawn the destroyed robots if the player has more lifetokens
+	 */
+	public void respawnRobots() {
+		for(int x = 0; x < robots.length; x++) {
+			Robot rob = robots[x];
+			if(rob.isDestroyed()) {
+				if(!rob.gameOver()) {
+					rob.respawn();
+				}
+			}
+		}
+	}
+	
+	public void assessDamage() {
+		for(int x = 0; x < robots.length; x++) {
+			Robot rob = robots[x];
+			IItems[] items = board.getElement(rob.getPosition());
+			for(int y = 0; y < items.length; y++) {
+				IItem item = items[y];
+				if(item instanceof Wrench) {
+					rob.repairDamage();
+				} else if(item instanceof Hammer){
+					rob.repairDamage();
+					// Draw option card
+				}
+			}
 		}
 	}
 	/**
@@ -104,7 +172,7 @@ public class Game {
 	 * @param nr The phase number
 	 */
 	public void robotDoTurn(Robot rob,int nr) {
-		if(!rob.isAlive()) {
+		if(!rob.isDestroyed()) {
 			return;
 		}
 		ProgramCard card = rob.getCards()[nr];
@@ -119,7 +187,7 @@ public class Game {
 		} else if (action == Action.MOVEFORWARD) {
 			int move = card.getMove();
 			while(move > 0) {
-				if(!rob.isAlive()) {
+				if(!rob.isDestroyed()) {
 					break;
 				}
 				if(!robotMove(rob,rob.getDirection())) {
@@ -130,7 +198,7 @@ public class Game {
 		} else {
 			int move = card.getMove();
 			while(move > 0) {
-				if(!rob.isAlive()) {
+				if(!rob.isDestroyed()) {
 					break;
 				}
 				if(!robotMove(rob,rob.getDirection().getOppositeDirection())) {
@@ -211,7 +279,6 @@ public class Game {
 		return prio;
 	}
 	
-	// Må gjøres bedre
 	public void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
 			Player per = new Player(Direction.NORTH, 2, 2, 10, "Robot");

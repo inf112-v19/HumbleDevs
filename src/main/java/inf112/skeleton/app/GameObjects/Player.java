@@ -9,7 +9,12 @@ public class Player extends Robot {
 	
 	
     public Player(Direction dir, int xPos, int yPos, int health, String name) {
-		super(dir, xPos, yPos, health);
+		super(dir, xPos, yPos);
 		this.name = name;
 	}
+    
+    @Override
+    public void chooseCards(ProgramCard[] cards) {
+    	
+    }
 }

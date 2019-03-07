@@ -38,15 +38,15 @@ public interface IRobot {
      */
     void takeDamage();
     /**
-     * Repair one health
+     * Remove one damage token
      */
-    void repairHealth();
+    void repairDamage();
     
     /**
-     * Check if the robot is still alive
-     * @return true if the robot is alive, false if it`s dead
+     * Check if the robot is still in the game.
+     * @return true if the robot has died 3 times, false otherwise.
      */
-    boolean isAlive();
+    boolean gameOver();
 
     /**
      * Rotate the robot left
@@ -87,6 +87,11 @@ public interface IRobot {
 	 * @return the position of the robot
 	 */
 	Position getPosition();
+	
+	/**
+	 * Power down the robot for one turn, all damage tokens are removed
+	 */
+	void powerDown();
 
 
 
