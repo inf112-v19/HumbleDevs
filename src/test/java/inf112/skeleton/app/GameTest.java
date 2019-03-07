@@ -30,5 +30,5 @@ public class GameTest {
 		fysj.startRound();
 		int[] sa = new int[3];
 		int[] li = fysj.findPriority(0);
-		
-	}
+  }
+}
