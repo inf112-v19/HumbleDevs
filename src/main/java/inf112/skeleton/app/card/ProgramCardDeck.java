@@ -2,14 +2,24 @@ package inf112.skeleton.app.card;
 import java.util.Collections;
 import  java.util.ArrayList;
 import java.util.Random;
+/**
+ * An implementation of the IDeck interface
+ *
+ * @author Linh Nguyen
+ *
+ */
 
 public class ProgramCardDeck implements IDeck{
 
     private static ProgramCard [] cardDeck;
 
+
+    /**
+     * Initializes the ProgramCardDeck with standard cards from rulebook
+     */
     public ProgramCardDeck(){
 
-        cardDeck = new ProgramCard[84];
+        cardDeck = new ProgramCard[84]; //Standard amount from the rulebook
 
         for(int i = 0; i < 18; i ++) { //rotate right
             cardDeck[i] = new ProgramCard(0,80+20*i,Action.RIGHT);
@@ -41,7 +51,10 @@ public class ProgramCardDeck implements IDeck{
 
     }
 
-
+    /**
+     * Chooses card from the card pack
+     * @return 9 random playing cards
+     */
     @Override
     public ProgramCard[] getRandomCards(){
         Random rng = new Random();
@@ -54,7 +67,9 @@ public class ProgramCardDeck implements IDeck{
         return playingCards;
     }
 
-
+    /**
+     * the size of the deck
+     */
     @Override
     public int size(){
         return cardDeck.length;
