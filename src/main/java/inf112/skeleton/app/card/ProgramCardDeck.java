@@ -1,80 +1,64 @@
 package inf112.skeleton.app.card;
 import java.util.Collections;
-import  java.util.Stack;
+import  java.util.ArrayList;
+import java.util.Random;
 
 public class ProgramCardDeck implements IDeck{
 
-    private Stack<ProgramCard> StackCard;
+    private static ProgramCard [] cardDeck;
 
     public ProgramCardDeck(){
 
-
-
-        StackCard = new Stack<>();
+        cardDeck = new ProgramCard[84];
 
         for(int i = 0; i < 18; i ++) { //rotate right
-            StackCard.add(new ProgramCard(80+20*i, 0, Action.RIGHT ));
+            cardDeck[i] = new ProgramCard(0,80+20*i,Action.RIGHT);
         }
 
-        for(int j = 18; j < 36; j ++) { //rotate left
-            StackCard.add(new ProgramCard(70+20*j, 0, Action.LEFT ));
+        for(int j = 0; j < 18; j ++) { //rotate left
+            cardDeck[j+18] = new ProgramCard(0,70+20*j , Action.LEFT );
         }
 
-        for(int k = 36; k < 42; k ++) {   //rotate 180
-            StackCard.add(new ProgramCard(10+10*k, 0, Action.UTURN ));
+        for(int k = 0; k < 6; k ++) {   //rotate 180
+            cardDeck[k+36]=new ProgramCard(0, 10+10*k, Action.UTURN );
         }
 
-        for(int l = 42; l < 60; l ++) { //move forward 1
-            StackCard.add(new ProgramCard(490+20*l-42, 1,Action.MOVEFORWARD ));
+        for(int l = 0; l < 18; l ++) { //move forward 1
+            cardDeck[l+54]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD );
         }
 
-        for(int m = 60; m < 72; m ++) { //move forward 2
-            StackCard.add(new ProgramCard(670+10*m, 2,Action.MOVEFORWARD ));
+        for(int m = 0; m < 12; m ++) { //move forward 2
+            cardDeck[m+66] = new ProgramCard(1, 670+10*m,Action.MOVEFORWARD );
         }
 
-        for(int n = 72; n < 78; n ++) { //move forward 3
-            StackCard.add(new ProgramCard(790+10*n, 3, Action.MOVEFORWARD));
+        for(int n = 0; n < 6; n ++) { //move forward 3
+            cardDeck[n +72]= new ProgramCard(1 , 790+10*n, Action.MOVEFORWARD);
         }
 
-        for(int o = 78; o < 84; o ++) { //move backward
-            StackCard.add(new ProgramCard(430+10*o-78, -1, Action.MOVEBACKWARD));
+        for(int o = 0; o < 6; o ++) { //move backward
+            cardDeck[o+78] = new ProgramCard(-1, 430+10*o, Action.MOVEBACKWARD);
         }
-
-        Collections.shuffle(StackCard);
 
     }
 
 
     @Override
-    public void shuffle(){
-        Collections.shuffle(StackCard);
+    public ProgramCard[] getRandomCards(){
+        Random rng = new Random();
+        ProgramCard[] playingCards = new ProgramCard[9];
+        for(int i = 0; i < playingCards.length; i++){
+            int random = rng.nextInt(cardDeck.length);
+            playingCards[i] = cardDeck[random];
+
+        }
+        return playingCards;
     }
 
-
-    @Override
-    public ProgramCard getCard(){
-        ProgramCard card = StackCard.get(0);
-        StackCard.remove(0);
-        return card;
-    }
-
-
-    @Override
-    public void addCard(ProgramCard card){
-        StackCard.add(card);
-    }
 
     @Override
     public int size(){
-        return StackCard.size();
+        return cardDeck.length;
 
     }
-
-    @Override
-    public boolean isEmpty(){
-        return StackCard.isEmpty();
-    }
-
-
 
 }
