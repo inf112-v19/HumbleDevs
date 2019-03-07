@@ -13,31 +13,31 @@ public class ProgramCardDeck implements IDeck{
         StackCard = new Stack<>();
 
         for(int i = 0; i < 18; i ++) { //rotate right
-            StackCard.add(new ProgramCard(80+20*i, 0, Movement.RIGHT ));
+            StackCard.add(new ProgramCard(80+20*i, 0, Action.RIGHT ));
         }
 
         for(int j = 18; j < 36; j ++) { //rotate left
-            StackCard.add(new ProgramCard(70+20*j, 0, Movement.LEFT ));
+            StackCard.add(new ProgramCard(70+20*j, 0, Action.LEFT ));
         }
 
         for(int k = 36; k < 42; k ++) {   //rotate 180
-            StackCard.add(new ProgramCard(10+10*k, 0, Movement.U_TURN ));
+            StackCard.add(new ProgramCard(10+10*k, 0, Action.UTURN ));
         }
 
         for(int l = 42; l < 60; l ++) { //move forward 1
-            StackCard.add(new ProgramCard(490+20*l-42, 1,Movement.Move ));
+            StackCard.add(new ProgramCard(490+20*l-42, 1,Action.MOVEFORWARD ));
         }
 
         for(int m = 60; m < 72; m ++) { //move forward 2
-            StackCard.add(new ProgramCard(670+10*m, 2,Movement.Move ));
+            StackCard.add(new ProgramCard(670+10*m, 2,Action.MOVEFORWARD ));
         }
 
         for(int n = 72; n < 78; n ++) { //move forward 3
-            StackCard.add(new ProgramCard(790+10*n, 3, Movement.Move));
+            StackCard.add(new ProgramCard(790+10*n, 3, Action.MOVEFORWARD));
         }
 
         for(int o = 78; o < 84; o ++) { //move backward
-            StackCard.add(new ProgramCard(430+10*o-78, -1, Movement.Move));
+            StackCard.add(new ProgramCard(430+10*o-78, -1, Action.MOVEBACKWARD));
         }
 
         Collections.shuffle(StackCard);
