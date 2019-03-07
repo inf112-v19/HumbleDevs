@@ -27,10 +27,6 @@ public class Flag implements IItem {
         return NAME;
     }
 
-    public char getSymbol() {
-        return 'F';
-    }
-
     @Override
     public Direction getDirection() {
         return null;
@@ -47,4 +43,10 @@ public class Flag implements IItem {
     public void setCaptured() {
         captured = true;
     }
+
+	@Override
+	public char getSymbol() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

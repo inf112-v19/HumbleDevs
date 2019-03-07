@@ -1,6 +1,5 @@
 package inf112.skeleton.app.card;
 import java.util.Collections;
-import  java.util.ArrayList;
 import java.util.Random;
 
 public class ProgramCardDeck implements IDeck{

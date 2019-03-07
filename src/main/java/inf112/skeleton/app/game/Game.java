@@ -20,6 +20,7 @@ import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
+import inf112.skeleton.app.card.ProgramCardDeck;
 
 /**
  * The game class that controls most of the game. The game class is the class that always
@@ -31,13 +32,13 @@ public class Game {
 	private static Random rng;
 	private static Board board;
 	private static Robot[] robots;
-	private static ProgramCard[] cardPack;
+	private ProgramCardDeck cardPack;
 	private static int round;
 	
 	
 	public Game(Board board, ProgramCard[] cards, int players) {
 		this.board = board;
-		this.cardPack = cards;
+		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
 		rng = new Random();
 		robots = new Robot[players];
@@ -49,7 +50,7 @@ public class Game {
 	 */
 	public void startRound() {
 		for(int x = 0; x < robots.length; x++) {
-			ProgramCard[] newCards = shuffleCards();
+			ProgramCard[] newCards = cardPack.getRandomCards();
 			robots[x].chooseCards(newCards);
 		}
 	}
@@ -175,11 +176,11 @@ public class Game {
 			return true;
 		}
 		IItem it = (IItem) board.getElement(pos);
-		if(it instanceof /* hull */) {
+		if(it instanceof Pit) {
 			rob.die();
 			return true;
 		}
-		if(it instanceof /* vegg*/) {
+		if(it instanceof Wall) {
 			return false;
 		}
 		if(board.isFree(pos)) {
@@ -217,19 +218,6 @@ public class Game {
 			prio[x] = (int) pri[x][1];
 		}
 		return prio;
-	}
-	
-	/**
-	 * Chooses cards from the card pack
-	 * @return array with 9 random playing cards
-	 */
-	public ProgramCard[] shuffleCards() {
-		ProgramCard[] newCards = new ProgramCard[9];
-		for(int x = 0; x < 9; x++) {
-			int rand = rng.nextInt(cardPack.length);
-			newCards[x] = cardPack[rand];
-		}
-		return newCards;
 	}
 	
 	// Må gjøres bedre
