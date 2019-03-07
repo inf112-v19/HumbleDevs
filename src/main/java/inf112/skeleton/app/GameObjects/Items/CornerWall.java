@@ -6,12 +6,12 @@ package inf112.skeleton.app.GameObjects.Items;
  *
  */
 
-public class cornerWall implements IItem {
+public class CornerWall implements IItem {
 
     private Wall wall1;
     private Wall wall2;
 
-    public cornerWall(Wall wall1, Wall wall2) {
+    public CornerWall(Wall wall1, Wall wall2) {
         this.wall1 = wall1;
         this.wall2 = wall2;
     }
