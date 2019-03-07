@@ -1,6 +1,5 @@
 package inf112.skeleton.app.GameObjects.Items;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
 
 /**
  * Pit class. If a robot class crosses a Pit it

@@ -31,13 +31,13 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
         camera.update();
-        tiledMap = new TmxMapLoader().load("assets/maps/defaultMap.tmx");
+        tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
 
         //Placing a player on the board
         //Create a new texture with the robot picture
         robotTexture = new Texture(Gdx.files.internal("texture/robot.png"));
         //Create a TextureRegion that is the entire size of the texture
-        TextureRegion textureRegion = new TextureRegion(robotTexture, 66, 66);
+        TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
         //Create a cell(tile) to add to the layer
         Cell cell = new Cell();
         //Set the graphic for the new cell

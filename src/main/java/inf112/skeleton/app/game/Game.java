@@ -74,14 +74,14 @@ public class Game {
 			Position pos = rob.getPosition();
 			IItem s = (IItem) board.getElement(pos);
 			if(s.equals(null)); continue;
-			if(s instanceof /*rullebånd*/) {
-				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
-			} else if (s instanceof /*laser*/) {
-				/* Finn antall lasere og la roboten ta skade*/
-			} else if (s instanceof Flag) {
-				rob.visitFlag();
-			} else if (s instanceof /*skrutrekker*/) {
-			}
+//			if(s instanceof /*rullebånd*/) {
+//				/* Finn retning til rullebåndet og beveg roboten i den retningen*/
+//			} else if (s instanceof /*laser*/) {
+//				/* Finn antall lasere og la roboten ta skade*/
+//			} else if (s instanceof Flag) {
+//				rob.visitFlag();
+//			} else if (s instanceof /*skrutrekker*/) {
+//			}
 		}
 	}
 	/**
