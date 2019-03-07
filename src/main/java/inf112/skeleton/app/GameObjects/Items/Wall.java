@@ -28,7 +28,7 @@ public class Wall implements IItem {
 
     @Override
     public char getSymbol() {
-        return 0;
+        return '|';
     }
 
     public Direction getDirection() {
