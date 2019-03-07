@@ -1,16 +1,14 @@
-package inf112.skeleton.app.GameObjects;
+package inf112.skeleton.app.GameObjects.Items;
 import inf112.skeleton.app.board.Direction;
 
 
 /*
  * Interface for cards and items
+ * @author Amalie Rovik
  */
 public interface IItem {
 
-    /*
-     * Return the Item type
-     */
-    IItem getType();
+    int tileId();
 
     /*
      * Return the name of the item
@@ -21,9 +19,4 @@ public interface IItem {
      * Returns the symbol of the item
      */
     char getSymbol();
-
-    /*
-     * Returns the direction of the item
-     */
-    Direction getDirection();
 }
