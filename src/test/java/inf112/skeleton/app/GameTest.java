@@ -1,4 +1,3 @@
-/*
 package inf112.skeleton.app;
 
 import static org.junit.Assert.assertEquals;
@@ -35,4 +34,3 @@ public class GameTest {
 	}
 
 }
-*/
