@@ -2,7 +2,10 @@ package inf112.skeleton.app;
 
 import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.board.Direction;
+import inf112.skeleton.app.card.Action;
 import org.junit.Test;
+
+import static inf112.skeleton.app.card.Action.*;
 import static org.junit.Assert.*;
 
 public class ItemTest {
@@ -130,5 +133,19 @@ public class ItemTest {
         //Test the symbol of the wall
         assertEquals(cw.getSymbol(), '<');
 
+    }
+
+    //Gear
+    @Test
+    public void TestThatGearWorks() {
+        Action action = Action.LEFT;
+        Gear gear = new Gear(action);
+
+        // Test name
+        assertEquals(gear.getName(), "Gear");
+        //Test the symbol of the wall
+        assertEquals(gear.getSymbol(), '°');
+        //checks that getAction resolves in the right action
+        assertEquals(gear.getAction(), Action.LEFT);
     }
 }

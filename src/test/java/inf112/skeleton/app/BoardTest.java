@@ -61,3 +61,5 @@ public class BoardTest {
                 assertNull(board.getElement(x, y));
             }
         }
+    }
+}
