@@ -71,8 +71,7 @@ public class BoardTest {
     }
 
     /**
-     * TODO:
-     * Make this test work
+     * TODO: Make this test work
      * It seems impossible to load the TiledMap from here.
      * Neither is it possible to get the TiledMap form the graphic-class.
      * The instance variable tiledMap is returned as null.
