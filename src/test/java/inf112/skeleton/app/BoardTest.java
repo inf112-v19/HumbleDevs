@@ -22,14 +22,14 @@ public class BoardTest {
 
     @Before
     public void setUp() {
-        board = new Board(4,4, new ArrayList<String>());
+        board = new Board(4,4);
     }
 
 
     @Test
     public void boardHasCorrectDimensions() {
         for (int i = 0; i < 20; i++) {
-            board = new Board(i,i, new ArrayList<String>());
+            board = new Board(i,i);
             assertEquals(i, board.getHeight());
             assertEquals(i, board.getWidth());
         }

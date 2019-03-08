@@ -24,22 +24,22 @@ public class Board<T> implements IBoard<T> {
     protected final int width;
     protected final int height;
     protected final int size;
-    protected final int[][] grid = null;
     private ArrayList<Square<T>> map;
 
-
-    public Board(int width, int height, ArrayList<String> outline) {
+    public Board(int width, int height) {
         this.height = height;
         this.width = width;
         this.size = height * width;
-        // Må lese inn instruksene til mapen som skal brukes
     }
 
+    /**
+     * Creates a board representation of a TiledMap object (a loaded .tmx file)
+     * ItemFactory is used to create the items that is in a square/cell,
+     * based on the tile id from the .tmx file. The tile id is 1-indexed and corresponds to the
+     * position it has in the tileSetLarge64.png (top left is id 1)
+     * @param tiledMap
+     */
     public Board(TiledMap tiledMap) {
-        if (tiledMap == null) {
-            System.out.println("fucku");
-        }
-
         this.height = (int) tiledMap.getProperties().get("height");
         this.width = (int) tiledMap.getProperties().get("width");
         this.size = height * width;
