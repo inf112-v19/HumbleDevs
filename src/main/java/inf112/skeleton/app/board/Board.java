@@ -1,27 +1,24 @@
 package inf112.skeleton.app.board;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.GameObjects.Items.ItemFactory;
 import inf112.skeleton.app.GameObjects.Robot;
 
+import java.util.ArrayList;
+
 
 /**
  * Board represented as a grid with width*height size.
  * Contains a Square for each position.
  *
- *
- * @param <T>
  */
-public class Board<T> implements IBoard<T> {
+public class Board implements IBoard {
     protected final int width;
     protected final int height;
     protected final int size;
-    private ArrayList<Square<T>> map;
+    private ArrayList<Square> map;
 
 
     public Board(int width, int height) {
@@ -31,23 +28,22 @@ public class Board<T> implements IBoard<T> {
         map = new ArrayList<>();
         for (int i = 0; i < height;i++) {
             for (int j = 0; j < width; j++) {
-                map.add(new Square<T>());
+                map.add(new Square());
             }
         }
     }
 
-    public Board(int width, int height, ArrayList<Square<T>> outline) {
+    public Board(int width, int height, ArrayList<Square> map) {
         this.height = height;
         this.width = width;
         this.size = height * width;
-        map = outline;
+        this.map = map;
     }
 
     /**
      * Creates a board representation of a TiledMap object (a loaded .tmx file)
      * ItemFactory is used to create the items that is in a square/cell,
-     * based on the tile id from the .tmx file. The tile id is 1-indexed and corresponds to the
-     * position it has in the tileSetLarge64.png (top left is id 1)
+     * based on the tile id from the .tmx file.
      * @param tiledMap
      */
     public Board(TiledMap tiledMap) {
@@ -59,7 +55,7 @@ public class Board<T> implements IBoard<T> {
 
         for (int i = 0; i < height;i++) {
             for (int j = 0; j < width; j++) {
-                map.add(new Square<T>());
+                map.add(new Square());
             }
         }
 
@@ -83,50 +79,58 @@ public class Board<T> implements IBoard<T> {
         }
     }
 
+    /**
+     * Create an item from a given id (tile id)
+     * The tile id is 1-indexed and corresponds to the
+     * position it has in the tileSetLarge64.png (top left is id 1)
+     * @param id
+     * @return
+     */
     private IItem createItemFromId(int id) {
         return ItemFactory.getItem(id);
     }
 
 
     @Override
-    public void insertElement(IPosition position, T element) {
-    	Square<T> sq = map.get(position.getIndex());
+    public void insertItem(IPosition position, IItem element) {
+    	Square sq = map.get(position.getIndex());
     	sq.addElement(element);
     }
 
     @Override
-    public void insertElement(int x, int y, T element) {
+    public void insertItem(int x, int y, IItem element) {
     	int index = toIndex(x,y);
-    	Square<T> sq = map.get(index);
+    	Square sq = map.get(index);
     	sq.addElement(element);
     }
 
-    public void insertElement(int index, T element) {
-    	Square<T> sq = map.get(index);
+    public void insertElement(int index, IItem element) {
+    	Square sq = map.get(index);
     	sq.addElement(element);
     }
 
-    public Square<IItem> getSquare(int x, int y) {
-        Square<IItem> sq = (Square<IItem>) map.get(toIndex(x, y));
+    @Override
+    public Square getSquare(int x, int y) {
+        Square sq = map.get(toIndex(x, y));
         return sq;
     }
 
     @Override
-    public T getElement(IPosition position) {
-    	Square<T> sq = map.get(position.getIndex());
-    	return (T) sq.getListOfItems();
+    public ArrayList<IItem> getItems(IPosition position) {
+    	Square sq = map.get(position.getIndex());
+    	return sq.getListOfItems();
     }
 
     @Override
-    public T getElement(int x, int y) {
+    public ArrayList<IItem> getItems(int x, int y) {
     	int index = toIndex(x,y);
-    	Square<T> sq = map.get(index);
-    	return (T) sq.getListOfItems();
+    	Square sq = map.get(index);
+    	return sq.getListOfItems();
     }
     
     public Robot getRobot(IPosition position) {
     	if(!isFree(position)) {
-    		Square<T> sq = map.get(position.getIndex());
+    		Square sq = map.get(position.getIndex());
     		return sq.getRobot();
     	}
     	return null;
@@ -134,14 +138,14 @@ public class Board<T> implements IBoard<T> {
 
     @Override// Sjekker for robot
     public boolean isFree(IPosition position) {
-    	Square<T> sq = map.get(position.getIndex());
+    	Square sq = map.get(position.getIndex());
         return !sq.occupied();
     }
     
     @Override// Sjekker for robot
     public boolean isFree(int x, int y) {
     	int index = toIndex(x,y);
-    	Square<T> sq = map.get(index);
+    	Square sq = map.get(index);
         return !sq.occupied();
     }
 

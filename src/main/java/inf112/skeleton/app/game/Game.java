@@ -71,7 +71,7 @@ public class Game {
 			Robot rob = robots[x];
 			if(!rob.isAlive()) continue;
 			Position pos = rob.getPosition();
-			IItem s = (IItem) board.getElement(pos);
+			IItem s = (IItem) board.getItems(pos);
 			if(s.equals(null)); continue;
 //			if(s instanceof /*rullebånd*/) {
 //				/* Finn retning til rullebåndet og beveg roboten i den retningen*/

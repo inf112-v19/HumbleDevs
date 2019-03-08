@@ -1,20 +1,32 @@
 package inf112.skeleton.app.board;
 
-public interface IBoard<T> {
+import inf112.skeleton.app.GameObjects.Items.IItem;
+
+import java.util.ArrayList;
+
+public interface IBoard {
     /**
-     * Place an element on the board
+     * Place an item on the board
      */
-    void insertElement(IPosition position, T element);
-    void insertElement(int x, int y, T element);
+    void insertItem(IPosition position, IItem item);
+    void insertItem(int x, int y, IItem item);
 
     /**
-     * Get an element on the board
+     * Get the square in a given position
+     * @param x
+     * @param y
+     * @return
      */
-    T getElement(IPosition position);
-    T getElement(int x, int y);
+    Square getSquare(int x, int y);
 
     /**
-     * Check if a location on the board is free (is null)
+     * Get list of items in a position
+     */
+    ArrayList<IItem> getItems(IPosition position);
+    ArrayList<IItem> getItems(int x, int y);
+
+    /**
+     * Check if a location on the board is free (contains no robot)
      * @return
      */
     boolean isFree(IPosition position);
