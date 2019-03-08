@@ -83,7 +83,7 @@ public class BoardTest {
         TiledMap tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         board = new Board(tiledMap);
         Square sq = board.getSquare(0, 0);
-        assertTrue(sq.getListOfItems().get(0) instanceof DefaultTile);
+        assertTrue(sq.getElements().get(0) instanceof DefaultTile);
     }
 
 }

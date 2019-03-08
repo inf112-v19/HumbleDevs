@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 public class Square<IItem> implements ISquare<IItem>{
 	private Robot robot;
-	private ArrayList<IItem> listOfItems;
+	private ArrayList<IItem> elements;
 	
 	
 	public Square() {
 		this.robot = null;
-		listOfItems = new ArrayList<>();
+		elements = new ArrayList<>();
 	}
 
-	public ArrayList<IItem> getListOfItems() {
-	    ArrayList<IItem> list = (ArrayList<IItem>) listOfItems.clone();
+	public ArrayList<IItem> getElements() {
+	    ArrayList<IItem> list = (ArrayList<IItem>) elements.clone();
 	    return list;
     }
 	
@@ -36,14 +36,18 @@ public class Square<IItem> implements ISquare<IItem>{
 		return false;
 	}
 	@Override
-	public boolean addElement(IItem elem) {
-			listOfItems.add(elem);
-			return true;
+	public void addElement(IItem elem) {
+			elements.add(elem);
 	}
 
 	@Override
 	public void removeRobot() {
 		this.robot = null;
+	}
+
+	@Override
+	public void removeElements() {
+
 	}
 
 	@Override

@@ -117,14 +117,14 @@ public class Board implements IBoard {
     @Override
     public ArrayList<IItem> getItems(IPosition position) {
     	Square sq = map.get(position.getIndex());
-    	return sq.getListOfItems();
+    	return sq.getElements();
     }
 
     @Override
     public ArrayList<IItem> getItems(int x, int y) {
     	int index = toIndex(x,y);
     	Square sq = map.get(index);
-    	return sq.getListOfItems();
+    	return sq.getElements();
     }
     
     public Robot getRobot(IPosition position) {
