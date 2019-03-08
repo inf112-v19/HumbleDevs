@@ -26,10 +26,24 @@ public class Board<T> implements IBoard<T> {
     protected final int size;
     private ArrayList<Square<T>> map;
 
+
     public Board(int width, int height) {
         this.height = height;
         this.width = width;
         this.size = height * width;
+        map = new ArrayList<>();
+        for (int i = 0; i < height;i++) {
+            for (int j = 0; j < width; j++) {
+                map.add(new Square<T>());
+            }
+        }
+    }
+
+    public Board(int width, int height, ArrayList<Square<T>> outline) {
+        this.height = height;
+        this.width = width;
+        this.size = height * width;
+        map = outline;
     }
 
     /**
@@ -48,7 +62,7 @@ public class Board<T> implements IBoard<T> {
 
         for (int i = 0; i < height;i++) {
             for (int j = 0; j < width; j++) {
-                map.add(new Square<T>(null));
+                map.add(new Square<T>());
             }
         }
 

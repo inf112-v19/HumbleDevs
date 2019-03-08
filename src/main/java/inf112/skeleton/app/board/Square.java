@@ -9,7 +9,7 @@ public class Square<IItem> implements ISquare<IItem>{
 	private ArrayList<IItem> listOfItems;
 	
 	
-	public Square(IItem elem) {
+	public Square() {
 		this.robot = null;
 		listOfItems = new ArrayList<>();
 	}
