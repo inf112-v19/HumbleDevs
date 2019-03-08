@@ -12,11 +12,8 @@ import inf112.skeleton.app.GameObjects.Robot;
 
 /**
  * Board represented as a grid with width*height size.
- * Contains an element for each position.
+ * Contains a Square for each position.
  *
- * The list of cells contain the elements, while the positions-list is an immutable list for position objects.
- *
- * An empty cell is currently null.
  *
  * @param <T>
  */

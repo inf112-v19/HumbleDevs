@@ -12,7 +12,7 @@ import inf112.skeleton.app.board.Square;
 
 public class SquareTest {
 	private Position pos = new Position(1,1);
-	private Square sq = new Square(pos);
+	private Square sq = new Square();
 	
 	@Test
 	public void insertRobot() {
