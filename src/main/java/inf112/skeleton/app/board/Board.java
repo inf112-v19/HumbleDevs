@@ -104,7 +104,7 @@ public class Board implements IBoard {
     	sq.addElement(element);
     }
 
-    public void insertElement(int index, IItem element) {
+    public void insertItem(int index, IItem element) {
     	Square sq = map.get(index);
     	sq.addElement(element);
     }
