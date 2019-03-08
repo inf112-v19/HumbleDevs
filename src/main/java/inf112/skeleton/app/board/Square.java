@@ -47,7 +47,7 @@ public class Square<IItem> implements ISquare<IItem>{
 
 	@Override
 	public void removeElements() {
-
+        elements.clear();
 	}
 
 	@Override

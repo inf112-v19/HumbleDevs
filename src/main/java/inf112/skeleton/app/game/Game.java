@@ -99,8 +99,8 @@ public class Game {
 			Robot rob = robots[x];
 			if(!rob.isDestroyed()) continue;
 			Position pos = rob.getPosition();
-			IItem s = (IItem) board.getElements(pos);
-			ArrayList<IItem> items = board.getElements(pos);
+			IItem s = (IItem) board.getItems(pos);
+			ArrayList<IItem> items = board.getItems(pos);
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(0);
 				// Implementation is, for now, only for single collectionbands
@@ -135,7 +135,7 @@ public class Game {
 	public void activatePassiveItems() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			ArrayList<IItem> items = board.getElements(robots[x].getPosition());
+			ArrayList<IItem> items = board.getItems(robots[x].getPosition());
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
 				if(item instanceof Laser) {
@@ -172,7 +172,7 @@ public class Game {
 	public void assessDamage() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			ArrayList<IItem> items = board.getElements(rob.getPosition());
+			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
 				if(item instanceof Wrench) {
@@ -266,7 +266,7 @@ public class Game {
 			rob.die();
 			return true;
 		}
-		ArrayList<IItem> items = board.getElements(pos);
+		ArrayList<IItem> items = board.getItems(pos);
 		for(int x = 0; x < items.size(); x++) {
 			IItem it = items.get(x);
 			if(it instanceof Pit) {

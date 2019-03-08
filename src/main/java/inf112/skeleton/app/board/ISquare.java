@@ -33,9 +33,9 @@ public boolean addRobot(Robot robot);
 
 /**
  * Add an item to a square
- * @param element the element to be added
+ * @param elem the element to be added
  */
-public void addElement(T element);
+public void addElement(T elem);
 
 /**
  * Method to remove the robot from the square
