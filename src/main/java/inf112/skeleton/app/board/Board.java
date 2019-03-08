@@ -73,7 +73,6 @@ public class Board implements IBoard {
                     if (item != null) {
                         getSquare(r, c).addElement(item);
                     }
-                    System.out.println(getSquare(r,c).getListOfItems().size());
                 }
             }
         }
