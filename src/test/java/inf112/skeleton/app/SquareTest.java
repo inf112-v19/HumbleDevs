@@ -16,7 +16,7 @@ import inf112.skeleton.app.board.Square;
 
 public class SquareTest {
 	private Position pos = new Position(1,1);
-	private Square<IItem> sq = new Square<IItem>(new ArrayList<IItem>(2));
+	private Square<IItem> sq = new Square<IItem>();
 	
 	@Test
 	public void insertRobot() {

@@ -28,7 +28,7 @@ public class GameTest {
 	public void init() {
 		ArrayList<Square<IItem>> test = new ArrayList<Square<IItem>>(144);
 		for(int x = 0; x < 144; x++) {
-			test.add(new Square<IItem>(new ArrayList<IItem>()));
+			test.add(new Square<IItem>());
 		}
 		Board<IItem> board = new Board<IItem>(12, 12,test);
 		board.insertElement(new Position(1,2), new Pit());

@@ -9,9 +9,9 @@ public class Square<T> implements ISquare<T>{
 	private ArrayList<T> elements;
 	
 	
-	public Square(ArrayList<T> elem) {
+	public Square() {
 		this.robot = null;
-		this.elements = elem;
+		this.elements = new ArrayList<T>();
 	}
 	
 	public ArrayList<T> getElements() {
