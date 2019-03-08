@@ -35,9 +35,25 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
+//        insertPlayer(0, 0, "texture/robot.png");
+
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        Gdx.input.setInputProcessor(this);
+    }
+
+    /**
+     * Insert a player/robot texture in a cell on the board.
+     * The (x,y) position (0,0) is bottom left
+     *
+     * insertPlayer(0, 0, "texture/robot.png"); //should place the robot texture in bottom left corner
+     * @param x
+     * @param y
+     * @param texturePath
+     */
+    public void insertPlayer(int x, int y, String texturePath) {
         //Placing a player on the board
         //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal("texture/robot.png"));
+        robotTexture = new Texture(Gdx.files.internal(texturePath));
         //Create a TextureRegion that is the entire size of the texture
         TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
         //Create a cell(tile) to add to the layer
@@ -45,12 +61,9 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
         //Get layer to put cell in
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(1);
+        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
         //place cell on layer in (x,y) coordinate
-        layer.setCell(5, 5, cell);
-
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        Gdx.input.setInputProcessor(this);
+        layer.setCell(x, y, cell);
     }
 
     public void render() {
