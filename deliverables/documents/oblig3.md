@@ -22,7 +22,7 @@ Game logic: Even
 
 <H5>How do the roles of the team work?<H/5>
 
-We agree about that we may have had unclear roles, about the tasks and what to do.
+- We agree about that we may have had unclear roles, about the tasks and what to do.
 Customer contact seems unnecessary for this task, due to the fact that everyone need to know just as much about the game. 
 
 <H5>Do you need to update who is teamlead or customer contact?<H/5>
