@@ -9,6 +9,11 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
+ * 
+ * Note to assignment 3:
+ * 		- The chooseCards() - method is just to make the robot get som cards when we are testing the
+ * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
+ * 		  that are controlled by the computer.
  * @author Even Kolsgaard
  *
  */

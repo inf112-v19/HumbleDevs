@@ -25,6 +25,18 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 /**
  * The game class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
+ * 
+ * Note for assignment 3: Some methods in this class is not implemented or only partially. The reason
+ * for this is because it makes it easy for us to see what needs to be done.
+ * Methods that not are implemented, but just for the structure
+ * 	- shootLasers()
+ *  - initializePlayers()
+ *  	* We have not decided how we should make this and is for know completely trivial
+ *   - updateBoard()
+ *   	* This is a extremely important method that updates the board on where the robots are located.
+ *   	  It has to remove the robots from the old location and place them on the new. We have not
+ *   	  found a solution that we are satisfied with yet, it is therefore not implemented yet. We may
+ *   	  even put it in another class.
  * @author Even Kolsgaard
  *
  */
@@ -54,7 +66,8 @@ public class Game {
 	}
 	
 	/**
-	 * Calls the methods to that makes up a round
+	 * Calls the methods to that makes up a round. Not every method this method uses is 
+	 * implemented, but it gives a nice illustration on how the game should work.
 	 */
 	public void round() {
 		for (int x = 0; x < 5; x++) {
@@ -86,30 +99,31 @@ public class Game {
 			Robot rob = robots[x];
 			if(!rob.isDestroyed()) continue;
 			Position pos = rob.getPosition();
-			IItem s = (IItem) board.getElement(pos);
-			if(s.equals(null)) {
-				continue;
-			}
-			// Implementation is, for now, only for single collectionbands
-			if(s instanceof CollectionBand) {
-				//int steps = ((CollectionBand) s).getMovement();
-				Action rotation = ((CollectionBand) s).getRotation();
-				if(rotation.equals(Action.LEFT)) {
-					rob.rotateLeft();
-					rob.move(((CollectionBand) s).getDirection().left());
-				} else if(rotation.equals(Action.RIGHT)) {
-					rob.move(((CollectionBand) s).getDirection().right());
-					rob.rotateRight();
-				}
-			} else if (s instanceof Gear) {
-				Action rotation = ((Gear) s).getAction();
-				if(rotation == Action.LEFT) {
-					rob.rotateLeft();
+			IItem s = (IItem) board.getElements(pos);
+			ArrayList<IItem> items = board.getElements(pos);
+			for(int y = 0; y < items.size(); y++) {
+				IItem item = items.get(0);
+				// Implementation is, for now, only for single collectionbands
+				if(item instanceof CollectionBand) {
+					//int steps = ((CollectionBand) s).getMovement();
+					Action rotation = ((CollectionBand) s).getRotation();
+					if(rotation.equals(Action.LEFT)) {
+						rob.rotateLeft();
+						rob.move(((CollectionBand) s).getDirection().left());
+					} else if(rotation.equals(Action.RIGHT)) {
+						rob.move(((CollectionBand) s).getDirection().right());
+						rob.rotateRight();
+					}
+				} else if (item instanceof Gear) {
+					Action rotation = ((Gear) s).getAction();
+					if(rotation == Action.LEFT) {
+						rob.rotateLeft();
+					} else {
+						rob.rotateRight();
+					}
 				} else {
-					rob.rotateRight();
+					continue;
 				}
-			} else {
-				continue;
 			}
 		}
 	}
@@ -121,7 +135,7 @@ public class Game {
 	public void activatePassiveItems() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			ArrayList<IItem> items = board.getElement(robots[x].getPosition());
+			ArrayList<IItem> items = board.getElements(robots[x].getPosition());
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
 				if(item instanceof Laser) {
@@ -134,7 +148,9 @@ public class Game {
 			}
 		}
 	}
-	
+	/**
+	 * To do
+	 */
 	public void shootLasers() {
 		// To do
 	}
@@ -156,7 +172,7 @@ public class Game {
 	public void assessDamage() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			ArrayList<IItem> items = board.getElement(rob.getPosition());
+			ArrayList<IItem> items = board.getElements(rob.getPosition());
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
 				if(item instanceof Wrench) {
@@ -169,7 +185,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Checks if any robots have visited all flags
+	 * Checks if any robots have visited all flags.
 	 * @return the robot that have visited all flags, returns null if nobody has done it yet.
 	 */
 	public Robot finished() {
@@ -233,7 +249,7 @@ public class Game {
 	 * @return True if the robot is moved, false otherwise
 	 */
 	public boolean robotMove(Robot rob, Direction dir) {
-		Position pos = rob.getPosition();
+		Position pos = new Position(rob.getX(),rob.getY());
 		switch(dir) {
 			case NORTH: pos.moveNorth();
 			break;
@@ -250,13 +266,16 @@ public class Game {
 			rob.die();
 			return true;
 		}
-		IItem it = (IItem) board.getElement(pos);
-		if(it instanceof Pit) {
-			rob.die();
-			return true;
-		}
-		if(it instanceof Wall) {
-			return false;
+		ArrayList<IItem> items = board.getElements(pos);
+		for(int x = 0; x < items.size(); x++) {
+			IItem it = items.get(x);
+			if(it instanceof Pit) {
+				rob.die();
+				return true;
+			}
+			if(it instanceof Wall) {
+				return false;
+			}
 		}
 		if(board.isFree(pos)) {
 			rob.move(dir);
@@ -268,6 +287,7 @@ public class Game {
 			return false;
 		}
 		rob.move(dir);
+		
 		return true;
 	}
 	
@@ -301,13 +321,13 @@ public class Game {
 			robots[x] = per;
 		}
 	}
+	
+	/**
+	 * Method only used to test the sorting based on the card priority.
+	 * @return
+	 */
 	public Robot[] getRobots() {
 		return this.robots;
-	}
-	public void updateBoard() {
-		for(int x = 0; x < robots.length; x++) {
-			
-		}
 	}
 
 }

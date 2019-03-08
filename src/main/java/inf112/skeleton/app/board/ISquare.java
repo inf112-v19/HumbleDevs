@@ -13,10 +13,10 @@ import inf112.skeleton.app.GameObjects.Robot;
 public interface ISquare<T> {
 	
 /**
- * Method that checks if there are any elemtns on this particular square
- * @return the element if there is one, otherwise null
+ * Method that checks if there are any elements on this particular square
+ * @return the list of element if they exists, otherwise null
  */
-public ArrayList<T> getElement();
+public ArrayList<T> getElements();
 	
 /**
  * Checks if there already is a robot on this square
@@ -34,9 +34,8 @@ public boolean addRobot(Robot robot);
 /**
  * Add an item to a square
  * @param element the element to be added
- * @return True if it succeeded to add an element, False otherwise
  */
-public boolean addElement(T element);
+public void addElement(T element);
 
 /**
  * Method to remove the robot from the square
@@ -44,9 +43,9 @@ public boolean addElement(T element);
 public void removeRobot();
 
 /**
- * Method to remove element from the square
+ * Clears all the elements from the list
  */
-public void removeElement();
+public void removeElements();
 
 /**
  * @return the robot if there is one, otherwise return null

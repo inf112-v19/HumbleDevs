@@ -12,7 +12,7 @@ public interface IBoard<T> {
     /**
      * Get an element on the board
      */
-    ArrayList<T> getElement(IPosition position);
+    ArrayList<T> getElements(IPosition position);
     T getElement(int x, int y);
 
     /**

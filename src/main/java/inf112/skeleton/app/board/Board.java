@@ -23,11 +23,11 @@ public class Board<T> implements IBoard<T> {
     protected ArrayList<Square<T>> map;
 
 
-    public Board(int width, int height, ArrayList<String> outline) {
+    public Board(int width, int height, ArrayList<Square<T>> outline) {
         this.height = height;
         this.width = width;
         this.size = height * width;
-        // Må lese inn instruksene til mapen som skal brukes
+        this.map = outline;
     }
 
     @Override
@@ -49,16 +49,16 @@ public class Board<T> implements IBoard<T> {
     }
 
     @Override
-    public ArrayList<T> getElement(IPosition position) {
+    public ArrayList<T> getElements(IPosition position) {
     	Square<T> sq = map.get(position.getIndex());
-    	return (ArrayList<T>) sq.getElement();
+    	return (ArrayList<T>) sq.getElements();
     }
 
     @Override
     public T getElement(int x, int y) {
     	int index = toIndex(x,y);
     	Square<T> sq = map.get(index);
-    	return (T) sq.getElement();
+    	return (T) sq.getElements();
     }
     
     public Robot getRobot(IPosition position) {
