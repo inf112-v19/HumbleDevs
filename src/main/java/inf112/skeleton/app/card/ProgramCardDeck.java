@@ -53,8 +53,8 @@ public class ProgramCardDeck implements IDeck{
         Random rng = new Random();
         ProgramCard[] playingCards = new ProgramCard[9];
         for(int i = 0; i < playingCards.length; i++){
-            int random = rng.nextInt(cardDeck.length);
-            playingCards[i] = cardDeck[random];
+            int random = rng.nextInt(cardDeck.length); // can be same number twice,
+            playingCards[i] = cardDeck[random];        // thereby giving two of same card to on person
 
         }
         return playingCards;
@@ -66,5 +66,12 @@ public class ProgramCardDeck implements IDeck{
     public int size(){
         return cardDeck.length;
     }
+
+    @Override
+    public ProgramCard[] getCards() {
+        return cardDeck;
+    }
+
+
 
 }
