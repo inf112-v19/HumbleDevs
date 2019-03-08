@@ -124,5 +124,7 @@ TBA
 
 <H5>Code quality and test coverage are emphasized. Note that the tests you write must be used in the product. Completed tasks must be finished. Deliver class diagrams. (If there are many classes, make class diagrams for the most important ones.)<H/5>
 <H/5>cho
-Class Diagram:
-TBA
+
+**Class Diagram**
+
+![Class diagram second iteration](classDiagramIteration2.png)
