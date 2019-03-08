@@ -1,6 +1,4 @@
 package inf112.skeleton.app.card;
-import java.util.Collections;
-import  java.util.ArrayList;
 import java.util.Random;
 /**
  * An implementation of the IDeck interface
@@ -8,12 +6,9 @@ import java.util.Random;
  * @author Linh Nguyen
  *
  */
-
 public class ProgramCardDeck implements IDeck{
 
     private static ProgramCard [] cardDeck;
-
-
     /**
      * Initializes the ProgramCardDeck with standard cards from rulebook
      */
@@ -34,23 +29,21 @@ public class ProgramCardDeck implements IDeck{
         }
 
         for(int l = 0; l < 18; l ++) { //move forward 1
-            cardDeck[l+42]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD);
+            cardDeck[l+42]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD );
         }
 
         for(int m = 0; m < 12; m ++) { //move forward 2
-            cardDeck[m+60] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD);
+            cardDeck[m+60] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD );
         }
 
         for(int n = 0; n < 6; n ++) { //move forward 3
-            cardDeck[n +72]= new ProgramCard(3 , 790+10*n, Action.MOVEFORWARD);
+            cardDeck[n+72]= new ProgramCard(3 , 790+10*n, Action.MOVEFORWARD);
         }
 
         for(int o = 0; o < 6; o ++) { //move backward
-            cardDeck[o+78] = new ProgramCard(-1, 430+10*o, Action.MOVEBACKWARD);
+            cardDeck[o+78] = new ProgramCard(1, 430+10*o, Action.MOVEBACKWARD);
         }
-
     }
-
     /**
      * Chooses card from the card pack
      * @return 9 random playing cards
@@ -66,16 +59,12 @@ public class ProgramCardDeck implements IDeck{
         }
         return playingCards;
     }
-
-
-
     /**
      * the size of the deck
      */
     @Override
     public int size(){
         return cardDeck.length;
-
     }
 
     @Override

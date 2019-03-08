@@ -9,6 +9,11 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
+ * 
+ * Note to assignment 3:
+ * 		- The chooseCards() - method is just to make the robot get som cards when we are testing the
+ * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
+ * 		  that are controlled by the computer.
  * @author Even Kolsgaard
  *
  */
@@ -16,28 +21,32 @@ public abstract class Robot implements IRobot {
 
     private Direction dir;
     private Position pos;
-    private int health;
+    private int lifeTokens;
     private Position backup;
     private ProgramCard[] cards;
     private int visitedFlags = 0;
+    private int damageTokens;
+    private boolean destroyed;
+    private boolean poweredDown;
 
-    public Robot (Direction dir, int xPos, int yPos, int health){
+    public Robot (Direction dir, int xPos, int yPos){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
-        this.health = health;
+        this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
+        this.damageTokens = 0;
+        this.poweredDown = false;
     }
     
     public void chooseCards(ProgramCard[] pos_cards) {
     	cards = new ProgramCard[5];
     	Random rn = new Random();
     	for(int x = 0; x < 5; x++) {
-    		ProgramCard s = pos_cards[rn.nextInt(9)];
+    		ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
     		this.cards[x] = s;
     	}
     }
 
-    // Må sjekke at det er et lovlig trekk
     @Override
     public void move(int i){
         for(int j = 0; j < i; j++){
@@ -52,7 +61,7 @@ public abstract class Robot implements IRobot {
             }
         }
     }
-    
+    @Override
     public void move(Direction dir) {
     	switch(dir) {
 	    	case NORTH: this.pos.moveNorth();
@@ -82,28 +91,12 @@ public abstract class Robot implements IRobot {
 
     @Override
     public void rotateLeft(){
-    	switch(this.dir) {
-    	case NORTH: this.dir = Direction.WEST;
-        break;
-        case SOUTH: this.dir = Direction.EAST;
-        break;
-        case EAST: this.dir = Direction.NORTH;
-        break;
-        case WEST: this.dir = Direction.SOUTH;
-    	}
+    	this.dir = dir.left();
     }
 
     @Override
     public void rotateRight() {
-    	switch(this.dir) {
-    	case NORTH: this.dir = Direction.EAST;
-        break;
-        case SOUTH: this.dir = Direction.WEST;
-        break;
-        case EAST: this.dir = Direction.SOUTH;
-        break;
-        case WEST: this.dir = Direction.NORTH;
-    	}
+    	this.dir = dir.right();
     }
 
     @Override
@@ -118,17 +111,21 @@ public abstract class Robot implements IRobot {
 
     @Override
     public void takeDamage(){
-        this.health--;
+        this.damageTokens++;
+        if(this.damageTokens == 10) {
+        	this.die();
+        	damageTokens = 0;
+        }
     }
 
     @Override
-    public void repairHealth(){
-        this.health++;
+    public void repairDamage(){
+        this.damageTokens--;
     }
 
     @Override
-    public boolean isAlive(){
-        return this.health > 0;
+    public boolean gameOver(){
+        return !(this.lifeTokens > 0);
     }
     @Override
     public ProgramCard[] getCards() {
@@ -136,7 +133,8 @@ public abstract class Robot implements IRobot {
     }
     @Override
     public void die() {
-    	this.health = 0;
+    	this.destroyed = true;
+    	this.lifeTokens--;
     }
     @Override
     public void visitFlag() {
@@ -144,11 +142,22 @@ public abstract class Robot implements IRobot {
     	makeBackup(this.pos);
     }
     @Override
-    public Position respawn() {
-    	return this.backup;
+    public void respawn() {
+    	this.destroyed = false;
+    	this.pos = backup;
     }
     @Override
     public int visitedFlags() {
     	return this.visitedFlags;
     }
+    @Override
+    public void powerDown() {
+    	this.damageTokens = 0;
+    	this.poweredDown = true;
+    }
+    
+    public boolean isDestroyed() {
+    	return this.destroyed;
+    }
+    
 }

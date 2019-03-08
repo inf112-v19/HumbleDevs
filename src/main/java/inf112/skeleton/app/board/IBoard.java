@@ -1,5 +1,7 @@
 package inf112.skeleton.app.board;
 
+import java.util.ArrayList;
+
 public interface IBoard<T> {
     /**
      * Place an element on the board
@@ -10,7 +12,7 @@ public interface IBoard<T> {
     /**
      * Get an element on the board
      */
-    T getElement(IPosition position);
+    ArrayList<T> getElements(IPosition position);
     T getElement(int x, int y);
 
     /**

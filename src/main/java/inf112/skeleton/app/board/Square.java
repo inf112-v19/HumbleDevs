@@ -1,19 +1,21 @@
 package inf112.skeleton.app.board;
 
+import java.util.ArrayList;
+
 import inf112.skeleton.app.GameObjects.Robot;
 
 public class Square<T> implements ISquare<T>{
 	private Robot robot;
-	private T elem;
+	private ArrayList<T> elements;
 	
 	
-	public Square(T elem) {
+	public Square() {
 		this.robot = null;
-		this.elem = elem;
+		this.elements = new ArrayList<T>();
 	}
 	
-	public T getElement() {
-		return elem;
+	public ArrayList<T> getElements() {
+		return elements;
 	}
 	public boolean occupied() {
 		if(robot == null) {
@@ -31,12 +33,8 @@ public class Square<T> implements ISquare<T>{
 		return false;
 	}
 	@Override
-	public boolean addElement(T elem) {
-		if(this.elem == null && elem != null) {
-			this.elem = elem;
-			return true;
-		}
-		return false;
+	public void addElement(T elem) {
+		this.elements.add(elem);
 	}
 
 	@Override
@@ -45,8 +43,8 @@ public class Square<T> implements ISquare<T>{
 	}
 
 	@Override
-	public void removeElement() {
-		this.elem = null;
+	public void removeElements() {
+		this.elements.clear();
 	}
 
 	@Override
