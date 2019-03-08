@@ -1,15 +1,20 @@
 package inf112.skeleton.app.card;
-import java.util.Collections;
-import  java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * An implementation of the IDeck interface
+ *
+ * @author Linh Nguyen
+ *
+ */
 public class ProgramCardDeck implements IDeck{
 
     private static ProgramCard [] cardDeck;
-
+    /**
+     * Initializes the ProgramCardDeck with standard cards from rulebook
+     */
     public ProgramCardDeck(){
 
-        cardDeck = new ProgramCard[84];
+        cardDeck = new ProgramCard[84]; //Standard amount from the rulebook
 
         for(int i = 0; i < 18; i ++) { //rotate right
             cardDeck[i] = new ProgramCard(0,80+20*i,Action.RIGHT);
@@ -24,41 +29,49 @@ public class ProgramCardDeck implements IDeck{
         }
 
         for(int l = 0; l < 18; l ++) { //move forward 1
-            cardDeck[l+54]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD );
+            cardDeck[l+42]=new ProgramCard(1, 490+10*l, Action.MOVEFORWARD );
         }
 
         for(int m = 0; m < 12; m ++) { //move forward 2
-            cardDeck[m+66] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD );
+            cardDeck[m+60] = new ProgramCard(2, 670+10*m,Action.MOVEFORWARD );
         }
 
         for(int n = 0; n < 6; n ++) { //move forward 3
-            cardDeck[n +72]= new ProgramCard(3 , 790+10*n, Action.MOVEFORWARD);
+            cardDeck[n+72]= new ProgramCard(3 , 790+10*n, Action.MOVEFORWARD);
         }
 
         for(int o = 0; o < 6; o ++) { //move backward
-            cardDeck[o+78] = new ProgramCard(-1, 430+10*o, Action.MOVEBACKWARD);
+            cardDeck[o+78] = new ProgramCard(1, 430+10*o, Action.MOVEBACKWARD);
         }
-
     }
-
-
+    /**
+     * Chooses card from the card pack
+     * @return 9 random playing cards
+     */
     @Override
     public ProgramCard[] getRandomCards(){
         Random rng = new Random();
         ProgramCard[] playingCards = new ProgramCard[9];
         for(int i = 0; i < playingCards.length; i++){
-            int random = rng.nextInt(cardDeck.length);
-            playingCards[i] = cardDeck[random];
+            int random = rng.nextInt(cardDeck.length); // can be same number twice,
+            playingCards[i] = cardDeck[random];        // thereby giving two of same card to on person
 
         }
         return playingCards;
     }
-
-
+    /**
+     * the size of the deck
+     */
     @Override
     public int size(){
         return cardDeck.length;
-
     }
+
+    @Override
+    public ProgramCard[] getCards() {
+        return cardDeck;
+    }
+
+
 
 }

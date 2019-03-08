@@ -49,11 +49,11 @@ public class Position implements IPosition {
 	}
 	public void moveNorth() {
 		this.yPos++;
-		this.index= this.index + 7;
+		this.index= this.index + 12;
 	}
 	public void moveSouth() {
 		this.yPos--;
-		this.index = this.index - 7;
+		this.index = this.index - 12;
 	}
 
 }

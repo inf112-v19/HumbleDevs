@@ -3,20 +3,30 @@ package inf112.skeleton.app.GameObjects;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
-
+/**
+ * Interface for the robot class
+ * @author Even Kolsgaard
+ *
+ */
 public interface IRobot {
 	
 	/**
-	 * Move the robot i steps
+	 * Move the robot i steps in the direction that the robot is facing
 	 * @param i number of steps to move
 	 */
     void move(int i);
     
     /**
+     * Move the robot one step in the given direction
+     * @param dir
+     */
+    void move(Direction dir);
+    
+    /**
      * Set a new backup for the robot
      * @param newBackup is the position for the new backup
      */
-    public void makeBackup(Position newBackup);
+    void makeBackup(Position newBackup);
     
     /**
      * @return the direction the robot is facing
@@ -38,15 +48,15 @@ public interface IRobot {
      */
     void takeDamage();
     /**
-     * Repair one health
+     * Remove one damage token
      */
-    void repairHealth();
+    void repairDamage();
     
     /**
-     * Check if the robot is still alive
-     * @return true if the robot is alive, false if it`s dead
+     * Check if the robot is still in the game.
+     * @return true if the robot has died 3 times, false otherwise.
      */
-    boolean isAlive();
+    boolean gameOver();
 
     /**
      * Rotate the robot left
@@ -69,9 +79,9 @@ public interface IRobot {
 	int visitedFlags();
 	
 	/**
-	 * @return the respawn position
+	 * @return the respawn the robot, its new position will be the last backup
 	 */
-	Position respawn();
+	void respawn();
 
 	/**
 	 * Visit a flag. Flags visited must increments and the backup - position is updated
@@ -87,6 +97,11 @@ public interface IRobot {
 	 * @return the position of the robot
 	 */
 	Position getPosition();
+	
+	/**
+	 * Power down the robot for one turn, all damage tokens are removed
+	 */
+	void powerDown();
 
 
 

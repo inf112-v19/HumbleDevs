@@ -3,7 +3,6 @@ package inf112.skeleton.app.GameObjects.Items;
 /**
  * Wrench class to fix the robots.
  * @author Amalie Rovik
- *
  */
 
 public class Hammer implements IItem {
