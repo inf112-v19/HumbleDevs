@@ -26,12 +26,12 @@ public class GameTest {
 	
 	@Before
 	public void init() {
-		ArrayList<Square<IItem>> test = new ArrayList<Square<IItem>>(144);
+		ArrayList<Square> test = new ArrayList<Square>(144);
 		for(int x = 0; x < 144; x++) {
 			test.add(new Square<IItem>());
 		}
-		Board<IItem> board = new Board<IItem>(12, 12,test);
-		board.insertElement(new Position(1,2), new Pit());
+		Board board = new Board(12, 12,test);
+		board.insertItem(new Position(1,2), new Pit());
 		Game game = new Game(board,3);
 		this.game = game;
 	}

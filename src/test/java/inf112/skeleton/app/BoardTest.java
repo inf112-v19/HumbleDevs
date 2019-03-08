@@ -43,7 +43,7 @@ public class BoardTest {
     public void isFreeReturnsFalseWhenContainingRobot() {
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
-                board.getSquare(x,y).addRobot(new Player(Direction.NORTH, x, y, 1, "testBot"));
+                board.getSquare(x,y).addRobot(new Player(Direction.NORTH, x, y,"testBot"));
             }
         }
 
