@@ -6,6 +6,8 @@ import inf112.skeleton.app.card.Action;
 public class ConveyorBelt implements IItem {
 
     private Direction direction;
+    private String name;
+    private char symbol;
 
     //Bending
     private Action rotation;
@@ -15,12 +17,16 @@ public class ConveyorBelt implements IItem {
     public ConveyorBelt(Direction direction, int speed) {
         this.direction = direction;
         this.speed = speed;
+        this.name = "ConveyorBelt";
+        this.symbol = '_';
     }
 
     // Constructor for "bending" conveyorbelts
     public ConveyorBelt(Direction direction, int speed, boolean clockwise) {
         this.direction = direction;
         this.speed = speed;
+        this.name = "BendingConveyorBelt";
+        this.symbol = '_';
 
         if(clockwise) rotation = Action.RIGHTTURN;
         else rotation = Action.LEFTTURN;
@@ -49,11 +55,11 @@ public class ConveyorBelt implements IItem {
 
     @Override
     public String getName() {
-        return null;
+        return this.name;
     }
 
     @Override
     public char getSymbol() {
-        return 0;
+        return this.symbol;
     }
 }

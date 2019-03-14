@@ -86,24 +86,22 @@ public class ItemTest {
     }
 
     //CollectionBand
-//    @Test
-//    public void TestThatWeCanMakeACollectionBand() {
-//        int movement = 1;
-//        Action rotation = Action.LEFTTURN;
-//        Direction dir = Direction.EAST;
-//
-//        ConveyorBelt cb = new ConveyorBelt(movement, rotation, dir);
-//        ConveyorBelt cb = new ConveyorBelt(movement, rotation, dir);
-//
-//        // Test to check symbol
-//        assertEquals(cb.getSymbol(), '_');
-//        //Test to check rotation
-//        assertEquals(rotation, Direction.EAST);
-//        //Test to check movement
-//        assertEquals(movement, 1);
-//        // Test name
-//        assertEquals(cb.getName(), "CollectionBand");
-//    }
+    @Test
+    public void TestThatWeCanMakeAConveyorBelt() {
+        int movement = 1;
+        Direction dir = Direction.EAST;
+
+        ConveyorBelt cb = new ConveyorBelt(dir, movement, false);
+
+        // Test to check symbol
+        assertEquals(cb.getSymbol(), '_');
+        //Test to check rotation
+        assertEquals(dir, Direction.EAST);
+        //Test to check movement
+        assertEquals(movement, 1);
+        // Test name
+        assertEquals(cb.getName(), "BendingConveyorBelt");
+    }
 
     //Wall
     @Test
@@ -121,20 +119,17 @@ public class ItemTest {
     }
 
     //CornerWall
-//    @Test
-//    public void TestCornerWall() {
-//        Wall wallNorth = new Wall(Direction.NORTH);
-//        Wall wallEast = new Wall(Direction.EAST);
-//
-//        CornerWall cw = new CornerWall(wallEast, wallNorth);
-//
-//        assertEquals(wallEast.getDirection(), Direction.EAST);
-//        // Test name
-//        assertEquals(cw.getName(), "CornerWall");
-//        //Test the symbol of the wall
-//        assertEquals(cw.getSymbol(), '<');
-//
-//    }
+    @Test
+    public void TestCornerWall() {
+        Wall w = new Wall(Direction.NORTH, Direction.SOUTH);
+
+        assertEquals(w.getDir(), Direction.NORTH);
+        // Test name
+        assertEquals(w.getName(), "CornerWall");
+        //Test the symbol of the wall
+        assertEquals(w.getSymbol(), '<');
+
+    }
 
     //Gear
     @Test
