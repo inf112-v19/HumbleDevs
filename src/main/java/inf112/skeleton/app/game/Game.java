@@ -1,15 +1,7 @@
-
 package inf112.skeleton.app.game;
 
+import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Items.ConveyorBelt;
-import inf112.skeleton.app.GameObjects.Items.Flag;
-import inf112.skeleton.app.GameObjects.Items.Gear;
-import inf112.skeleton.app.GameObjects.Items.Hammer;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.Laser;
-import inf112.skeleton.app.GameObjects.Items.Pit;
-import inf112.skeleton.app.GameObjects.Items.Wall;
-import inf112.skeleton.app.GameObjects.Items.Wrench;
 
 import java.util.ArrayList;
 
@@ -25,18 +17,6 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 /**
  * The game class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
- * 
- * Note for assignment 3: Some methods in this class is not implemented or only partially. The reason
- * for this is because it makes it easy for us to see what needs to be done.
- * Methods that not are implemented, but just for the structure
- * 	- shootLasers()
- *  - initializePlayers()
- *  	* We have not decided how we should make this and is for know completely trivial
- *   - updateBoard()
- *   	* This is a extremely important method that updates the board on where the robots are located.
- *   	  It has to remove the robots from the old location and place them on the new. We have not
- *   	  found a solution that we are satisfied with yet, it is therefore not implemented yet. We may
- *   	  even put it in another class.
  * @author Even Kolsgaard
  *
  */
@@ -45,16 +25,16 @@ public class Game {
 	private static Robot[] robots;
 	private ProgramCardDeck cardPack;
 	private static int round;
-	
-	
+
+
 	public Game(Board board, int players) {
 		this.board = board;
 		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
 		robots = new Robot[players];
-		initializePlayers(players);	
+		initializePlayers(players);
 	}
-	
+
 	/**
 	 * Starts the a new round by dealing new cards to every player
 	 */
@@ -64,9 +44,9 @@ public class Game {
 			robots[x].chooseCards(newCards);
 		}
 	}
-	
+
 	/**
-	 * Calls the methods to that makes up a round. Not every method this method uses is 
+	 * Calls the methods to that makes up a round. Not every method this method uses is
 	 * implemented, but it gives a nice illustration on how the game should work.
 	 */
 	public void round() {
@@ -75,8 +55,8 @@ public class Game {
 			activateMovement();
 			activatePassiveItems();
 			shootLasers();
+			repairDamage();
 		}
-		assessDamage();
 		respawnRobots();
 	}
 	/**
@@ -114,6 +94,7 @@ public class Game {
 						rob.move(((ConveyorBelt) s).getDirection().right());
 						rob.rotateRight();
 					}
+					// Update robot position on board
 				} else if (item instanceof Gear) {
 					Action rotation = ((Gear) s).getAction();
 					if(rotation == Action.LEFTTURN) {
@@ -127,7 +108,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method that activates the activities on the board that doesn't change the robots placement
 	 * or/and rotation e.g. laser
@@ -152,9 +133,11 @@ public class Game {
 	 * To do
 	 */
 	public void shootLasers() {
-		// To do
+		// To do, sjekk alle rutene i retningen laseren kommer fra, hvis man kommer helt til
+		// laserskyteren vil man ta skade. Hvis det står en annen robot i veien vil man ikke
+		// ta skade.
 	}
-	
+
 	/**
 	 * Respawn the destroyed robots if the player has more lifetokens
 	 */
@@ -164,21 +147,24 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
+					board.insertRobot(rob.getPosition(), rob);
 				}
 			}
 		}
 	}
-	
-	public void assessDamage() {
+
+	public void repairDamage() {
 		for(int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
 				if(item instanceof Wrench) {
+					rob.makeBackup(rob.getPosition());
 					rob.repairDamage();
 				} else if(item instanceof Hammer){
 					rob.repairDamage();
+					rob.makeBackup(rob.getPosition());
 					// Draw option card
 				}
 			}
@@ -242,28 +228,30 @@ public class Game {
 	}
 	/**
 	 * Method that moves the robot. Checks the new position and depending on that, the robot will
-	 * either move or stand still. If there is a robot in the way, this method is used again on 
+	 * either move or stand still. If there is a robot in the way, this method is used again on
 	 * that robot.
 	 * @param rob the robot that are going to be moved
 	 * @param dir the direction of the movement
 	 * @return True if the robot is moved, false otherwise
 	 */
 	public boolean robotMove(Robot rob, Direction dir) {
+		Position startPos = new Position(rob.getX(), rob.getY());
 		Position pos = new Position(rob.getX(),rob.getY());
 		switch(dir) {
 			case NORTH: pos.moveNorth();
-			break;
+				break;
 			case EAST: pos.moveEast();
-			break;
+				break;
 			case WEST: pos.moveWest();
-			break;
+				break;
 			case SOUTH: pos.moveSouth();
-			break;
+				break;
 		}
 		int xPos = pos.getX();
 		int yPos = pos.getY();
 		if(xPos > board.getWidth() || xPos < 0 || yPos < 0 || yPos > board.getHeight()) {
 			rob.die();
+			board.removeRobot(rob.getPosition());
 			return true;
 		}
 		ArrayList<IItem> items = board.getItems(pos);
@@ -271,14 +259,18 @@ public class Game {
 			IItem it = items.get(x);
 			if(it instanceof Pit) {
 				rob.die();
+				board.removeRobot(rob.getPosition());
 				return true;
 			}
 			if(it instanceof Wall) {
+				// Må sjekke hvilken vei veggen står
+				// Må sjekke squaren man står på og squaren man ønsker å gå inn på
 				return false;
 			}
 		}
 		if(board.isFree(pos)) {
 			rob.move(dir);
+			updateBoard(startPos, rob.getPosition());
 			return true;
 		}
 		Robot rob2 = board.getRobot(pos);
@@ -287,10 +279,10 @@ public class Game {
 			return false;
 		}
 		rob.move(dir);
-		
+		updateBoard(startPos, rob.getPosition());
 		return true;
 	}
-	
+
 	/**
 	 * The method that orders the robots with respect to the priority of the card that each robot
 	 * is going to play this turn
@@ -304,9 +296,9 @@ public class Game {
 			pri[x][0] = robots[x].getCards()[cardnr].getPriority();
 		}
 		java.util.Arrays.sort(pri, new java.util.Comparator<double[]>() {
-		    public int compare(double[] a, double[] b) {
-		        return Double.compare(a[0], b[0]);
-		    }
+			public int compare(double[] a, double[] b) {
+				return Double.compare(a[0], b[0]);
+			}
 		});
 		int[] prio = new int[robots.length];
 		for(int x = 0; x < robots.length; x++) {
@@ -314,20 +306,32 @@ public class Game {
 		}
 		return prio;
 	}
-	
+
 	public void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
-			Player per = new Player(Direction.NORTH, 2, 2, "Robot");
+			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
 			robots[x] = per;
+			board.insertRobot(new Position(2+x,2), per);
 		}
 	}
-	
 	/**
 	 * Method only used to test the sorting based on the card priority.
-	 * @return
+	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
 		return this.robots;
 	}
-
+	/**
+	 * Method to update the position of a robot on the board
+	 * @param start the position where the robot was placed
+	 * @param end the position where to robot is moved to now
+	 */
+	public void updateBoard(Position start, Position end) {
+		Robot rob = board.getRobot(start);
+		if(rob == null) {
+			return;
+		}
+		board.removeRobot(start);
+		board.insertRobot(end, rob);
+	}
 }

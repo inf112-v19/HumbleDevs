@@ -11,7 +11,7 @@ import inf112.skeleton.app.card.ProgramCard;
  * that is controlled by the computer.
  *
  * Note to assignment 3:
- * 		- The chooseCards() - method is just to make the robot get som cards when we are testing the
+ * 		- The chooseCards() - method is just to make the robot get some cards when we are testing the
  * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
  * 		  that are controlled by the computer.
  * @author Even Kolsgaard
@@ -28,14 +28,16 @@ public abstract class Robot implements IRobot {
     private int damageTokens;
     private boolean destroyed;
     private boolean poweredDown;
+    private String name;
 
-    public Robot (Direction dir, int xPos, int yPos){
+    public Robot (Direction dir, int xPos, int yPos, String name){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
         this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
         this.damageTokens = 0;
         this.poweredDown = false;
+        this.name = name;
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
@@ -158,6 +160,10 @@ public abstract class Robot implements IRobot {
 
     public boolean isDestroyed() {
         return this.destroyed;
+    }
+
+    public String toString() {
+        return this.name;
     }
 
 }
