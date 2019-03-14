@@ -6,8 +6,19 @@ package inf112.skeleton.app.GameObjects.Items;
  */
 
 public class Flag implements IItem {
+    private int flagNum;
 
-    public Flag() {}
+    public Flag(int flagNum) {
+        this.flagNum = flagNum;
+    }
+
+    public int getFlagNum() {
+        return flagNum;
+    }
+
+    public void setFlagNum(int flagNum) {
+        this.flagNum = flagNum;
+    }
 
     @Override
     public int tileId() {
