@@ -108,6 +108,11 @@ public class Board implements IBoard {
     	sq.addElement(element);
     }
 
+    //Uses the Tile ID (1-indexed based in position in tileset)
+    public void insertItem(int x, int y, int id) {
+        insertItem(x, y, createItemFromId(id));
+    }
+
     @Override
     public Square getSquare(int x, int y) {
         Square sq = map.get(toIndex(x, y));
