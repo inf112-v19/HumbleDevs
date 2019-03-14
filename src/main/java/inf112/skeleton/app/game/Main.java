@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "hello-robot";
+        cfg.title = "RoboRally";
         cfg.width = 768;
         cfg.height = 768;
         new LwjglApplication(new Tiled(), cfg);
