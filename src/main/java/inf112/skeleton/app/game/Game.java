@@ -1,7 +1,7 @@
 
 package inf112.skeleton.app.game;
 
-import inf112.skeleton.app.GameObjects.Items.CollectionBand;
+import inf112.skeleton.app.GameObjects.Items.ConveyorBelt;
 import inf112.skeleton.app.GameObjects.Items.Flag;
 import inf112.skeleton.app.GameObjects.Items.Gear;
 import inf112.skeleton.app.GameObjects.Items.Hammer;
@@ -104,14 +104,14 @@ public class Game {
 			for(int y = 0; y < items.size(); y++) {
 				IItem item = items.get(0);
 				// Implementation is, for now, only for single collectionbands
-				if(item instanceof CollectionBand) {
+				if(item instanceof ConveyorBelt) {
 					//int steps = ((CollectionBand) s).getMovement();
-					Action rotation = ((CollectionBand) s).getRotation();
+					Action rotation = ((ConveyorBelt) s).getRotation();
 					if(rotation.equals(Action.LEFT)) {
 						rob.rotateLeft();
-						rob.move(((CollectionBand) s).getDirection().left());
+						rob.move(((ConveyorBelt) s).getDirection().left());
 					} else if(rotation.equals(Action.RIGHT)) {
-						rob.move(((CollectionBand) s).getDirection().right());
+						rob.move(((ConveyorBelt) s).getDirection().right());
 						rob.rotateRight();
 					}
 				} else if (item instanceof Gear) {
