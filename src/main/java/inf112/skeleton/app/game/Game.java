@@ -13,6 +13,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import org.lwjgl.Sys;
 
 /**
  * The game class that controls most of the game. The game class is the class that
@@ -114,17 +115,45 @@ public class Game {
 	 * or/and rotation e.g. laser
 	 */
 	public void activatePassiveItems() {
-		for(int x = 0; x < robots.length; x++) {
+		for (int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
 			ArrayList<IItem> items = board.getItems(robots[x].getPosition());
-			for(int y = 0; y < items.size(); y++) {
+			for (int y = 0; y < items.size(); y++) {
 				IItem item = items.get(y);
-				if(item instanceof Laser) {
-					// To do
-				} else if(item instanceof Flag) {
+				if (item instanceof LaserShoot) {
+					// Sjekk i retningen prosjektilet kom fra, hvis det står en robot i veien vil man ikke ta skade
+					Direction projectileDir = ((LaserShoot) item).getDirection();
+					Position followProjectile = new Position(rob.getX(), rob.getY());
+					loop:
+					while (true) {
+						Robot obstructing = board.getRobot(followProjectile);
+						if (obstructing != null) {
+							if (!obstructing.equals(rob)){
+								break;
+							}
+						}
+						// Trenger ikke variabelen damage i laserShoot()
+						ArrayList<IItem> items2 = board.getItems(followProjectile);
+						for (int p = 0; p < items2.size(); p++) {
+							IItem item2 = items2.get(p);
+							if (item2 instanceof Laser) {
+								int damage = ((Laser) item2).getDamageMultiplier();
+								rob.takeDamage(damage);
+								if (rob.isDestroyed()) {
+									return;
+								}
+								break loop;
+							}
+						}
+						followProjectile.move(projectileDir.getOppositeDirection());
+						if(followProjectile.getX() > board.getWidth() || followProjectile.getY() > board.getHeight()
+						|| followProjectile.getX() < 0 || followProjectile.getY() < 0){
+							// ERROR
+						}
+					}
+				}
+				if (item instanceof Flag) {
 					rob.visitFlag();
-				} else {
-					continue;
 				}
 			}
 		}
@@ -190,7 +219,7 @@ public class Game {
 	 * @param nr The phase number
 	 */
 	public void robotDoTurn(Robot rob,int nr) {
-		if(!rob.isDestroyed()) {
+		if(rob.isDestroyed()) {
 			return;
 		}
 		ProgramCard card = rob.getCards()[nr];
@@ -256,7 +285,7 @@ public class Game {
 		}
 		ArrayList<IItem> items = board.getItems(pos);
 		ArrayList<IItem> currentItems = board.getItems(startPos);
-		// Check for walls on the current tile
+		// Check for obstruction on current tile
 		for(int y = 0; y < currentItems.size(); y++){
 			IItem obstruction = currentItems.get(y);
 			if(obstruction instanceof  Wall){

@@ -7,14 +7,12 @@ import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import inf112.skeleton.app.GameObjects.Items.Wall;
+import inf112.skeleton.app.GameObjects.Items.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.GameObjects.Robot;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.Pit;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.IBoard;
@@ -130,5 +128,50 @@ public class GameTest {
         game.robotMove(rob,Direction.SOUTH);
         game.robotMove(rob,Direction.WEST);
         assertEquals(new Position(2,1),rob.getPosition());
+    }
+
+    @Test
+    public void testMovementIntoLaser(){
+        Robot rob = robs[0];
+        Laser laser = new Laser(Direction.SOUTH, 1);
+        Laser laser2 = new Laser(Direction.EAST, 1);
+        board.insertItem(2,2,laser2);
+        board.insertItem(2,3,laser);
+        game.robotMove(rob,Direction.NORTH);
+        assertEquals(new Position(2,2), rob.getPosition());
+        game.robotMove(rob, Direction.WEST);
+        assertEquals(new Position(2,2), rob.getPosition());
+        game.robotMove(rob,Direction.SOUTH);
+        assertEquals(new Position(2,1), rob.getPosition());
+    }
+
+    @Test
+    public void testLasers(){
+        Robot rob = robs[0];
+        Robot rob2 = robs[1];
+        Laser laser = new Laser(Direction.SOUTH,2);
+        LaserShoot s1 = new LaserShoot(Direction.SOUTH,2);
+        LaserShoot s2 = new LaserShoot(Direction.SOUTH,2);
+        LaserShoot s3 = new LaserShoot(Direction.SOUTH,2);
+        LaserShoot s4 = new LaserShoot(Direction.SOUTH,2);
+        LaserShoot s5 = new LaserShoot(Direction.SOUTH,2);
+        LaserShoot s6 = new LaserShoot(Direction.SOUTH,2);
+        board.insertItem(2,5,laser);
+        board.insertItem(2,4,s1);
+        board.insertItem(2,3,s1);
+        board.insertItem(2,2,s1);
+        board.insertItem(2,1,s1);
+        board.insertItem(2,0,s1);
+        game.activatePassiveItems();
+        assertEquals(2,rob.getDamageTokens());
+
+        game.robotMove(rob2,Direction.NORTH);
+        game.robotMove(rob2,Direction.WEST);
+        game.activatePassiveItems();
+        assertEquals(2,rob.getDamageTokens());
+        assertEquals(2,rob2.getDamageTokens());
+        game.activatePassiveItems();
+        assertEquals(4,rob2.getDamageTokens());
+        assertEquals(2,rob.getDamageTokens());
     }
 }

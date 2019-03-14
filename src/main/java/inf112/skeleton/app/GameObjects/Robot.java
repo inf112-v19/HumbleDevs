@@ -120,6 +120,14 @@ public abstract class Robot implements IRobot {
         }
     }
 
+    public void takeDamage(int damage){
+        this.damageTokens = this.damageTokens + damage;
+        if(damageTokens >= 10){
+            this.die();
+            damageTokens = 0;
+        }
+    }
+
     @Override
     public void repairDamage(){
         this.damageTokens--;
@@ -164,6 +172,10 @@ public abstract class Robot implements IRobot {
 
     public String toString() {
         return this.name;
+    }
+
+    public int getDamageTokens(){
+        return this.damageTokens;
     }
 
 }
