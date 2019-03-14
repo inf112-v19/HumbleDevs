@@ -7,6 +7,7 @@ import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import inf112.skeleton.app.GameObjects.Items.Wall;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,7 @@ import inf112.skeleton.app.game.Game;
 public class GameTest {
     private Game game;
     private Board board;
+    private Robot[] robs;
 
     @Before
     public void init() {
@@ -37,12 +39,12 @@ public class GameTest {
         board.insertItem(new Position(1,2), new Pit());
         Game game = new Game(board,3);
         this.game = game;
+        this.robs = game.getRobots();
     }
 
     @Test
     public void testFindPriority() {
         game.startRound();
-        Robot[] robs = game.getRobots();
         assertEquals(5,robs[0].getCards().length);
         int[] pri = game.findPriority(1);
         Robot rob1 = robs[pri[0]];
@@ -54,7 +56,6 @@ public class GameTest {
 
     @Test
     public void testMovement() {
-        Robot[] robs = game.getRobots();
         Robot rob1 = robs[0];
         Position pos = rob1.getPosition();
         assertEquals(new Position(2,2), pos);
@@ -64,7 +65,6 @@ public class GameTest {
 
     @Test
     public void testPit() {
-        Robot[] robs = game.getRobots();
         Robot rob1 = robs[0];
         game.robotMove(rob1, Direction.WEST);
         assertTrue(rob1.isDestroyed());
@@ -73,7 +73,6 @@ public class GameTest {
 
     @Test
     public void testUpdateBoard() {
-        Robot[] robs = game.getRobots();
         Robot rob1 = robs[0];
         game.robotMove(rob1, rob1.getDirection());
         assertEquals(new Position(2,3),rob1.getPosition());
@@ -85,7 +84,6 @@ public class GameTest {
 
     @Test
     public void testBoardMovement() {
-        Robot[] robs = game.getRobots();
         Robot rob1 = robs[0];
         Robot rob2 = robs[1];
         Robot rob3 = robs[2];
@@ -100,12 +98,37 @@ public class GameTest {
     }
     @Test
     public void respawnTest() {
-        Robot[] robs = game.getRobots();
         Robot rob1 = robs[0];
         game.robotMove(rob1, Direction.WEST);
         assertTrue(rob1.isDestroyed());
         game.respawnRobots();
         assertEquals(new Position(2,2), rob1.getPosition());
         assertEquals(rob1, board.getRobot(new Position(2,2)));
+    }
+
+    @Test
+    public void testMovementIntoSingleWall(){
+        Robot rob = robs[0];
+        Wall wall = new Wall(Direction.NORTH);
+        board.insertItem(2,0,wall);
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        assertEquals(new Position(2,1),rob.getPosition());
+        Wall wall2 = new Wall(Direction.EAST);
+        Wall wall3 = new Wall(Direction.WEST);
+        board.insertItem(2,1,wall2);
+        board.insertItem(3,2,wall3);
+        game.robotMove(rob,Direction.EAST);
+        assertEquals(new Position(2,1),rob.getPosition());
+    }
+    @Test
+    public void testMovementIntoCornerWall(){
+        Robot rob = robs[0];
+        Wall cornerWall = new Wall(Direction.WEST, Direction.SOUTH);
+        board.insertItem(2,1,cornerWall);
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.WEST);
+        assertEquals(new Position(2,1),rob.getPosition());
     }
 }

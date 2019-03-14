@@ -255,6 +255,24 @@ public class Game {
 			return true;
 		}
 		ArrayList<IItem> items = board.getItems(pos);
+		ArrayList<IItem> currentItems = board.getItems(startPos);
+		// Check for walls on the current tile
+		for(int y = 0; y < currentItems.size(); y++){
+			IItem obstruction = currentItems.get(y);
+			if(obstruction instanceof  Wall){
+				Direction wallDir1 = ((Wall) obstruction).getDir();
+				Direction wallDir2 = ((Wall) obstruction).getDir2();
+				if(wallDir1 == dir || wallDir2 == dir){
+					return false;
+				}
+			}
+			if(obstruction instanceof Laser){
+				Direction laserDir = ((Laser) obstruction).getDirection();
+				if(laserDir.getOppositeDirection() == dir){
+					return false;
+				}
+			}
+		}
 		for(int x = 0; x < items.size(); x++) {
 			IItem it = items.get(x);
 			if(it instanceof Pit) {
@@ -263,9 +281,17 @@ public class Game {
 				return true;
 			}
 			if(it instanceof Wall) {
-				// Må sjekke hvilken vei veggen står
-				// Må sjekke squaren man står på og squaren man ønsker å gå inn på
-				return false;
+				Direction wallDir1 = ((Wall) it).getDir();
+				Direction wallDir2 = ((Wall) it).getDir2();
+				if(wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir){
+					return false;
+				}
+			}
+			if(it instanceof  Laser){
+				Direction laserDir = ((Laser) it).getDirection();
+				if (laserDir.getOppositeDirection() == dir){
+					return false;
+				}
 			}
 		}
 		if(board.isFree(pos)) {
@@ -282,7 +308,6 @@ public class Game {
 		updateBoard(startPos, rob.getPosition());
 		return true;
 	}
-
 	/**
 	 * The method that orders the robots with respect to the priority of the card that each robot
 	 * is going to play this turn
