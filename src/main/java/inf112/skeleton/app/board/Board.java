@@ -53,7 +53,7 @@ public class Board implements IBoard {
         map = new ArrayList<>();
 
 
-        for (int i = 0; i < height;i++) {
+        for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 map.add(new Square());
             }
@@ -64,7 +64,7 @@ public class Board implements IBoard {
             TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(l);
             for (int r = 0; r < height; r++) {
                 for (int c = 0; c < width; c++) {
-                    if(layer.getCell(r, c) == null) {
+                    if (layer.getCell(r, c) == null) {
                         continue;
                     }
                     int id = layer.getCell(r, c).getTile().getId();

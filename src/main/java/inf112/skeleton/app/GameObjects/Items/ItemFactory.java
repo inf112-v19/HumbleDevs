@@ -3,7 +3,7 @@ package inf112.skeleton.app.GameObjects.Items;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.Action;
 
-public class ItemFactory {
+public abstract class ItemFactory {
 
     public static IItem getItem(int id) {
         if (id == 1) {
@@ -156,12 +156,12 @@ public class ItemFactory {
 
         //Red gear (left)
         if (id == 41) {
-            return new Gear(Action.LEFT);
+            return new Gear(Action.LEFTTURN);
         }
 
         //Green gear (right)
         if (id == 42) {
-            return new Gear(Action.RIGHT);
+            return new Gear(Action.RIGHTTURN);
         }
 
         //Laser vertical

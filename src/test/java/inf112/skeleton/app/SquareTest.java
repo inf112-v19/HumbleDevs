@@ -27,7 +27,7 @@ public class SquareTest {
 	
 	@Test
 	public void itemTest() {
-		Flag flag = new Flag();
+		Flag flag = new Flag(1);
 		sq.addElement(flag);
 		ArrayList<IItem> items = sq.getElements();
 		assertEquals(1,items.size());
