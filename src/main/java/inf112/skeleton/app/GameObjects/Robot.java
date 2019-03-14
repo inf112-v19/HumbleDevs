@@ -9,7 +9,7 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- * 
+ *
  * Note to assignment 3:
  * 		- The chooseCards() - method is just to make the robot get som cards when we are testing the
  * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
@@ -37,14 +37,14 @@ public abstract class Robot implements IRobot {
         this.damageTokens = 0;
         this.poweredDown = false;
     }
-    
+
     public void chooseCards(ProgramCard[] pos_cards) {
-    	cards = new ProgramCard[5];
-    	Random rn = new Random();
-    	for(int x = 0; x < 5; x++) {
-    		ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
-    		this.cards[x] = s;
-    	}
+        cards = new ProgramCard[5];
+        Random rn = new Random();
+        for(int x = 0; x < 5; x++) {
+            ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
+            this.cards[x] = s;
+        }
     }
 
     @Override
@@ -52,51 +52,51 @@ public abstract class Robot implements IRobot {
         for(int j = 0; j < i; j++){
             switch(this.dir){
                 case NORTH: this.pos.moveNorth();
-                break;
+                    break;
                 case SOUTH: this.pos.moveSouth();
-                break;
+                    break;
                 case EAST: this.pos.moveEast();
-                break;
+                    break;
                 case WEST: this.pos.moveWest();
             }
         }
     }
     @Override
     public void move(Direction dir) {
-    	switch(dir) {
-	    	case NORTH: this.pos.moveNorth();
-	        break;
-	        case SOUTH: this.pos.moveSouth();
-	        break;
-	        case EAST: this.pos.moveEast();
-	        break;
-	        case WEST: this.pos.moveWest();
-    	}
+        switch(dir) {
+            case NORTH: this.pos.moveNorth();
+                break;
+            case SOUTH: this.pos.moveSouth();
+                break;
+            case EAST: this.pos.moveEast();
+                break;
+            case WEST: this.pos.moveWest();
+        }
     }
 
     @Override
     public Direction getDirection(){
         return this.dir;
     }
-    
+
     @Override
     public Position getPosition() {
-    	return pos;
+        return pos;
     }
-    
+
     @Override
     public void makeBackup(Position newBackup) {
-    	this.backup = newBackup;
+        this.backup = newBackup;
     }
 
     @Override
     public void rotateLeft(){
-    	this.dir = dir.left();
+        this.dir = dir.left();
     }
 
     @Override
     public void rotateRight() {
-    	this.dir = dir.right();
+        this.dir = dir.right();
     }
 
     @Override
@@ -113,8 +113,8 @@ public abstract class Robot implements IRobot {
     public void takeDamage(){
         this.damageTokens++;
         if(this.damageTokens == 10) {
-        	this.die();
-        	damageTokens = 0;
+            this.die();
+            damageTokens = 0;
         }
     }
 
@@ -129,35 +129,35 @@ public abstract class Robot implements IRobot {
     }
     @Override
     public ProgramCard[] getCards() {
-    	return cards;
+        return cards;
     }
     @Override
     public void die() {
-    	this.destroyed = true;
-    	this.lifeTokens--;
+        this.destroyed = true;
+        this.lifeTokens--;
     }
     @Override
     public void visitFlag() {
-    	this.visitedFlags++;
-    	makeBackup(this.pos);
+        this.visitedFlags++;
+        makeBackup(this.pos);
     }
     @Override
     public void respawn() {
-    	this.destroyed = false;
-    	this.pos = backup;
+        this.destroyed = false;
+        this.pos = backup;
     }
     @Override
     public int visitedFlags() {
-    	return this.visitedFlags;
+        return this.visitedFlags;
     }
     @Override
     public void powerDown() {
-    	this.damageTokens = 0;
-    	this.poweredDown = true;
+        this.damageTokens = 0;
+        this.poweredDown = true;
     }
-    
+
     public boolean isDestroyed() {
-    	return this.destroyed;
+        return this.destroyed;
     }
-    
+
 }
