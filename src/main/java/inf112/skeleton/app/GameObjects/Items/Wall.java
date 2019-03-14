@@ -53,7 +53,7 @@ public class Wall implements IItem {
         return corner;
     }
 
-    public void setCorner(boolean corner) {
+    public void setCorner (boolean corner) {
         this.corner = corner;
     }
 
