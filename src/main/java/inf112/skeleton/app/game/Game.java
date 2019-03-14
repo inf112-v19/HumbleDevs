@@ -107,16 +107,16 @@ public class Game {
 				if(item instanceof ConveyorBelt) {
 					//int steps = ((CollectionBand) s).getMovement();
 					Action rotation = ((ConveyorBelt) s).getRotation();
-					if(rotation.equals(Action.LEFT)) {
+					if(rotation.equals(Action.LEFTTURN)) {
 						rob.rotateLeft();
 						rob.move(((ConveyorBelt) s).getDirection().left());
-					} else if(rotation.equals(Action.RIGHT)) {
+					} else if(rotation.equals(Action.RIGHTTURN)) {
 						rob.move(((ConveyorBelt) s).getDirection().right());
 						rob.rotateRight();
 					}
 				} else if (item instanceof Gear) {
 					Action rotation = ((Gear) s).getAction();
-					if(rotation == Action.LEFT) {
+					if(rotation == Action.LEFTTURN) {
 						rob.rotateLeft();
 					} else {
 						rob.rotateRight();
@@ -209,9 +209,9 @@ public class Game {
 		}
 		ProgramCard card = rob.getCards()[nr];
 		Action action = card.getAction();
-		if(action == Action.LEFT) {
+		if(action == Action.LEFTTURN) {
 			rob.rotateLeft();
-		} else if(action == Action.RIGHT) {
+		} else if(action == Action.RIGHTTURN) {
 			rob.rotateRight();
 		} else if (action == Action.UTURN) {
 			rob.rotateRight();

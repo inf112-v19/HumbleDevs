@@ -5,7 +5,6 @@ import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.Action;
 import org.junit.Test;
 
-import static inf112.skeleton.app.card.Action.*;
 import static org.junit.Assert.*;
 
 public class ItemTest {
@@ -90,7 +89,7 @@ public class ItemTest {
     @Test
     public void TestThatWeCanMakeACollectionBand() {
         int movement = 1;
-        Action rotation = Action.LEFT;
+        Action rotation = Action.LEFTTURN;
         Direction dir = Direction.EAST;
 
         CollectionBand cb = new CollectionBand(movement, rotation, dir);
@@ -139,7 +138,7 @@ public class ItemTest {
     //Gear
     @Test
     public void TestThatGearWorks() {
-        Action action = Action.LEFT;
+        Action action = Action.LEFTTURN;
         Gear gear = new Gear(action);
 
         // Test name
@@ -147,6 +146,6 @@ public class ItemTest {
         //Test the symbol of the wall
         assertEquals(gear.getSymbol(), '°');
         //checks that getAction resolves in the right action
-        assertEquals(gear.getAction(), Action.LEFT);
+        assertEquals(gear.getAction(), Action.LEFTTURN);
     }
 }

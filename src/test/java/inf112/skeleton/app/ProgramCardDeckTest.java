@@ -33,7 +33,7 @@ public class ProgramCardDeckTest {
         IDeck deck = new ProgramCardDeck();
         ProgramCard[] cardDeck = deck.getCards();
         for (int i = 0; i < cardDeck.length; i++) {
-            if (cardDeck[i].getAction() == Action.RIGHT) {
+            if (cardDeck[i].getAction() == Action.RIGHTTURN) {
                 result++;
             }
         }
@@ -49,7 +49,7 @@ public class ProgramCardDeckTest {
         IDeck deck = new ProgramCardDeck();
         ProgramCard[] cardDeck = deck.getCards();
         for (int i = 0; i < cardDeck.length; i++) {
-            if (cardDeck[i].getAction() == Action.LEFT) {
+            if (cardDeck[i].getAction() == Action.LEFTTURN) {
                 result++;
             }
         }

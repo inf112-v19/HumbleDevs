@@ -1,13 +1,14 @@
 package inf112.skeleton.app.GameObjects.Items;
 
 import inf112.skeleton.app.board.Direction;
+import inf112.skeleton.app.card.Action;
 
 public class ConveyorBelt implements IItem {
 
     private Direction direction;
 
     //Bending
-    private boolean clockwise;
+    private Action rotation;
     private int speed;
 
     // Constructor for straight converyorbelts
@@ -19,26 +20,28 @@ public class ConveyorBelt implements IItem {
     // Constructor for "bending" conveyorbelts
     public ConveyorBelt(Direction direction, int speed, boolean clockwise) {
         this.direction = direction;
-        this.clockwise = clockwise;
         this.speed = speed;
+
+        if(clockwise) rotation = Action.RIGHTTURN;
+        else rotation = Action.LEFTTURN;
     }
 
-    public boolean isClockwise() {
-        return clockwise;
-    }
-
-    public void setClockwise(boolean clockwise) {
-        this.clockwise = clockwise;
-    }
-
-    public int isDoubleSpeed() {
+    /**
+     * Speed is a step speed multiplier, usually 1 or 2
+     * @return
+     */
+    public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public Action getRotation() {
+        return rotation;
     }
-     
+
+    public Direction getDirection() {
+        return direction;
+    }
+
     @Override
     public int tileId() {
         return 0;
