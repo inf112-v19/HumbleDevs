@@ -10,11 +10,47 @@ import inf112.skeleton.app.board.Direction;
  */
 
 public class Wall implements IItem {
-    private Direction dir;
+    private Direction dir = null;
+    private Direction dir2 = null;
+    private boolean corner;
 
+    //Single wall
     public Wall(Direction dir) {
         this.dir = dir;
+        this.corner = false;
     }
+
+    //Corner wall
+    public Wall(Direction dir1, Direction dir2, boolean corner) {
+        this.dir = dir1;
+        this.dir2 = dir2;
+        this.corner = true;
+    }
+
+    public Direction getDir() {
+        return dir;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
+    public Direction getDir2() {
+        return dir2;
+    }
+
+    public void setDir2(Direction dir2) {
+        this.dir2 = dir2;
+    }
+
+    public boolean isCorner() {
+        return corner;
+    }
+
+    public void setCorner(boolean corner) {
+        this.corner = corner;
+    }
+
 
     @Override
     public int tileId() {

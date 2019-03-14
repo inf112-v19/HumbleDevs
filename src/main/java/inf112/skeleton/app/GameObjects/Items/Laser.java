@@ -7,10 +7,18 @@ public class Laser implements IItem {
 
     private Direction dir;
     private int damageMultiplier;
+    private boolean start;
 
     public Laser(Direction dir, int damageMultiplier) {
         this.dir = dir;
         this.damageMultiplier = damageMultiplier;
+        start = false;
+    }
+
+    public Laser(Direction dir, int damageMultiplier, boolean start) {
+        this.dir = dir;
+        this.damageMultiplier = damageMultiplier;
+        this.start = start;
     }
 
     @Override
