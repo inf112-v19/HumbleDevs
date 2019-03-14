@@ -102,18 +102,18 @@ public abstract class ItemFactory {
         //Corner Wall
 
         if (id == 23) {
-            new Wall(Direction.WEST, Direction.NORTH, true);
+            new Wall(Direction.WEST, Direction.NORTH);
         }
         if (id == 24) {
-            new Wall(Direction.EAST, Direction.NORTH, true);
+            new Wall(Direction.EAST, Direction.NORTH);
         }
 
         if (id == 29) {
-            new Wall(Direction.WEST, Direction.SOUTH, true);
+            new Wall(Direction.WEST, Direction.SOUTH);
         }
 
         if (id == 30) {
-            new Wall(Direction.EAST, Direction.SOUTH, true);
+            new Wall(Direction.EAST, Direction.SOUTH);
         }
 
         //Doublespeed straight conveyorbelt
