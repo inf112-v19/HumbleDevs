@@ -88,20 +88,47 @@ public class Game {
 			for (int y = 0; y < items.size(); y++) {
 				IItem item = items.get(0);
 				if (item instanceof ConveyorBelt) {
-					int speed = ((ConveyorBelt) item).getSpeed();
-					for(int step = 0; step < speed; step++){
+					IItem temp = item;
+					outerloop:
+					for(int turn = 0; turn < 2; turn++){
+						// 1. Sjekk hva som er i neste posisjon
 						Position startPos = new Position(rob.getX(),rob.getY());
-						Action rotation = ((ConveyorBelt) item).getRotation();
-						if(rotation == null){
-							rob.move(((ConveyorBelt) item).getDirection());
-						} else if (rotation.equals(Action.LEFTTURN)) {
-							rob.rotateLeft();
-							rob.move(((ConveyorBelt) item).getDirection());
-						} else {
-							rob.rotateRight();
-							rob.move(((ConveyorBelt) item).getDirection());
+						Position nextPos = new Position(rob.getX(),rob.getY());
+						nextPos.move(((ConveyorBelt) temp).getDirection());
+						ArrayList<IItem> items2 = board.getItems(nextPos);
+						Action rotate = null;
+						IItem var = temp;
+						for(IItem is : items2){
+							if(is instanceof Pit){
+								rob.die();
+								board.removeRobot(rob.getPosition());
+							} else if (is instanceof Wall){
+								break outerloop;
+							} else if (is instanceof Laser){
+								break outerloop;
+							} else if (is instanceof ConveyorBelt){
+								rotate = ((ConveyorBelt) is).getRotation();
+								temp = is;
+							}
 						}
+						// 2. Hvis det enten er mer rullebånd eller et felt uten robot -> Beveg roboten
+						if(board.isFree(nextPos)){
+							robotMove(rob,((ConveyorBelt) var).getDirection());
+						}
+						// 3. Hvis neste rute er et rullebånd, sjekk rotasjonen -> roter
+						if(rotate != null) {
+							if (rotate.equals(Action.LEFTTURN)) {
+								rob.rotateLeft();
+							}
+							if (rotate.equals(Action.RIGHTTURN)) {
+								rob.rotateRight();
+							}
+						}
+						// 4. Er det et dobbelt rullebånd -> Gjenta prosessen
 						updateBoard(startPos,rob.getPosition());
+						if(((ConveyorBelt) item).getSpeed() == 1){
+							break;
+						}
 					}
 				}
 				if (item instanceof Gear) {
@@ -133,9 +160,6 @@ public class Game {
 							board.removeRobot(rob.getPosition());
 						}
 					}
-				}
-				if (item instanceof Flag) {
-					rob.visitFlag();
 				}
 			}
 		}
@@ -246,6 +270,8 @@ public class Game {
 					rob.repairDamage();
 					rob.makeBackup(rob.getPosition());
 					// Draw option card
+				} else if(item instanceof Flag){
+					rob.visitFlag();
 				}
 			}
 		}
@@ -443,5 +469,11 @@ public class Game {
  - Hvorfor boolean i laser?
  - Metoden som velger tilfeldige kort fra en kortstokk skal ikke legge tilbake kort, slik som den gjør nå
  - Hva hvis det står en robot foran en annen på samlebåndet?
+ 	- Andre spesialtilfeller, to møtene roboter i et kryss, robot som skal av -> robotene dyttes ikke
+		-> Lage en boolsk variabel som holder kontroll på om bevegelsen er fra kort eller rullebånd
+	- Rotasjonen i svinger skal etter at roboten har blitt flyttet i svingen, men hvis en robot går inn i svingen, vil
+	  roboten ikke roteres
  - Hvilken retning har rullebåndet i en sving? Retningen den starter eller retningen den skal til?
+ 	- Hva skjer i et kryss
+ - Power down?
  */

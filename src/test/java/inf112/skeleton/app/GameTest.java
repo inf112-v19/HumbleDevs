@@ -219,21 +219,20 @@ public class GameTest {
     @Test
     public void doubleConveyorBeltTest(){
         Robot rob = robs[0];
-        ConveyorBelt cb = new ConveyorBelt(Direction.WEST,2);
-        ConveyorBelt cb2 = new ConveyorBelt(Direction.NORTH,2,true);
-        ConveyorBelt cb3 = new ConveyorBelt(Direction.NORTH,2);
-        board.insertItem(2,0,cb);
-        board.insertItem(1,0,cb);
-        board.insertItem(0,0,cb2);
-        board.insertItem(0,1,cb3);
-        board.insertItem(0,2,cb3);
+        ConveyorBelt cb = new ConveyorBelt(Direction.EAST,2);
+        ConveyorBelt cb2 = new ConveyorBelt(Direction.SOUTH,2,true);
+        ConveyorBelt cb3 = new ConveyorBelt(Direction.WEST,2, true);
+        ConveyorBelt cb4 = new ConveyorBelt(Direction.WEST,2);
+        board.insertItem(2,1,cb);
+        board.insertItem(3,1,cb2);
+        board.insertItem(3,0,cb3);
+        board.insertItem(2,0,cb4);
+        board.insertItem(2,0,cb4);
         game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.SOUTH);
-        assertEquals(new Position(2,0),rob.getPosition());
         game.activateMovement();
-        assertEquals(new Position(0,0),rob.getPosition());
+        assertEquals(new Position(3,0),rob.getPosition());
         game.activateMovement();
-        assertEquals(new Position(0,2),rob.getPosition());
+        assertEquals(new Position(1,0),rob.getPosition());
     }
 
     @Test
