@@ -13,7 +13,7 @@ public class ConveyorBelt implements IItem {
     private Action rotation;
     private int speed;
 
-    // Constructor for straight converyorbelts
+    // Constructor for straight conveyorbelts
     public ConveyorBelt(Direction direction, int speed) {
         this.direction = direction;
         this.speed = speed;
