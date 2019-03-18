@@ -43,7 +43,11 @@ public abstract class Robot implements IRobot {
     public void chooseCards(ProgramCard[] pos_cards) {
         cards = new ProgramCard[5];
         Random rn = new Random();
-        for(int x = 0; x < 5; x++) {
+        int registers = 9 - damageTokens;
+        if(registers >= 5) {
+            registers = 5;
+        }
+        for(int x = 0; x < registers; x++) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
             this.cards[x] = s;
         }
@@ -154,7 +158,7 @@ public abstract class Robot implements IRobot {
     @Override
     public void respawn() {
         this.destroyed = false;
-        this.pos = backup;
+        this.pos = new Position(backup.getX(),backup.getY());
     }
     @Override
     public int visitedFlags() {

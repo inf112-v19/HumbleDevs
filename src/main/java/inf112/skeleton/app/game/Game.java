@@ -15,7 +15,7 @@ import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 
 /**
- * The game class that controls most of the game. The game class is the class that
+ * The class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
  * @author Even Kolsgaard
  *
@@ -95,7 +95,7 @@ public class Game {
 						Position startPos = new Position(rob.getX(),rob.getY());
 						Position nextPos = new Position(rob.getX(),rob.getY());
 						nextPos.move(((ConveyorBelt) temp).getDirection());
-						ArrayList<IItem> items2 = board.getItems(nextPos);
+						ArrayList<IItem> items2 = 	board.getItems(nextPos);
 						Action rotate = null;
 						IItem var = temp;
 						for(IItem is : items2){
@@ -184,7 +184,6 @@ public class Game {
 				}
 			}
 		}
-		loop:
 		while (true) {
 			shotPos.move(shootingDir);
 			if (shotPos.getY() >= board.getWidth() || shotPos.getY() < 0 || shotPos.getX() >= board.getHeight()
@@ -251,6 +250,7 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
+					// Spilleren skal kunne velge hvilken vei roboten skal peke
 					board.insertRobot(rob.getPosition(), rob);
 				}
 			}
@@ -437,7 +437,7 @@ public class Game {
 		return prio;
 	}
 
-	public void initializePlayers(int numb) {
+	private void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
 			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
 			robots[x] = per;
@@ -456,7 +456,7 @@ public class Game {
 	 * @param start the position where the robot was placed
 	 * @param end the position where to robot is moved to now
 	 */
-	public void updateBoard(Position start, Position end) {
+	private void updateBoard(Position start, Position end) {
 		Robot rob = board.getRobot(start);
 		if(rob == null) {
 			return;
@@ -476,4 +476,7 @@ public class Game {
  - Hvilken retning har rullebåndet i en sving? Retningen den starter eller retningen den skal til?
  	- Hva skjer i et kryss
  - Power down?
+ - Lage en bedre rotate metode for robot
+ - Må oppdatere sortering basert på prioritet slik at den tar hensyn til roboter som ikke har fem kort
+ - Spesialregler angående programkort, skade og registre
  */

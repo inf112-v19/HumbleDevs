@@ -1,26 +1,20 @@
 package inf112.skeleton.app;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import inf112.skeleton.app.GameObjects.Items.*;
-import javafx.geometry.Pos;
+import inf112.skeleton.app.card.Action;
 import org.junit.Before;
 import org.junit.Test;
 
-import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.GameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
-import inf112.skeleton.app.board.IBoard;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.board.Square;
-import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.game.Game;
+
+import static org.junit.Assert.*;
 
 public class GameTest {
     private Game game;
@@ -29,7 +23,7 @@ public class GameTest {
 
     @Before
     public void init() {
-        ArrayList<Square> test = new ArrayList<Square>(144);
+        ArrayList<Square> test = new ArrayList<>(144);
         for(int x = 0; x < 144; x++) {
             test.add(new Square<IItem>());
         }
@@ -67,7 +61,7 @@ public class GameTest {
         Robot rob1 = robs[0];
         game.robotMove(rob1, Direction.WEST);
         assertTrue(rob1.isDestroyed());
-        assertEquals(null,board.getRobot(rob1.getPosition()));
+        assertNull(board.getRobot(rob1.getPosition()));
     }
 
     @Test
@@ -78,7 +72,7 @@ public class GameTest {
         Robot rob2 = board.getRobot(new Position(2,3));
         assertEquals(rob1,rob2);
         Robot rob = board.getRobot(new Position(2,2));
-        assertEquals(null,rob);
+        assertNull(rob);
     }
 
     @Test
@@ -90,7 +84,7 @@ public class GameTest {
         assertEquals(new Position(3,2),rob1.getPosition());
         assertEquals(new Position(4,2),rob2.getPosition());
         assertEquals(new Position(5,2),rob3.getPosition());
-        assertEquals(board.getRobot(new Position(2,2)), null);
+        assertNull(board.getRobot(new Position(2,2)));
         assertEquals(board.getRobot(new Position(3,2)), rob1);
         assertEquals(board.getRobot(new Position(4,2)), rob2);
         assertEquals(board.getRobot(new Position(5,2)), rob3);
@@ -191,7 +185,7 @@ public class GameTest {
         Object wallHit = game.trackLaser(Direction.EAST,new Position(0,5));
         assertEquals(wall,wallHit);
         Object miss = game.trackLaser(Direction.NORTH,new Position(0,5));
-        assertEquals(null,miss);
+        assertNull(miss);
     }
 
     @Test
@@ -251,5 +245,50 @@ public class GameTest {
         assertEquals(new Position(1,0), rob.getPosition());
         game.activateMovement();
         assertEquals(new Position(1,1), rob.getPosition());
+    }
+
+    @Test
+    public void testGear(){
+        Robot rob = robs[0];
+        Direction dir = rob.getDirection();
+        Gear gear = new Gear(Action.LEFTTURN);
+        board.insertItem(2,2,gear);
+        game.activateMovement();
+        assertEquals(dir.left(), rob.getDirection());
+        Gear gear1 = new Gear(Action.RIGHTTURN);
+        rob.move(Direction.NORTH);
+        board.insertItem(2,3,gear1);
+        game.activateMovement();
+        assertEquals(dir,rob.getDirection());
+    }
+
+    @Test
+    public void testSpecialCase1ConveyorBelt(){
+        ConveyorBelt cb = new ConveyorBelt(Direction.WEST,1);
+        board.insertItem(3,2,cb);
+        Robot rob1 = robs[0];
+        Robot rob2 = robs[1];
+        game.activateMovement();
+        assertEquals(new Position(2,2),rob1.getPosition());
+        assertEquals(new Position(3,2),rob2.getPosition());
+    }
+    @Test
+    public void testConveyorBeltTurn(){
+        ConveyorBelt cb = new ConveyorBelt(Direction.NORTH, 1);
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.EAST,1,true);
+        Robot rob1 = robs[0];
+        board.insertItem(2,2,cb);
+        board.insertItem(2,3,cb1);
+        game.activateMovement();
+        assertEquals(new Position(2,3), rob1.getPosition());
+        assertEquals(Direction.EAST,rob1.getDirection());
+    }
+    @Test
+    public void testSpecialCase2ConveyorBelt(){
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.EAST,1,true);
+        board.insertItem(2,3,cb1);
+        Robot rob = robs[0];
+        game.robotMove(rob, Direction.NORTH);
+        assertEquals(Direction.NORTH, rob.getDirection());
     }
 }
