@@ -2,11 +2,12 @@ package inf112.skeleton.app;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import inf112.skeleton.app.GameObjects.Items.DefaultTile;
+import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Square;
+import inf112.skeleton.app.card.Action;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,19 +71,27 @@ public class BoardTest {
         }
     }
 
-    /**
-     * TODO: Make this test work
-     * It seems impossible to load the TiledMap from here.
-     * Neither is it possible to get the TiledMap form the graphic-class.
-     * The instance variable tiledMap is returned as null.
-     */
     @Test
-    public void itemFactoryCreatesDefaultTile() {
+    public void insertElementByTileId() {
+        // 1 = defaultTile ...
+        insertElementByTileIdCreatesCorrectTile(1, new DefaultTile());
+        insertElementByTileIdCreatesCorrectTile(2, new Pit());
+        insertElementByTileIdCreatesCorrectTile(3, new Flag(1));
+        insertElementByTileIdCreatesCorrectTile(7, new ConveyorBelt(Direction.SOUTH, 2, false));
+        insertElementByTileIdCreatesCorrectTile(11, new Wall(Direction.NORTH));
+        insertElementByTileIdCreatesCorrectTile(35, new RepairTool());
+        insertElementByTileIdCreatesCorrectTile(41, new Gear(Action.LEFTTURN));
+//        insertElementByTileIdCreatesCorrectTile(67, new Laser(Direction.NORTH, 1));
 
-        TiledMap tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        board = new Board(tiledMap);
-        Square sq = board.getSquare(0, 0);
-        assertTrue(sq.getElements().get(0) instanceof DefaultTile);
+
     }
+
+    public void insertElementByTileIdCreatesCorrectTile(int tileId, IItem expectedItem) {
+        board.clearSquare(0, 0);
+        board.insertItem(0, 0, tileId);
+        Square sq = board.getSquare(0, 0);
+        assertEquals(expectedItem.getClass(), sq.getElements().get(0).getClass());
+    }
+
 
 }

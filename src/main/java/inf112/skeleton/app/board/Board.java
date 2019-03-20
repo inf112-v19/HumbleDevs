@@ -177,4 +177,9 @@ public class Board implements IBoard {
     public void clear() {
     	map.clear();
     }
+
+    public void clearSquare(int x, int y) {
+        int index = toIndex(x, y);
+        map.get(index).removeElements();
+    }
 }
