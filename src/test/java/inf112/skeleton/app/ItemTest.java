@@ -111,7 +111,7 @@ public class ItemTest {
         Wall wall = new Wall(dir);
 
         //Test the direction
-        assertEquals(wall.getDirection(), Direction.WEST);
+        assertEquals(wall.getDir(), Direction.WEST);
         // Test name
         assertEquals(wall.getName(), "Wall");
         //Test the symbol of the wall
@@ -124,6 +124,7 @@ public class ItemTest {
         Wall w = new Wall(Direction.NORTH, Direction.SOUTH);
 
         assertEquals(w.getDir(), Direction.NORTH);
+        assertEquals(w.getDir2(), Direction.SOUTH);
         // Test name
         assertEquals(w.getName(), "CornerWall");
         //Test the symbol of the wall
