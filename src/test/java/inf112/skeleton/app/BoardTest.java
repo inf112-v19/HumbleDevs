@@ -71,7 +71,7 @@ public class BoardTest {
 
     /**
      * Needs to be updated if the tileSetLarge64 file is edited.
-     * Follows top 1-indexing from the tileSetLarge64.png
+     * Follows top row-based 1-indexing from the tileSetLarge64.png
      */
     @Test
     public void insertElementByTileId() {
@@ -145,8 +145,6 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItem(76, new Laser(Direction.EAST, 2, true));
         insertElementByTileIdCreatesCorrectItem(77, new Laser(Direction.SOUTH, 2, true));
         insertElementByTileIdCreatesCorrectItem(78, new Laser(Direction.WEST, 2, true));
-
-
     }
 
     public void insertElementByTileIdCreatesCorrectItem(int tileId, IItem expectedItem) {
@@ -160,6 +158,7 @@ public class BoardTest {
         if (actualItem instanceof ConveyorBelt) conveyorBeltHasCorrectProperties((ConveyorBelt) expectedItem, (ConveyorBelt) actualItem);
         if (actualItem instanceof Wall) wallHasCorrectProperties((Wall) expectedItem, (Wall) actualItem);
         if (actualItem instanceof Gear) gearHasCorrectProperties((Gear) expectedItem, (Gear) actualItem);
+        if (actualItem instanceof Laser) laserHasCorrectProperties((Laser) expectedItem, (Laser) actualItem);
     }
 
     public void flagHasCorrectProperties(Flag expected, Flag actual) {
@@ -183,7 +182,8 @@ public class BoardTest {
 
     public void laserHasCorrectProperties(Laser expected, Laser actual) {
         assertEquals(expected.getDirection(), actual.getDirection());
+        assertEquals(expected.getDamageMultiplier(), actual.getDamageMultiplier());
+        assertEquals(expected.isStart(), actual.isStart());
     }
-
 
 }
