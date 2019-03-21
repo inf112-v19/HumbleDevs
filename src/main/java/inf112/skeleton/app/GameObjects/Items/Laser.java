@@ -21,6 +21,14 @@ public class Laser implements IItem {
         this.start = start;
     }
 
+    public int getDamageMultiplier() {
+        return damageMultiplier;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
     @Override
     public int tileId() {
         return 0;
