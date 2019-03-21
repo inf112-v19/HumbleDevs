@@ -1,4 +1,5 @@
 package inf112.skeleton.app.GameObjects;
+import inf112.skeleton.app.GameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 
 import java.util.Random;
@@ -151,9 +152,12 @@ public abstract class Robot implements IRobot {
         this.lifeTokens--;
     }
     @Override
-    public void visitFlag() {
-        this.visitedFlags++;
-        makeBackup(this.pos);
+    public void visitFlag(Flag flag) {
+        if(visitedFlags == (flag.getFlagNum() - 1)){
+            visitedFlags++;
+            makeBackup(this.pos);
+        }
+
     }
     @Override
     public void respawn() {

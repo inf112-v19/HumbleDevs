@@ -91,7 +91,6 @@ public class Game {
 					IItem temp = item;
 					outerloop:
 					for(int turn = 0; turn < 2; turn++){
-						// 1. Sjekk hva som er i neste posisjon
 						Position startPos = new Position(rob.getX(),rob.getY());
 						Position nextPos = new Position(rob.getX(),rob.getY());
 						nextPos.move(((ConveyorBelt) temp).getDirection());
@@ -111,11 +110,9 @@ public class Game {
 								temp = is;
 							}
 						}
-						// 2. Hvis det enten er mer rullebånd eller et felt uten robot -> Beveg roboten
 						if(board.isFree(nextPos)){
 							robotMove(rob,((ConveyorBelt) var).getDirection());
 						}
-						// 3. Hvis neste rute er et rullebånd, sjekk rotasjonen -> roter
 						if(rotate != null) {
 							if (rotate.equals(Action.LEFTTURN)) {
 								rob.rotateLeft();
@@ -124,7 +121,6 @@ public class Game {
 								rob.rotateRight();
 							}
 						}
-						// 4. Er det et dobbelt rullebånd -> Gjenta prosessen
 						updateBoard(startPos,rob.getPosition());
 						if(((ConveyorBelt) item).getSpeed() == 1){
 							break;
@@ -173,7 +169,6 @@ public class Game {
 	 */
 	public Object trackLaser(Direction shootingDir, Position pos) {
 		Position shotPos = new Position(pos.getX(), pos.getY());
-		// Må sjekke om det er vegg på nåværende rute
 		ArrayList<IItem> currentItems = board.getItems(shotPos);
 		for (IItem currIt : currentItems) {
 			if (currIt instanceof Wall) {
@@ -250,7 +245,6 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
-					// Spilleren skal kunne velge hvilken vei roboten skal peke
 					board.insertRobot(rob.getPosition(), rob);
 				}
 			}
@@ -271,7 +265,7 @@ public class Game {
 					rob.makeBackup(rob.getPosition());
 					// Draw option card
 				} else if(item instanceof Flag){
-					rob.visitFlag();
+					rob.visitFlag((Flag)item);
 				}
 			}
 		}
@@ -282,7 +276,7 @@ public class Game {
 	 */
 	private Robot finished() {
 		for(Robot robot : robots){
-			if(robot.visitedFlags() == 3) {
+			if(robot.visitedFlags() == 4) {
 				return robot;
 			}
 		}
@@ -437,16 +431,6 @@ public class Game {
 		return prio;
 	}
 
-	private void setUpRobots(int number){
-	    // Må ha en oversikt over mulige startposisjoner, 2 - 8 players -> 8 mulige "docks"
-        for(int x = 0; x < number; x++){
-            // ArrayList<Position> docks = board.getDocks();
-            // Spilleren må også få lov til å velge hvilken robot man skal være
-            // Player player = new Player(*Selvagt retning?, docks.get(x), *navn); + bilde av roboten
-            // board.insertRobot(dock.get(x));
-        }
-    }
-
 	private void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
 			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
@@ -475,20 +459,3 @@ public class Game {
 		board.insertRobot(end, rob);
 	}
 }
-/*
- - Metoden som velger tilfeldige kort fra en kortstokk skal ikke legge tilbake kort, slik som den gjør nå
- - Hva hvis det står en robot foran en annen på samlebåndet?
- 	- Andre spesialtilfeller, to møtene roboter i et kryss, robot som skal av -> robotene dyttes ikke
-		-> Lage en boolsk variabel som holder kontroll på om bevegelsen er fra kort eller rullebånd
-	- Rotasjonen i svinger skal etter at roboten har blitt flyttet i svingen, men hvis en robot går inn i svingen, vil
-	  roboten ikke roteres
--  Hva skjer i et kryss?
- - Power down?
- - Lage en bedre rotate metode for robot
- - Må oppdatere sortering basert på prioritet slik at den tar hensyn til roboter som ikke har fem kort
- - Spesialregler angående programkort, skade og registre
- - Må ta på flaggene i riktig rekkefølge
-    - Hvert flagg må ha en ranking
- - I tillegg til selve brettet er det et "docking bay board"
- - Må ha bilder av 8 roboter fra alle ulike vinkler
- */
