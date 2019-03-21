@@ -56,7 +56,7 @@ public class Game {
 			activateMovement();
 			activatePassiveItems();
 			shootLasers();
-			repairDamage();
+			repairAndCheckFlags();
 		}
 		respawnRobots();
 	}
@@ -259,7 +259,7 @@ public class Game {
 	/**
 	 * Checks if any of the robots are placed on fields that repair them
 	 */
-	public void repairDamage() {
+	public void repairAndCheckFlags() {
 		for(Robot rob : robots){
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
@@ -295,7 +295,7 @@ public class Game {
 	 * @param rob The robot that are going to do its turn
 	 * @param nr The phase number
 	 */
-	private void robotDoTurn(Robot rob,int nr) {
+	private void robotDoTurn(Robot rob, int nr) {
 		if(rob.isDestroyed()) {
 			return;
 		}
@@ -437,6 +437,16 @@ public class Game {
 		return prio;
 	}
 
+	private void setUpRobots(int number){
+	    // Må ha en oversikt over mulige startposisjoner, 2 - 8 players -> 8 mulige "docks"
+        for(int x = 0; x < number; x++){
+            // ArrayList<Position> docks = board.getDocks();
+            // Spilleren må også få lov til å velge hvilken robot man skal være
+            // Player player = new Player(*Selvagt retning?, docks.get(x), *navn); + bilde av roboten
+            // board.insertRobot(dock.get(x));
+        }
+    }
+
 	private void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
 			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
@@ -445,7 +455,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Method only used to test the sorting based on the card priority.
+	 * Method only used to for test cases
 	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
@@ -466,17 +476,19 @@ public class Game {
 	}
 }
 /*
- - Hvorfor boolean i laser?
  - Metoden som velger tilfeldige kort fra en kortstokk skal ikke legge tilbake kort, slik som den gjør nå
  - Hva hvis det står en robot foran en annen på samlebåndet?
  	- Andre spesialtilfeller, to møtene roboter i et kryss, robot som skal av -> robotene dyttes ikke
 		-> Lage en boolsk variabel som holder kontroll på om bevegelsen er fra kort eller rullebånd
 	- Rotasjonen i svinger skal etter at roboten har blitt flyttet i svingen, men hvis en robot går inn i svingen, vil
 	  roboten ikke roteres
- - Hvilken retning har rullebåndet i en sving? Retningen den starter eller retningen den skal til?
- 	- Hva skjer i et kryss
+-  Hva skjer i et kryss?
  - Power down?
  - Lage en bedre rotate metode for robot
  - Må oppdatere sortering basert på prioritet slik at den tar hensyn til roboter som ikke har fem kort
  - Spesialregler angående programkort, skade og registre
+ - Må ta på flaggene i riktig rekkefølge
+    - Hvert flagg må ha en ranking
+ - I tillegg til selve brettet er det et "docking bay board"
+ - Må ha bilder av 8 roboter fra alle ulike vinkler
  */
