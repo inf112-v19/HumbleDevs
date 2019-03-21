@@ -1,7 +1,5 @@
 package inf112.skeleton.app;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.board.Board;
@@ -78,57 +76,70 @@ public class BoardTest {
     @Test
     public void insertElementByTileId() {
         // 1 = defaultTile ...
-        insertElementByTileIdCreatesCorrectTile(1, new DefaultTile());
-        insertElementByTileIdCreatesCorrectTile(2, new Pit());
+        insertElementByTileIdCreatesCorrectItemClass(1, new DefaultTile());
+        insertElementByTileIdCreatesCorrectItemClass(2, new Pit());
 
-        insertElementByTileIdCreatesCorrectTile(3, new Flag(1));
-        insertElementByTileIdCreatesCorrectTile(4, new Flag(2));
-        insertElementByTileIdCreatesCorrectTile(5, new Flag(3));
-        insertElementByTileIdCreatesCorrectTile(6, new Flag(4));
+        insertElementByTileIdCreatesCorrectItemClass(3, new Flag(1));
+        insertElementByTileIdCreatesCorrectItemClass(4, new Flag(2));
+        insertElementByTileIdCreatesCorrectItemClass(5, new Flag(3));
+        insertElementByTileIdCreatesCorrectItemClass(6, new Flag(4));
 
-        insertElementByTileIdCreatesCorrectTile(7, new ConveyorBelt(Direction.SOUTH, 2, false));
-        insertElementByTileIdCreatesCorrectTile(8, new ConveyorBelt(Direction.WEST, 2, false));
-        insertElementByTileIdCreatesCorrectTile(13, new ConveyorBelt(Direction.EAST, 2, false));
-        insertElementByTileIdCreatesCorrectTile(14, new ConveyorBelt(Direction.NORTH, 2, false));
+        insertElementByTileIdCreatesCorrectItemClass(7, new ConveyorBelt(Direction.SOUTH, 2, false));
+        insertElementByTileIdCreatesCorrectItemClass(8, new ConveyorBelt(Direction.WEST, 2, false));
+        insertElementByTileIdCreatesCorrectItemClass(13, new ConveyorBelt(Direction.EAST, 2, false));
+        insertElementByTileIdCreatesCorrectItemClass(14, new ConveyorBelt(Direction.NORTH, 2, false));
 
-        insertElementByTileIdCreatesCorrectTile(9, new ConveyorBelt(Direction.EAST, 2, true));
-        insertElementByTileIdCreatesCorrectTile(10, new ConveyorBelt(Direction.SOUTH, 2, true));
-        insertElementByTileIdCreatesCorrectTile(15, new ConveyorBelt(Direction.NORTH, 2, true));
-        insertElementByTileIdCreatesCorrectTile(16, new ConveyorBelt(Direction.WEST, 2, true));
+        insertElementByTileIdCreatesCorrectItemClass(9, new ConveyorBelt(Direction.EAST, 2, true));
+        insertElementByTileIdCreatesCorrectItemClass(10, new ConveyorBelt(Direction.SOUTH, 2, true));
+        insertElementByTileIdCreatesCorrectItemClass(15, new ConveyorBelt(Direction.NORTH, 2, true));
+        insertElementByTileIdCreatesCorrectItemClass(16, new ConveyorBelt(Direction.WEST, 2, true));
 
-        insertElementByTileIdCreatesCorrectTile(19, new ConveyorBelt(Direction.SOUTH, 1, false));
-        insertElementByTileIdCreatesCorrectTile(20, new ConveyorBelt(Direction.WEST, 1, false));
-        insertElementByTileIdCreatesCorrectTile(25, new ConveyorBelt(Direction.EAST, 1, false));
-        insertElementByTileIdCreatesCorrectTile(26, new ConveyorBelt(Direction.NORTH, 1, false));
+        insertElementByTileIdCreatesCorrectItemClass(19, new ConveyorBelt(Direction.SOUTH, 1, false));
+        insertElementByTileIdCreatesCorrectItemClass(20, new ConveyorBelt(Direction.WEST, 1, false));
+        insertElementByTileIdCreatesCorrectItemClass(25, new ConveyorBelt(Direction.EAST, 1, false));
+        insertElementByTileIdCreatesCorrectItemClass(26, new ConveyorBelt(Direction.NORTH, 1, false));
 
-        insertElementByTileIdCreatesCorrectTile(21, new ConveyorBelt(Direction.EAST, 1, true));
-        insertElementByTileIdCreatesCorrectTile(22, new ConveyorBelt(Direction.SOUTH, 1, true));
-        insertElementByTileIdCreatesCorrectTile(27, new ConveyorBelt(Direction.NORTH, 1, true));
-        insertElementByTileIdCreatesCorrectTile(28, new ConveyorBelt(Direction.WEST, 1, true));
+        insertElementByTileIdCreatesCorrectItemClass(21, new ConveyorBelt(Direction.EAST, 1, true));
+        insertElementByTileIdCreatesCorrectItemClass(22, new ConveyorBelt(Direction.SOUTH, 1, true));
+        insertElementByTileIdCreatesCorrectItemClass(27, new ConveyorBelt(Direction.NORTH, 1, true));
+        insertElementByTileIdCreatesCorrectItemClass(28, new ConveyorBelt(Direction.WEST, 1, true));
 
-        insertElementByTileIdCreatesCorrectTile(11, new Wall(Direction.NORTH));
-        insertElementByTileIdCreatesCorrectTile(12, new Wall(Direction.SOUTH));
-        insertElementByTileIdCreatesCorrectTile(17, new Wall(Direction.WEST));
-        insertElementByTileIdCreatesCorrectTile(18, new Wall(Direction.EAST));
+        insertElementByTileIdCreatesCorrectItemClass(11, new Wall(Direction.NORTH));
+        insertElementByTileIdCreatesCorrectItemClass(12, new Wall(Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItemClass(17, new Wall(Direction.WEST));
+        insertElementByTileIdCreatesCorrectItemClass(18, new Wall(Direction.EAST));
 
-        insertElementByTileIdCreatesCorrectTile(23, new Wall(Direction.WEST, Direction.NORTH));
-        insertElementByTileIdCreatesCorrectTile(24, new Wall(Direction.EAST, Direction.NORTH));
-        insertElementByTileIdCreatesCorrectTile(29, new Wall(Direction.WEST, Direction.SOUTH));
-        insertElementByTileIdCreatesCorrectTile(30, new Wall(Direction.EAST, Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItemClass(23, new Wall(Direction.WEST, Direction.NORTH));
+//        insertElementByTileIdCreatesCorrectItemClass(24, new Wall(Direction.EAST, Direction.NORTH));
+//        insertElementByTileIdCreatesCorrectItemClass(29, new Wall(Direction.WEST, Direction.SOUTH));
+//        insertElementByTileIdCreatesCorrectItemClass(30, new Wall(Direction.EAST, Direction.SOUTH));
 
+        insertElementByTileIdCreatesCorrectItemClass(31, new ConveyorBelt(Direction.NORTH, 2));
+        insertElementByTileIdCreatesCorrectItemClass(32, new ConveyorBelt(Direction.SOUTH, 2));
+        insertElementByTileIdCreatesCorrectItemClass(33, new ConveyorBelt(Direction.WEST, 2));
+        insertElementByTileIdCreatesCorrectItemClass(34, new ConveyorBelt(Direction.EAST, 2));
 
+        insertElementByTileIdCreatesCorrectItemClass(37, new ConveyorBelt(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItemClass(38, new ConveyorBelt(Direction.SOUTH, 1));
+        insertElementByTileIdCreatesCorrectItemClass(39, new ConveyorBelt(Direction.WEST, 1));
+        insertElementByTileIdCreatesCorrectItemClass(40, new ConveyorBelt(Direction.EAST, 1));
 
-        insertElementByTileIdCreatesCorrectTile(35, new RepairTool());
-        insertElementByTileIdCreatesCorrectTile(41, new Gear(Action.LEFTTURN));
-//        insertElementByTileIdCreatesCorrectTile(67, new Laser(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItemClass(35, new RepairTool());
+        insertElementByTileIdCreatesCorrectItemClass(36, new RepairTool());
+
+        insertElementByTileIdCreatesCorrectItemClass(41, new Gear(Action.LEFTTURN));
+        insertElementByTileIdCreatesCorrectItemClass(42, new Gear(Action.RIGHTTURN));
+
+//        insertElementByTileIdCreatesCorrectItemClass(67, new Laser(Direction.NORTH, 1));
 
 
     }
 
-    public void insertElementByTileIdCreatesCorrectTile(int tileId, IItem expectedItem) {
+    public void insertElementByTileIdCreatesCorrectItemClass(int tileId, IItem expectedItem) {
         board.clearSquare(0, 0);
         board.insertItem(0, 0, tileId);
         Square sq = board.getSquare(0, 0);
+        Class c2 = sq.getElements().get(0).getClass();
         assertEquals(expectedItem.getClass(), sq.getElements().get(0).getClass());
     }
 
