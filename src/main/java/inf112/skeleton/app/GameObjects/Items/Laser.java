@@ -14,7 +14,7 @@ public class Laser implements IItem {
         this.damageMultiplier = damageMultiplier;
         start = false;
     }
-
+    // Hva er start?
     public Laser(Direction dir, int damageMultiplier, boolean start) {
         this.dir = dir;
         this.damageMultiplier = damageMultiplier;
@@ -38,5 +38,9 @@ public class Laser implements IItem {
 
     public Direction getDirection() {
         return dir;
+    }
+
+    public int getDamageMultiplier() {
+        return damageMultiplier;
     }
 }

@@ -1,5 +1,6 @@
 package inf112.skeleton.app.GameObjects;
 
+import inf112.skeleton.app.GameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
@@ -84,9 +85,9 @@ public interface IRobot {
     void respawn();
 
     /**
-     * Visit a flag. Flags visited must increments and the backup - position is updated
+     * Check that the robot is visiting the flag in the correct order. If it is then record it, else do nothing
      */
-    void visitFlag();
+    void visitFlag(Flag flag);
 
     /**
      * @return the robots cards for one round
