@@ -55,5 +55,23 @@ public class Position implements IPosition {
 		this.yPos--;
 		this.index = this.index - 12;
 	}
+	public void move(Direction dir){
+        switch(dir){
+            case NORTH:
+                moveNorth();
+                break;
+            case WEST:
+                moveWest();
+                break;
+            case SOUTH:
+                moveSouth();
+                break;
+            case EAST:
+                moveEast();
+                break;
+            default:
+                break;
+        }
+    }
 
 }

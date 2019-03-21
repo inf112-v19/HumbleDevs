@@ -1,15 +1,7 @@
-
 package inf112.skeleton.app.game;
 
+import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Items.ConveyorBelt;
-import inf112.skeleton.app.GameObjects.Items.Flag;
-import inf112.skeleton.app.GameObjects.Items.Gear;
-import inf112.skeleton.app.GameObjects.Items.Hammer;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.Laser;
-import inf112.skeleton.app.GameObjects.Items.Pit;
-import inf112.skeleton.app.GameObjects.Items.Wall;
-import inf112.skeleton.app.GameObjects.Items.Wrench;
 
 import java.util.ArrayList;
 
@@ -23,163 +15,257 @@ import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 
 /**
- * The game class that controls most of the game. The game class is the class that
+ * The class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
- * 
- * Note for assignment 3: Some methods in this class is not implemented or only partially. The reason
- * for this is because it makes it easy for us to see what needs to be done.
- * Methods that not are implemented, but just for the structure
- * 	- shootLasers()
- *  - initializePlayers()
- *  	* We have not decided how we should make this and is for know completely trivial
- *   - updateBoard()
- *   	* This is a extremely important method that updates the board on where the robots are located.
- *   	  It has to remove the robots from the old location and place them on the new. We have not
- *   	  found a solution that we are satisfied with yet, it is therefore not implemented yet. We may
- *   	  even put it in another class.
  * @author Even Kolsgaard
  *
  */
 public class Game {
-	private static Board board;
-	private static Robot[] robots;
+	private Board board;
+	private Robot[] robots;
 	private ProgramCardDeck cardPack;
-	private static int round;
-	
-	
+	private int round;
+
+
 	public Game(Board board, int players) {
 		this.board = board;
 		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
 		robots = new Robot[players];
-		initializePlayers(players);	
+		initializePlayers(players);
 	}
-	
+
 	/**
 	 * Starts the a new round by dealing new cards to every player
 	 */
 	public void startRound() {
-		for(int x = 0; x < robots.length; x++) {
+		for (Robot robot : robots) {
 			ProgramCard[] newCards = cardPack.getRandomCards();
-			robots[x].chooseCards(newCards);
+			robot.chooseCards(newCards);
 		}
 	}
-	
+
 	/**
-	 * Calls the methods to that makes up a round. Not every method this method uses is 
+	 * Calls the methods to that makes up a round. Not every method this method uses is
 	 * implemented, but it gives a nice illustration on how the game should work.
 	 */
 	public void round() {
+		startRound();
 		for (int x = 0; x < 5; x++) {
 			phase(x);
 			activateMovement();
 			activatePassiveItems();
 			shootLasers();
+			repairAndCheckFlags();
 		}
-		assessDamage();
 		respawnRobots();
 	}
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
 	 * is going to be used this round. For every robot the robotDoTurn - method is called.
+	 *
 	 * @param nr the number of the phase in this round
 	 */
-	public void phase(int nr) {
+	private void phase(int nr) {
 		int[] prio = findPriority(nr);
-		for(int x = robots.length-1; x >= 0 ; x--) {
+		for (int x = robots.length - 1; x >= 0; x--) {
 			int robot = prio[x];
-			robotDoTurn(robots[robot],nr);
+			robotDoTurn(robots[robot], nr);
 		}
 	}
+
 	/**
 	 * Method that does the movement actions on the board e.g. gear
 	 */
 	public void activateMovement() {
-		for(int x = 0; x < robots.length; x++) {
+		for (int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			if(!rob.isDestroyed()) continue;
+			if (rob.isDestroyed()){
+				continue;
+			}
 			Position pos = rob.getPosition();
-			IItem s = (IItem) board.getItems(pos);
 			ArrayList<IItem> items = board.getItems(pos);
-			for(int y = 0; y < items.size(); y++) {
+			for (int y = 0; y < items.size(); y++) {
 				IItem item = items.get(0);
-				// Implementation is, for now, only for single collectionbands
-				if(item instanceof ConveyorBelt) {
-					//int steps = ((CollectionBand) s).getMovement();
-					Action rotation = ((ConveyorBelt) s).getRotation();
-					if(rotation.equals(Action.LEFTTURN)) {
-						rob.rotateLeft();
-						rob.move(((ConveyorBelt) s).getDirection().left());
-					} else if(rotation.equals(Action.RIGHTTURN)) {
-						rob.move(((ConveyorBelt) s).getDirection().right());
-						rob.rotateRight();
+				if (item instanceof ConveyorBelt) {
+					IItem temp = item;
+					outerloop:
+					for(int turn = 0; turn < 2; turn++){
+						Position startPos = new Position(rob.getX(),rob.getY());
+						Position nextPos = new Position(rob.getX(),rob.getY());
+						nextPos.move(((ConveyorBelt) temp).getDirection());
+						ArrayList<IItem> items2 = 	board.getItems(nextPos);
+						Action rotate = null;
+						IItem var = temp;
+						for(IItem is : items2){
+							if(is instanceof Pit){
+								rob.die();
+								board.removeRobot(rob.getPosition());
+							} else if (is instanceof Wall){
+								break outerloop;
+							} else if (is instanceof Laser){
+								break outerloop;
+							} else if (is instanceof ConveyorBelt){
+								rotate = ((ConveyorBelt) is).getRotation();
+								temp = is;
+							}
+						}
+						if(board.isFree(nextPos)){
+							robotMove(rob,((ConveyorBelt) var).getDirection());
+						}
+						if(rotate != null) {
+							if (rotate.equals(Action.LEFTTURN)) {
+								rob.rotateLeft();
+							}
+							if (rotate.equals(Action.RIGHTTURN)) {
+								rob.rotateRight();
+							}
+						}
+						updateBoard(startPos,rob.getPosition());
+						if(((ConveyorBelt) item).getSpeed() == 1){
+							break;
+						}
 					}
-				} else if (item instanceof Gear) {
-					Action rotation = ((Gear) s).getAction();
-					if(rotation == Action.LEFTTURN) {
+				}
+				if (item instanceof Gear) {
+					Action rotation = ((Gear) item).getAction();
+					if (rotation == Action.LEFTTURN) {
 						rob.rotateLeft();
 					} else {
 						rob.rotateRight();
 					}
-				} else {
-					continue;
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Method that activates the activities on the board that doesn't change the robots placement
 	 * or/and rotation e.g. laser
 	 */
 	public void activatePassiveItems() {
-		for(int x = 0; x < robots.length; x++) {
-			Robot rob = robots[x];
-			ArrayList<IItem> items = board.getItems(robots[x].getPosition());
-			for(int y = 0; y < items.size(); y++) {
-				IItem item = items.get(y);
-				if(item instanceof Laser) {
-					// To do
-				} else if(item instanceof Flag) {
-					rob.visitFlag();
-				} else {
-					continue;
+		for (Robot rob : robots) {
+			ArrayList<IItem> items = board.getItems(rob.getPosition());
+			for (IItem item : items) {
+				if (item instanceof LaserShoot) {
+					Direction dir = ((LaserShoot) item).getDirection().getOppositeDirection();
+					Object obstruction = trackLaser(dir,rob.getPosition());
+					if (obstruction instanceof Laser){
+						rob.takeDamage(((LaserShoot)item).getHarm());
+						if (rob.isDestroyed()){
+							board.removeRobot(rob.getPosition());
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Method that returns the first obstacle you hit in a given direction from a position
+	 * @param shootingDir the direction of the line
+	 * @param pos the start position
+	 * @return an object of whatever that is in the way, return null if there is no obstacles
+	 */
+	public Object trackLaser(Direction shootingDir, Position pos) {
+		Position shotPos = new Position(pos.getX(), pos.getY());
+		ArrayList<IItem> currentItems = board.getItems(shotPos);
+		for (IItem currIt : currentItems) {
+			if (currIt instanceof Wall) {
+				Direction dir1 = ((Wall) currIt).getDir();
+				Direction dir2 = ((Wall) currIt).getDir2();
+				if (dir1 == shootingDir || dir2 == shootingDir) {
+					return currIt;
+				}
+			}
+		}
+		while (true) {
+			shotPos.move(shootingDir);
+			if (shotPos.getY() >= board.getWidth() || shotPos.getY() < 0 || shotPos.getX() >= board.getHeight()
+					|| shotPos.getX() < 0) {
+				return null;
+			}
+			ArrayList<IItem> items = board.getItems(shotPos);
+			for (IItem item : items) {
+				if (item instanceof Wall) {
+					Direction dir1 = ((Wall) item).getDir();
+					Direction dir2 = ((Wall) item).getDir2();
+					if (dir1 == shootingDir.getOppositeDirection() || dir2 == shootingDir.getOppositeDirection()) {
+						return item;
+					}
+				}
+				if (item instanceof Laser) {
+					Direction turretDir = ((Laser) item).getDirection();
+					if (turretDir == shootingDir) {
+						return item;
+					}
+				}
+			}
+			Robot target = board.getRobot(shotPos);
+			if (target != null) {
+				return target;
+			}
+			for (IItem item : items) {
+				if (item instanceof Wall) {
+					Direction dir1 = ((Wall) item).getDir();
+					Direction dir2 = ((Wall) item).getDir2();
+					if (dir1 == shootingDir || dir2 == shootingDir) {
+						return item;
+					}
+				}
+				if (item instanceof Laser) {
+					Direction turretDir = ((Laser) item).getDirection();
+					if (turretDir == shootingDir.getOppositeDirection()) {
+						return item;
+					}
 				}
 			}
 		}
 	}
 	/**
-	 * To do
+	 * Every robot shoots their laser
 	 */
 	public void shootLasers() {
-		// To do
+		for(Robot rob : robots){
+			Direction shootingDir = rob.getDirection();
+			Object obstruction = trackLaser(shootingDir,rob.getPosition());
+			if (obstruction instanceof Robot){
+				((Robot) obstruction).takeDamage();
+				if (((Robot) obstruction).isDestroyed()){
+					board.removeRobot(rob.getPosition());
+				}
+			}
+		}
 	}
-	
 	/**
 	 * Respawn the destroyed robots if the player has more lifetokens
 	 */
 	public void respawnRobots() {
-		for(int x = 0; x < robots.length; x++) {
-			Robot rob = robots[x];
+		for(Robot rob : robots){
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
+					board.insertRobot(rob.getPosition(), rob);
 				}
 			}
 		}
 	}
-	
-	public void assessDamage() {
-		for(int x = 0; x < robots.length; x++) {
-			Robot rob = robots[x];
+	/**
+	 * Checks if any of the robots are placed on fields that repair them
+	 */
+	public void repairAndCheckFlags() {
+		for(Robot rob : robots){
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
-			for(int y = 0; y < items.size(); y++) {
-				IItem item = items.get(y);
+			for(IItem item : items){
 				if(item instanceof Wrench) {
+					rob.makeBackup(rob.getPosition());
 					rob.repairDamage();
 				} else if(item instanceof Hammer){
 					rob.repairDamage();
+					rob.makeBackup(rob.getPosition());
 					// Draw option card
+				} else if(item instanceof Flag){
+					rob.visitFlag((Flag)item);
 				}
 			}
 		}
@@ -188,10 +274,10 @@ public class Game {
 	 * Checks if any robots have visited all flags.
 	 * @return the robot that have visited all flags, returns null if nobody has done it yet.
 	 */
-	public Robot finished() {
-		for(int x = 0; x < robots.length; x++) {
-			if(robots[x].visitedFlags() == 3) {
-				return robots[x];
+	private Robot finished() {
+		for(Robot robot : robots){
+			if(robot.visitedFlags() == 4) {
+				return robot;
 			}
 		}
 		return null;
@@ -203,8 +289,8 @@ public class Game {
 	 * @param rob The robot that are going to do its turn
 	 * @param nr The phase number
 	 */
-	public void robotDoTurn(Robot rob,int nr) {
-		if(!rob.isDestroyed()) {
+	private void robotDoTurn(Robot rob, int nr) {
+		if(rob.isDestroyed()) {
 			return;
 		}
 		ProgramCard card = rob.getCards()[nr];
@@ -242,43 +328,74 @@ public class Game {
 	}
 	/**
 	 * Method that moves the robot. Checks the new position and depending on that, the robot will
-	 * either move or stand still. If there is a robot in the way, this method is used again on 
+	 * either move or stand still. If there is a robot in the way, this method is used again on
 	 * that robot.
 	 * @param rob the robot that are going to be moved
 	 * @param dir the direction of the movement
 	 * @return True if the robot is moved, false otherwise
 	 */
 	public boolean robotMove(Robot rob, Direction dir) {
+		Position startPos = new Position(rob.getX(), rob.getY());
 		Position pos = new Position(rob.getX(),rob.getY());
 		switch(dir) {
 			case NORTH: pos.moveNorth();
-			break;
+				break;
 			case EAST: pos.moveEast();
-			break;
+				break;
 			case WEST: pos.moveWest();
-			break;
+				break;
 			case SOUTH: pos.moveSouth();
-			break;
+				break;
 		}
 		int xPos = pos.getX();
 		int yPos = pos.getY();
 		if(xPos > board.getWidth() || xPos < 0 || yPos < 0 || yPos > board.getHeight()) {
 			rob.die();
+			board.removeRobot(rob.getPosition());
 			return true;
 		}
 		ArrayList<IItem> items = board.getItems(pos);
-		for(int x = 0; x < items.size(); x++) {
-			IItem it = items.get(x);
+		ArrayList<IItem> currentItems = board.getItems(startPos);
+		// Check for obstruction on current tile
+		for(IItem obstruction : currentItems){
+			if(obstruction instanceof  Wall){
+				Direction wallDir1 = ((Wall) obstruction).getDir();
+				Direction wallDir2 = ((Wall) obstruction).getDir2();
+				if(wallDir1 == dir || wallDir2 == dir){
+					return false;
+				}
+			}
+			if(obstruction instanceof Laser){
+				Direction laserDir = ((Laser) obstruction).getDirection();
+				if(laserDir.getOppositeDirection() == dir){
+					return false;
+				}
+			}
+		}
+		// Check for obstructions on the next tile
+		for(IItem it : items){
 			if(it instanceof Pit) {
 				rob.die();
+				board.removeRobot(rob.getPosition());
 				return true;
 			}
 			if(it instanceof Wall) {
-				return false;
+				Direction wallDir1 = ((Wall) it).getDir();
+				Direction wallDir2 = ((Wall) it).getDir2();
+				if(wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir){
+					return false;
+				}
+			}
+			if(it instanceof  Laser){
+				Direction laserDir = ((Laser) it).getDirection();
+				if (laserDir.getOppositeDirection() == dir){
+					return false;
+				}
 			}
 		}
 		if(board.isFree(pos)) {
 			rob.move(dir);
+			updateBoard(startPos, rob.getPosition());
 			return true;
 		}
 		Robot rob2 = board.getRobot(pos);
@@ -287,10 +404,9 @@ public class Game {
 			return false;
 		}
 		rob.move(dir);
-		
+		updateBoard(startPos, rob.getPosition());
 		return true;
 	}
-	
 	/**
 	 * The method that orders the robots with respect to the priority of the card that each robot
 	 * is going to play this turn
@@ -304,9 +420,9 @@ public class Game {
 			pri[x][0] = robots[x].getCards()[cardnr].getPriority();
 		}
 		java.util.Arrays.sort(pri, new java.util.Comparator<double[]>() {
-		    public int compare(double[] a, double[] b) {
-		        return Double.compare(a[0], b[0]);
-		    }
+			public int compare(double[] a, double[] b) {
+				return Double.compare(a[0], b[0]);
+			}
 		});
 		int[] prio = new int[robots.length];
 		for(int x = 0; x < robots.length; x++) {
@@ -314,20 +430,32 @@ public class Game {
 		}
 		return prio;
 	}
-	
-	public void initializePlayers(int numb) {
+
+	private void initializePlayers(int numb) {
 		for(int x = 0; x < numb; x++) {
-			Player per = new Player(Direction.NORTH, 2, 2, "Robot");
+			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
 			robots[x] = per;
+			board.insertRobot(new Position(2+x,2), per);
 		}
 	}
-	
 	/**
-	 * Method only used to test the sorting based on the card priority.
-	 * @return
+	 * Method only used to for test cases
+	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
 		return this.robots;
 	}
-
+	/**
+	 * Method to update the position of a robot on the board
+	 * @param start the position where the robot was placed
+	 * @param end the position where to robot is moved to now
+	 */
+	private void updateBoard(Position start, Position end) {
+		Robot rob = board.getRobot(start);
+		if(rob == null) {
+			return;
+		}
+		board.removeRobot(start);
+		board.insertRobot(end, rob);
+	}
 }

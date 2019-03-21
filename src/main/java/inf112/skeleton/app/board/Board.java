@@ -92,20 +92,20 @@ public class Board implements IBoard {
 
     @Override
     public void insertItem(IPosition position, IItem element) {
-    	Square sq = map.get(position.getIndex());
-    	sq.addElement(element);
+        Square sq = map.get(position.getIndex());
+        sq.addElement(element);
     }
 
     @Override
     public void insertItem(int x, int y, IItem element) {
-    	int index = toIndex(x,y);
-    	Square sq = map.get(index);
-    	sq.addElement(element);
+        int index = toIndex(x,y);
+        Square sq = map.get(index);
+        sq.addElement(element);
     }
 
     public void insertItem(int index, IItem element) {
-    	Square sq = map.get(index);
-    	sq.addElement(element);
+        Square sq = map.get(index);
+        sq.addElement(element);
     }
 
     //Uses the Tile ID (1-indexed based in position in tileset)
@@ -121,36 +121,48 @@ public class Board implements IBoard {
 
     @Override
     public ArrayList<IItem> getItems(IPosition position) {
-    	Square sq = map.get(position.getIndex());
-    	return sq.getElements();
+        Square sq = map.get(position.getIndex());
+        return sq.getElements();
     }
 
     @Override
     public ArrayList<IItem> getItems(int x, int y) {
-    	int index = toIndex(x,y);
-    	Square sq = map.get(index);
-    	return sq.getElements();
+        int index = toIndex(x,y);
+        Square sq = map.get(index);
+        return sq.getElements();
     }
-    
+
     public Robot getRobot(IPosition position) {
-    	if(!isFree(position)) {
-    		Square sq = map.get(position.getIndex());
-    		return sq.getRobot();
-    	}
-    	return null;
+        if(!isFree(position)) {
+            Square sq = map.get(position.getIndex());
+            return sq.getRobot();
+        }
+        return null;
     }
 
     @Override// Sjekker for robot
     public boolean isFree(IPosition position) {
-    	Square sq = map.get(position.getIndex());
+        Square sq = map.get(position.getIndex());
         return !sq.occupied();
     }
-    
+
     @Override// Sjekker for robot
     public boolean isFree(int x, int y) {
-    	int index = toIndex(x,y);
-    	Square sq = map.get(index);
+        int index = toIndex(x,y);
+        Square sq = map.get(index);
         return !sq.occupied();
+    }
+
+    public void removeRobot(Position pos) {
+        Square sq = map.get(pos.getIndex());
+        sq.removeRobot();
+    }
+
+    public void insertRobot(Position pos, Robot rob) {
+        Square sq = map.get(pos.getIndex());
+        if(isFree(pos)) {
+            sq.addRobot(rob);
+        }
     }
 
     @Override
@@ -175,7 +187,7 @@ public class Board implements IBoard {
 
     @Override
     public void clear() {
-    	map.clear();
+        map.clear();
     }
 
     public void clearSquare(int x, int y) {

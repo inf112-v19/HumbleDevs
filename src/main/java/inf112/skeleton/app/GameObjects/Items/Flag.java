@@ -6,6 +6,9 @@ package inf112.skeleton.app.GameObjects.Items;
  */
 
 public class Flag implements IItem {
+
+    // To finish the game you have to visit x flags in a specific order
+    // In the constructor it will be given a order number.
     private int flagNum;
 
     public Flag(int flagNum) {
