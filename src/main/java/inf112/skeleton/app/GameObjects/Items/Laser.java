@@ -21,10 +21,6 @@ public class Laser implements IItem {
         this.start = start;
     }
 
-    public int getDamageMultiplier() {
-        return damageMultiplier;
-    }
-
     public boolean isStart() {
         return start;
     }
