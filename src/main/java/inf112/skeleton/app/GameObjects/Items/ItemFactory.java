@@ -6,28 +6,17 @@ import inf112.skeleton.app.card.Action;
 public abstract class ItemFactory {
 
     public static IItem getItem(int id) {
-        if (id == 1) {
-            return new DefaultTile();
-        }
-        if (id == 2) {
-            return new Pit();
-        }
-        if (id == 3 || id == 4 || id == 5 || id == 6) {
-            if (id == 3) {
-                return new Flag(1);
-            }
-            if (id == 4) {
-                return new Flag(2);
-            }
-            if (id == 5) {
-                return new Flag(3);
-            } else {
-                return new Flag(4);
-            }
-        }
+        //Default Tile
+        if (id == 1) return new DefaultTile();
+        if (id == 2) return new Pit();
 
+        // Flags
+        if (id == 3) return new Flag(1);
+        if (id == 4) return new Flag(2);
+        if (id == 5) return new Flag(3);
+        if (id == 6) return new Flag(4);
 
-        //Bending clockwise converyorbelts
+        //Bending clockwise conveyorbelts
         if (id == 7) return new ConveyorBelt(Direction.SOUTH, 2, false);
         if (id == 8) return new ConveyorBelt(Direction.WEST, 2, false);
         if (id == 13) return new ConveyorBelt(Direction.EAST, 2, false);
@@ -58,12 +47,9 @@ public abstract class ItemFactory {
         if (id == 18) return new Wall(Direction.EAST);
 
         //Corner Wall
-
         if (id == 23) return new Wall(Direction.WEST, Direction.NORTH);
         if (id == 24) return new Wall(Direction.EAST, Direction.NORTH);
-
         if (id == 29) return new Wall(Direction.WEST, Direction.SOUTH);
-
         if (id == 30) return new Wall(Direction.EAST, Direction.SOUTH);
 
         //Doublespeed straight conveyorbelt
