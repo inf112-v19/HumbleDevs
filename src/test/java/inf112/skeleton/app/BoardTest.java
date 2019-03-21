@@ -71,14 +71,53 @@ public class BoardTest {
         }
     }
 
+    /**
+     * Needs to be updated if the tileSetLarge64 file is edited.
+     * Follows top 1-indexing from the tileSetLarge64.png
+     */
     @Test
     public void insertElementByTileId() {
         // 1 = defaultTile ...
         insertElementByTileIdCreatesCorrectTile(1, new DefaultTile());
         insertElementByTileIdCreatesCorrectTile(2, new Pit());
+
         insertElementByTileIdCreatesCorrectTile(3, new Flag(1));
+        insertElementByTileIdCreatesCorrectTile(4, new Flag(2));
+        insertElementByTileIdCreatesCorrectTile(5, new Flag(3));
+        insertElementByTileIdCreatesCorrectTile(6, new Flag(4));
+
         insertElementByTileIdCreatesCorrectTile(7, new ConveyorBelt(Direction.SOUTH, 2, false));
+        insertElementByTileIdCreatesCorrectTile(8, new ConveyorBelt(Direction.WEST, 2, false));
+        insertElementByTileIdCreatesCorrectTile(13, new ConveyorBelt(Direction.EAST, 2, false));
+        insertElementByTileIdCreatesCorrectTile(14, new ConveyorBelt(Direction.NORTH, 2, false));
+
+        insertElementByTileIdCreatesCorrectTile(9, new ConveyorBelt(Direction.EAST, 2, true));
+        insertElementByTileIdCreatesCorrectTile(10, new ConveyorBelt(Direction.SOUTH, 2, true));
+        insertElementByTileIdCreatesCorrectTile(15, new ConveyorBelt(Direction.NORTH, 2, true));
+        insertElementByTileIdCreatesCorrectTile(16, new ConveyorBelt(Direction.WEST, 2, true));
+
+        insertElementByTileIdCreatesCorrectTile(19, new ConveyorBelt(Direction.SOUTH, 1, false));
+        insertElementByTileIdCreatesCorrectTile(20, new ConveyorBelt(Direction.WEST, 1, false));
+        insertElementByTileIdCreatesCorrectTile(25, new ConveyorBelt(Direction.EAST, 1, false));
+        insertElementByTileIdCreatesCorrectTile(26, new ConveyorBelt(Direction.NORTH, 1, false));
+
+        insertElementByTileIdCreatesCorrectTile(21, new ConveyorBelt(Direction.EAST, 1, true));
+        insertElementByTileIdCreatesCorrectTile(22, new ConveyorBelt(Direction.SOUTH, 1, true));
+        insertElementByTileIdCreatesCorrectTile(27, new ConveyorBelt(Direction.NORTH, 1, true));
+        insertElementByTileIdCreatesCorrectTile(28, new ConveyorBelt(Direction.WEST, 1, true));
+
         insertElementByTileIdCreatesCorrectTile(11, new Wall(Direction.NORTH));
+        insertElementByTileIdCreatesCorrectTile(12, new Wall(Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectTile(17, new Wall(Direction.WEST));
+        insertElementByTileIdCreatesCorrectTile(18, new Wall(Direction.EAST));
+
+        insertElementByTileIdCreatesCorrectTile(23, new Wall(Direction.WEST, Direction.NORTH));
+        insertElementByTileIdCreatesCorrectTile(24, new Wall(Direction.EAST, Direction.NORTH));
+        insertElementByTileIdCreatesCorrectTile(29, new Wall(Direction.WEST, Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectTile(30, new Wall(Direction.EAST, Direction.SOUTH));
+
+
+
         insertElementByTileIdCreatesCorrectTile(35, new RepairTool());
         insertElementByTileIdCreatesCorrectTile(41, new Gear(Action.LEFTTURN));
 //        insertElementByTileIdCreatesCorrectTile(67, new Laser(Direction.NORTH, 1));
