@@ -9,25 +9,25 @@ import inf112.skeleton.app.card.ProgramCard;
  *
  */
 public interface IRobot {
-	
-	/**
-	 * Move the robot i steps in the direction that the robot is facing
-	 * @param i number of steps to move
-	 */
+
+    /**
+     * Move the robot i steps in the direction that the robot is facing
+     * @param i number of steps to move
+     */
     void move(int i);
-    
+
     /**
      * Move the robot one step in the given direction
      * @param dir
      */
     void move(Direction dir);
-    
+
     /**
      * Set a new backup for the robot
      * @param newBackup is the position for the new backup
      */
     void makeBackup(Position newBackup);
-    
+
     /**
      * @return the direction the robot is facing
      */
@@ -51,7 +51,7 @@ public interface IRobot {
      * Remove one damage token
      */
     void repairDamage();
-    
+
     /**
      * Check if the robot is still in the game.
      * @return true if the robot has died 3 times, false otherwise.
@@ -61,47 +61,47 @@ public interface IRobot {
     /**
      * Rotate the robot left
      */
-	void rotateLeft();
-	
-	/**
-	 * Rotate the robot right
-	 */
-	void rotateRight();
-	
-	/**
-	 * Kill the robot
-	 */
-	void die();
-	
-	/**
-	 * @return the number of flags the robot has visited
-	 */
-	int visitedFlags();
-	
-	/**
-	 * @return the respawn the robot, its new position will be the last backup
-	 */
-	void respawn();
+    void rotateLeft();
 
-	/**
-	 * Visit a flag. Flags visited must increments and the backup - position is updated
-	 */
-	void visitFlag();
+    /**
+     * Rotate the robot right
+     */
+    void rotateRight();
 
-	/**
-	 * @return the robots cards for one round
-	 */
-	ProgramCard[] getCards();
+    /**
+     * Kill the robot
+     */
+    void die();
 
-	/**
-	 * @return the position of the robot
-	 */
-	Position getPosition();
-	
-	/**
-	 * Power down the robot for one turn, all damage tokens are removed
-	 */
-	void powerDown();
+    /**
+     * @return the number of flags the robot has visited
+     */
+    int visitedFlags();
+
+    /**
+     * @return the respawn the robot, its new position will be the last backup
+     */
+    void respawn();
+
+    /**
+     * Visit a flag. Flags visited must increments and the backup - position is updated
+     */
+    void visitFlag();
+
+    /**
+     * @return the robots cards for one round
+     */
+    ProgramCard[] getCards();
+
+    /**
+     * @return the position of the robot
+     */
+    Position getPosition();
+
+    /**
+     * Power down the robot for one turn, all damage tokens are removed
+     */
+    void powerDown();
 
 
 

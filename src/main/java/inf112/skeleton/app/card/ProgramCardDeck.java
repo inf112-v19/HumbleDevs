@@ -17,11 +17,11 @@ public class ProgramCardDeck implements IDeck{
         cardDeck = new ProgramCard[84]; //Standard amount from the rulebook
 
         for(int i = 0; i < 18; i ++) { //rotate right
-            cardDeck[i] = new ProgramCard(0,80+20*i,Action.RIGHT);
+            cardDeck[i] = new ProgramCard(0,80+20*i,Action.RIGHTTURN);
         }
 
         for(int j = 0; j < 18; j ++) { //rotate left
-            cardDeck[j+18] = new ProgramCard(0,70+20*j , Action.LEFT );
+            cardDeck[j+18] = new ProgramCard(0,70+20*j , Action.LEFTTURN);
         }
 
         for(int k = 0; k < 6; k ++) {   //rotate 180

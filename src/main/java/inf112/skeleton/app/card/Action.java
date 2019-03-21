@@ -7,8 +7,8 @@ package inf112.skeleton.app.card;
  *
  */
 public enum Action {
-    LEFT,
-    RIGHT,
+    LEFTTURN, //Left turn = CounterClockWise
+    RIGHTTURN, //Right turn = ClockWise
     UTURN,
     MOVEFORWARD,
     MOVEBACKWARD;

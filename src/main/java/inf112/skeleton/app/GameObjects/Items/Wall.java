@@ -10,11 +10,53 @@ import inf112.skeleton.app.board.Direction;
  */
 
 public class Wall implements IItem {
-    private Direction dir;
+    private Direction dir = null;
+    private Direction dir2 = null;
+    private boolean corner;
+    private String name;
+    private char symbol;
 
+    //Single wall
     public Wall(Direction dir) {
         this.dir = dir;
+        this.corner = false;
+        this.name = "Wall";
+        this.symbol = '|';
     }
+
+    //Corner wall
+    public Wall(Direction dir1, Direction dir2) {
+        this.dir = dir1;
+        this.dir2 = dir2;
+        this.corner = true;
+        this.name = "CornerWall";
+        this.symbol = '<';
+    }
+
+    public Direction getDir() {
+        return dir;
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
+    public Direction getDir2() {
+        return dir2;
+    }
+
+    public void setDir2(Direction dir2) {
+        this.dir2 = dir2;
+    }
+
+    public boolean isCorner() {
+        return corner;
+    }
+
+    public void setCorner (boolean corner) {
+        this.corner = corner;
+    }
+
 
     @Override
     public int tileId() {
@@ -23,12 +65,12 @@ public class Wall implements IItem {
 
     @Override
     public String getName() {
-        return "Wall";
+        return this.name;
     }
 
     @Override
     public char getSymbol() {
-        return '|';
+        return this.symbol;
     }
 
     public Direction getDirection() {

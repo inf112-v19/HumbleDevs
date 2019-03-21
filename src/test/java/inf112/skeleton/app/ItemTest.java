@@ -5,7 +5,6 @@ import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.Action;
 import org.junit.Test;
 
-import static inf112.skeleton.app.card.Action.*;
 import static org.junit.Assert.*;
 
 public class ItemTest {
@@ -13,7 +12,7 @@ public class ItemTest {
     //Flag
     @Test
     public void TestThatWeCanMakeAFlag() {
-        Flag flag = new Flag();
+        Flag flag = new Flag(1);
 
         assertEquals(flag.getName(), "Flag");
     }
@@ -88,21 +87,20 @@ public class ItemTest {
 
     //CollectionBand
     @Test
-    public void TestThatWeCanMakeACollectionBand() {
+    public void TestThatWeCanMakeAConveyorBelt() {
         int movement = 1;
-        Action rotation = Action.LEFT;
         Direction dir = Direction.EAST;
 
-        CollectionBand cb = new CollectionBand(movement, rotation, dir);
+        ConveyorBelt cb = new ConveyorBelt(dir, movement, false);
 
         // Test to check symbol
         assertEquals(cb.getSymbol(), '_');
         //Test to check rotation
-        assertEquals(rotation, Direction.EAST);
+        assertEquals(dir, Direction.EAST);
         //Test to check movement
         assertEquals(movement, 1);
         // Test name
-        assertEquals(cb.getName(), "CollectionBand");
+        assertEquals(cb.getName(), "BendingConveyorBelt");
     }
 
     //Wall
@@ -123,23 +121,20 @@ public class ItemTest {
     //CornerWall
     @Test
     public void TestCornerWall() {
-        Wall wallNorth = new Wall(Direction.NORTH);
-        Wall wallEast = new Wall(Direction.EAST);
+        Wall w = new Wall(Direction.NORTH, Direction.SOUTH);
 
-        CornerWall cw = new CornerWall(wallEast, wallNorth);
-
-        assertEquals(wallEast.getDirection(), Direction.EAST);
+        assertEquals(w.getDir(), Direction.NORTH);
         // Test name
-        assertEquals(cw.getName(), "CornerWall");
+        assertEquals(w.getName(), "CornerWall");
         //Test the symbol of the wall
-        assertEquals(cw.getSymbol(), '<');
+        assertEquals(w.getSymbol(), '<');
 
     }
 
     //Gear
     @Test
     public void TestThatGearWorks() {
-        Action action = Action.LEFT;
+        Action action = Action.LEFTTURN;
         Gear gear = new Gear(action);
 
         // Test name
@@ -147,6 +142,6 @@ public class ItemTest {
         //Test the symbol of the wall
         assertEquals(gear.getSymbol(), '°');
         //checks that getAction resolves in the right action
-        assertEquals(gear.getAction(), Action.LEFT);
+        assertEquals(gear.getAction(), Action.LEFTTURN);
     }
 }
