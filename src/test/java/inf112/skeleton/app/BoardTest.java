@@ -110,9 +110,9 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItemClass(18, new Wall(Direction.EAST));
 
         insertElementByTileIdCreatesCorrectItemClass(23, new Wall(Direction.WEST, Direction.NORTH));
-//        insertElementByTileIdCreatesCorrectItemClass(24, new Wall(Direction.EAST, Direction.NORTH));
-//        insertElementByTileIdCreatesCorrectItemClass(29, new Wall(Direction.WEST, Direction.SOUTH));
-//        insertElementByTileIdCreatesCorrectItemClass(30, new Wall(Direction.EAST, Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItemClass(24, new Wall(Direction.EAST, Direction.NORTH));
+        insertElementByTileIdCreatesCorrectItemClass(29, new Wall(Direction.WEST, Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItemClass(30, new Wall(Direction.EAST, Direction.SOUTH));
 
         insertElementByTileIdCreatesCorrectItemClass(31, new ConveyorBelt(Direction.NORTH, 2));
         insertElementByTileIdCreatesCorrectItemClass(32, new ConveyorBelt(Direction.SOUTH, 2));
@@ -130,7 +130,7 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItemClass(41, new Gear(Action.LEFTTURN));
         insertElementByTileIdCreatesCorrectItemClass(42, new Gear(Action.RIGHTTURN));
 
-//        insertElementByTileIdCreatesCorrectItemClass(67, new Laser(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItemClass(67, new Laser(Direction.NORTH, 1));
 
 
     }
