@@ -6,8 +6,13 @@ package inf112.skeleton.app.GameObjects.Items;
  */
 
 public class Flag implements IItem {
+    private int order;
 
-    public Flag() {}
+    // To finish the game you have to visit x flags in a specific order
+    // In the constructor it will be given a order number.
+    public Flag(int order) {
+        this.order = order;
+    }
 
     @Override
     public int tileId() {
