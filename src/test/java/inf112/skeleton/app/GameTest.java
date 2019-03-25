@@ -291,4 +291,19 @@ public class GameTest {
         game.robotMove(rob, Direction.NORTH);
         assertEquals(Direction.NORTH, rob.getDirection());
     }
+    @Test
+    public void testSpecialCase3ConveyorBelt(){
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.NORTH,1);
+        Robot rob1 = robs[0];
+        Robot rob2 = robs[1];
+        game.robotMove(rob2,Direction.NORTH);
+        game.robotMove(rob2,Direction.WEST);
+        assertEquals(new Position(2,2), rob1.getPosition());
+        assertEquals(new Position(2,3), rob2.getPosition());
+        board.insertItem(2,2,cb1);
+        board.insertItem(2,3,cb1);
+        game.activateMovement();
+        assertEquals(new Position(2,3), rob1.getPosition());
+        assertEquals(new Position(2,4), rob2.getPosition());
+    }
 }
