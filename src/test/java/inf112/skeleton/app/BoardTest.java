@@ -1,12 +1,11 @@
 package inf112.skeleton.app;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import inf112.skeleton.app.GameObjects.Items.DefaultTile;
+import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Square;
+import inf112.skeleton.app.card.Action;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,18 +70,120 @@ public class BoardTest {
     }
 
     /**
-     * TODO: Make this test work
-     * It seems impossible to load the TiledMap from here.
-     * Neither is it possible to get the TiledMap form the graphic-class.
-     * The instance variable tiledMap is returned as null.
+     * Needs to be updated if the tileSetLarge64 file is edited.
+     * Follows top row-based 1-indexing from the tileSetLarge64.png
      */
     @Test
-    public void itemFactoryCreatesDefaultTile() {
+    public void insertElementByTileId() {
+        // 1 = defaultTile ...
+        insertElementByTileIdCreatesCorrectItem(1, new DefaultTile());
+        insertElementByTileIdCreatesCorrectItem(2, new Pit());
 
-        TiledMap tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        board = new Board(tiledMap);
+        insertElementByTileIdCreatesCorrectItem(3, new Flag(1));
+        insertElementByTileIdCreatesCorrectItem(4, new Flag(2));
+        insertElementByTileIdCreatesCorrectItem(5, new Flag(3));
+        insertElementByTileIdCreatesCorrectItem(6, new Flag(4));
+
+        insertElementByTileIdCreatesCorrectItem(7, new ConveyorBelt(Direction.SOUTH, 2, false));
+        insertElementByTileIdCreatesCorrectItem(8, new ConveyorBelt(Direction.WEST, 2, false));
+        insertElementByTileIdCreatesCorrectItem(13, new ConveyorBelt(Direction.EAST, 2, false));
+        insertElementByTileIdCreatesCorrectItem(14, new ConveyorBelt(Direction.NORTH, 2, false));
+
+        insertElementByTileIdCreatesCorrectItem(9, new ConveyorBelt(Direction.EAST, 2, true));
+        insertElementByTileIdCreatesCorrectItem(10, new ConveyorBelt(Direction.SOUTH, 2, true));
+        insertElementByTileIdCreatesCorrectItem(15, new ConveyorBelt(Direction.NORTH, 2, true));
+        insertElementByTileIdCreatesCorrectItem(16, new ConveyorBelt(Direction.WEST, 2, true));
+
+        insertElementByTileIdCreatesCorrectItem(19, new ConveyorBelt(Direction.SOUTH, 1, false));
+        insertElementByTileIdCreatesCorrectItem(20, new ConveyorBelt(Direction.WEST, 1, false));
+        insertElementByTileIdCreatesCorrectItem(25, new ConveyorBelt(Direction.EAST, 1, false));
+        insertElementByTileIdCreatesCorrectItem(26, new ConveyorBelt(Direction.NORTH, 1, false));
+
+        insertElementByTileIdCreatesCorrectItem(21, new ConveyorBelt(Direction.EAST, 1, true));
+        insertElementByTileIdCreatesCorrectItem(22, new ConveyorBelt(Direction.SOUTH, 1, true));
+        insertElementByTileIdCreatesCorrectItem(27, new ConveyorBelt(Direction.NORTH, 1, true));
+        insertElementByTileIdCreatesCorrectItem(28, new ConveyorBelt(Direction.WEST, 1, true));
+
+        insertElementByTileIdCreatesCorrectItem(11, new Wall(Direction.NORTH));
+        insertElementByTileIdCreatesCorrectItem(12, new Wall(Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItem(17, new Wall(Direction.WEST));
+        insertElementByTileIdCreatesCorrectItem(18, new Wall(Direction.EAST));
+
+        insertElementByTileIdCreatesCorrectItem(23, new Wall(Direction.WEST, Direction.NORTH));
+        insertElementByTileIdCreatesCorrectItem(24, new Wall(Direction.EAST, Direction.NORTH));
+        insertElementByTileIdCreatesCorrectItem(29, new Wall(Direction.WEST, Direction.SOUTH));
+        insertElementByTileIdCreatesCorrectItem(30, new Wall(Direction.EAST, Direction.SOUTH));
+
+        insertElementByTileIdCreatesCorrectItem(31, new ConveyorBelt(Direction.NORTH, 2));
+        insertElementByTileIdCreatesCorrectItem(32, new ConveyorBelt(Direction.SOUTH, 2));
+        insertElementByTileIdCreatesCorrectItem(33, new ConveyorBelt(Direction.WEST, 2));
+        insertElementByTileIdCreatesCorrectItem(34, new ConveyorBelt(Direction.EAST, 2));
+
+        insertElementByTileIdCreatesCorrectItem(37, new ConveyorBelt(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItem(38, new ConveyorBelt(Direction.SOUTH, 1));
+        insertElementByTileIdCreatesCorrectItem(39, new ConveyorBelt(Direction.WEST, 1));
+        insertElementByTileIdCreatesCorrectItem(40, new ConveyorBelt(Direction.EAST, 1));
+
+        insertElementByTileIdCreatesCorrectItem(35, new RepairTool());
+        insertElementByTileIdCreatesCorrectItem(36, new RepairTool());
+
+        insertElementByTileIdCreatesCorrectItem(41, new Gear(Action.LEFTTURN));
+        insertElementByTileIdCreatesCorrectItem(42, new Gear(Action.RIGHTTURN));
+
+        insertElementByTileIdCreatesCorrectItem(67, new Laser(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItem(68, new Laser(Direction.WEST, 1));
+
+        insertElementByTileIdCreatesCorrectItem(69, new Laser(Direction.NORTH, 1, true));
+        insertElementByTileIdCreatesCorrectItem(70, new Laser(Direction.EAST, 1, true));
+        insertElementByTileIdCreatesCorrectItem(71, new Laser(Direction.SOUTH, 1, true));
+        insertElementByTileIdCreatesCorrectItem(72, new Laser(Direction.WEST, 1, true));
+
+        insertElementByTileIdCreatesCorrectItem(73, new Laser(Direction.NORTH, 2));
+        insertElementByTileIdCreatesCorrectItem(74, new Laser(Direction.WEST, 2));
+
+        insertElementByTileIdCreatesCorrectItem(75, new Laser(Direction.NORTH, 2, true));
+        insertElementByTileIdCreatesCorrectItem(76, new Laser(Direction.EAST, 2, true));
+        insertElementByTileIdCreatesCorrectItem(77, new Laser(Direction.SOUTH, 2, true));
+        insertElementByTileIdCreatesCorrectItem(78, new Laser(Direction.WEST, 2, true));
+    }
+
+    public void insertElementByTileIdCreatesCorrectItem(int tileId, IItem expectedItem) {
+        board.clearSquare(0, 0);
+        board.insertItem(0, 0, tileId);
         Square sq = board.getSquare(0, 0);
-        assertTrue(sq.getElements().get(0) instanceof DefaultTile);
+        IItem actualItem = (IItem) sq.getElements().get(0);
+        assertEquals(expectedItem.getClass(), actualItem.getClass());
+
+        if (actualItem instanceof Flag) flagHasCorrectProperties((Flag) expectedItem, (Flag) actualItem);
+        if (actualItem instanceof ConveyorBelt) conveyorBeltHasCorrectProperties((ConveyorBelt) expectedItem, (ConveyorBelt) actualItem);
+        if (actualItem instanceof Wall) wallHasCorrectProperties((Wall) expectedItem, (Wall) actualItem);
+        if (actualItem instanceof Gear) gearHasCorrectProperties((Gear) expectedItem, (Gear) actualItem);
+        if (actualItem instanceof Laser) laserHasCorrectProperties((Laser) expectedItem, (Laser) actualItem);
+    }
+
+    public void flagHasCorrectProperties(Flag expected, Flag actual) {
+        assertEquals(expected.getFlagNum(), actual.getFlagNum());
+    }
+
+    public void conveyorBeltHasCorrectProperties(ConveyorBelt expected, ConveyorBelt actual) {
+        assertEquals(expected.getDirection(), actual.getDirection());
+        assertEquals(expected.getSpeed(), actual.getSpeed());
+        assertEquals(expected.getRotation(), actual.getRotation());
+    }
+
+    public void wallHasCorrectProperties(Wall expected, Wall actual) {
+        assertEquals(expected.getDir(), actual.getDir());
+        assertEquals(expected.getDir2(), actual.getDir2());
+    }
+
+    public void gearHasCorrectProperties(Gear expected, Gear actual) {
+        assertEquals(expected.getAction(), actual.getAction());
+    }
+
+    public void laserHasCorrectProperties(Laser expected, Laser actual) {
+        assertEquals(expected.getDirection(), actual.getDirection());
+        assertEquals(expected.getDamageMultiplier(), actual.getDamageMultiplier());
+        assertEquals(expected.isStart(), actual.isStart());
     }
 
 }

@@ -73,7 +73,4 @@ public class Wall implements IItem {
         return this.symbol;
     }
 
-    public Direction getDirection() {
-        return dir;
-    }
 }
