@@ -29,7 +29,6 @@ public class Game {
 
 	public Game(Board board, int players) {
 		this.board = board;
-		this.cardPack = new ProgramCardDeck();
 		this.round = 1;
 		robots = new Robot[players];
 		initializePlayers(players);
@@ -39,12 +38,14 @@ public class Game {
 	 * Starts the a new round by dealing new cards to every player
 	 */
 	public void startRound() {
+		this.cardPack = new ProgramCardDeck();
 		for (Robot robot : robots) {
-			ProgramCard[] newCards = cardPack.getRandomCards();
+			// Må først avgjøre om man ønsker å power down
+			int numbCards = 9 - robot.getDamageTokens();
+			ProgramCard[] newCards = cardPack.getRandomCards(numbCards);
 			robot.chooseCards(newCards);
 		}
 	}
-
 	/**
 	 * Calls the methods to that makes up a round. Not every method this method uses is
 	 * implemented, but it gives a nice illustration on how the game should work.
@@ -80,7 +81,7 @@ public class Game {
 	public void activateMovement() {
 		for (int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			if (rob.isDestroyed()){
+			if (rob.isDestroyed() || rob.isPoweredDown()){
 				continue;
 			}
 			Position pos = rob.getPosition();
@@ -227,6 +228,9 @@ public class Game {
 	 */
 	public void shootLasers() {
 		for(Robot rob : robots){
+			if(rob.isPoweredDown()){
+				continue;
+			}
 			Direction shootingDir = rob.getDirection();
 			Object obstruction = trackLaser(shootingDir,rob.getPosition());
 			if (obstruction instanceof Robot){
@@ -251,7 +255,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Checks if any of the robots are placed on fields that repair them
+	 * Checks if any of the robots are placed on fields that repairs them
 	 */
 	public void repairAndCheckFlags() {
 		for(Robot rob : robots){
@@ -413,6 +417,7 @@ public class Game {
 	 * @param cardnr the number of the phase
 	 * @return an array with the right order
 	 */
+	// Metoden tar ikke hensyn til at man kan
 	public int[] findPriority(int cardnr) {
 		double[][] pri = new double[robots.length][2];
 		for(int x = 0; x < robots.length; x++) {

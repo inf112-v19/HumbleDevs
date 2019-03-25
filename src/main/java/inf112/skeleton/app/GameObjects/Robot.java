@@ -10,11 +10,6 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- *
- * Note to assignment 3:
- * 		- The chooseCards() - method is just to make the robot get some cards when we are testing the
- * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
- * 		  that are controlled by the computer.
  * @author Even Kolsgaard
  *
  */
@@ -125,6 +120,7 @@ public abstract class Robot implements IRobot {
         }
     }
 
+    @Override
     public void takeDamage(int damage){
         this.damageTokens = this.damageTokens + damage;
         if(damageTokens >= 10){
@@ -174,16 +170,23 @@ public abstract class Robot implements IRobot {
         this.poweredDown = true;
     }
 
+    @Override
+    public boolean isPoweredDown(){
+        return poweredDown;
+    }
+
+    @Override
     public boolean isDestroyed() {
         return this.destroyed;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }
 
+    @Override
     public int getDamageTokens(){
         return this.damageTokens;
     }
-
 }

@@ -1,4 +1,7 @@
 package inf112.skeleton.app.card;
+
+import java.util.ArrayList;
+
 /**
  * Class keeps the track of the index of the next card
  *
@@ -8,9 +11,10 @@ package inf112.skeleton.app.card;
 public interface IDeck {
 
     /**
-     * Chooses random card from the card pack
+     * Chooses random cards from the card pack
+     * @param i the number of cards to return
      */
-    ProgramCard[] getRandomCards();
+    ProgramCard [] getRandomCards(int i);
 
     /**
      * the size of the deck
@@ -23,7 +27,7 @@ public interface IDeck {
      *
      * @return cards
      */
-    ProgramCard[] getCards();
+    ArrayList<ProgramCard> getCards();
 
 
 }
