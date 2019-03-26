@@ -21,10 +21,9 @@ import inf112.skeleton.app.board.Direction;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
-    Texture robotTexture;
-    TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
+    private static TiledMap tiledMap;
+    private OrthographicCamera camera;
+    private TiledMapRenderer tiledMapRenderer;
 
     public void create() {
         float w = Gdx.graphics.getWidth();
@@ -36,7 +35,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-        insertPlayer(0, 0, "texture/robot1.png", Direction.EAST);
+        insertPlayer(0, 0, "texture/robot1.png", Direction.SOUTH);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
@@ -46,30 +45,29 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * Insert a player/robot texture in a cell on the board.
      * The (x,y) position (0,0) is bottom left
      *
-     * insertPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner
+     * insertPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
      * @param x
      * @param y
      * @param texturePath
      */
-    public void insertPlayer(int x, int y, String texturePath) {
+    public static void insertPlayer(int x, int y, String texturePath) {
         insertPlayer(x, y, texturePath, Direction.NORTH);
     }
-    public void insertPlayer(int x, int y, String texturePath, Direction facingDir) {
+    public static void insertPlayer(int x, int y, String texturePath, Direction facingDir) {
         //Placing a player on the board
         //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal(texturePath));
+        Texture robotTexture = new Texture(Gdx.files.internal(texturePath));
         //Create a TextureRegion that is the entire size of the texture
         TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
         //Create a cell(tile) to add to the layer
         Cell cell = new Cell();
         //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
-
         //Rotate
-        //By default, no rotation (should be facing NORTH)
         if(facingDir == Direction.WEST) cell.setRotation(1);
         else if(facingDir == Direction.SOUTH) cell.setRotation(2);
         else if(facingDir == Direction.EAST) cell.setRotation(3);
+        else cell.setRotation(0); //By default no rotation (should be facing NORTH)
         //Get layer to put cell in
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
         //place cell on layer in (x,y) coordinate
