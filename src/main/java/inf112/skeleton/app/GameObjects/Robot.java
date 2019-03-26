@@ -25,8 +25,9 @@ public abstract class Robot implements IRobot {
     private boolean destroyed;
     private boolean poweredDown;
     private String name;
+    private String path;
 
-    public Robot (Direction dir, int xPos, int yPos, String name){
+    public Robot (Direction dir, int xPos, int yPos, String name, String path){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
         this.lifeTokens = 3;
@@ -34,16 +35,17 @@ public abstract class Robot implements IRobot {
         this.damageTokens = 0;
         this.poweredDown = false;
         this.name = name;
+        this.path = path;
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
         cards = new ProgramCard[5];
         Random rn = new Random();
-        int registers = 9 - damageTokens;
-        if(registers >= 5) {
-            registers = 5;
+        int register = 9 - getDamageTokens();
+        if(register > 5){
+            register = 5;
         }
-        for(int x = 0; x < registers; x++) {
+        for(int x = 0; x < register; x++) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
             this.cards[x] = s;
         }

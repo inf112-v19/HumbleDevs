@@ -15,9 +15,9 @@ import java.util.ArrayList;
  *
  */
 public class Board implements IBoard {
-    protected final int width;
-    protected final int height;
-    protected final int size;
+    private final int width;
+    private final int height;
+    private final int size;
     private ArrayList<Square> map;
 
 

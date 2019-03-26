@@ -92,7 +92,8 @@ public interface IRobot {
     void respawn();
 
     /**
-     * Check that the robot is visiting the flag in the correct order. If it is then record it, else do nothing
+     * Check that the robot is visiting the flag in the correct order. The flag is registered if it's in the correct order,
+     * otherwise do nothing.
      */
     void visitFlag(Flag flag);
 

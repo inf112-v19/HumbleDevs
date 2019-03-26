@@ -47,6 +47,19 @@ public class GameTest {
         assertTrue(rob2.getCards()[1].getPriority() <= rob3.getCards()[1].getPriority());
     }
 
+    /**
+     * If a robot has over 4 damage tokens, then his registers should start to lock. The method findPriority(),
+     * that finds in which order the robots should do their turn, should only return the index of robots that doesn't
+     * have their register i locked.
+     */
+    @Test
+    public void testPriorityWhenRegistersLock(){
+        Robot rob = robs[0];
+        rob.takeDamage(9);
+        game.startRound();
+        int[] pri = game.findPriority(3);
+        assertEquals(2,pri.length);
+    }
     @Test
     public void testMovement() {
         Robot rob1 = robs[0];
@@ -55,7 +68,9 @@ public class GameTest {
         game.robotMove(rob1, Direction.NORTH);
         assertEquals(new Position(2,3),pos);
     }
-
+    /**
+     * Checks if the robot is destroyed and removed from the board when it walks into a pit.
+     */
     @Test
     public void testPit() {
         Robot rob1 = robs[0];
@@ -228,7 +243,6 @@ public class GameTest {
         game.activateMovement();
         assertEquals(new Position(1,0),rob.getPosition());
     }
-
     @Test
     public void singleConveyorBeltTest(){
         Robot rob = robs[0];
@@ -246,7 +260,6 @@ public class GameTest {
         game.activateMovement();
         assertEquals(new Position(1,1), rob.getPosition());
     }
-
     @Test
     public void testGear(){
         Robot rob = robs[0];
@@ -261,11 +274,17 @@ public class GameTest {
         game.activateMovement();
         assertEquals(dir,rob.getDirection());
     }
+    /**
+     * Tests if the flags work properly. A flag should only be registered if the order is correct. The robot should therefore
+     * register the first flag, but not the third flag when the second flag is skipped.
+     */
     @Test
     public void testTouchFlag(){
         Robot rob = robs[0];
         Flag flag = new Flag(1);
         board.insertItem(2,2,flag);
+        game.repairAndCheckFlags();
+        assertEquals(1,rob.visitedFlags());
         game.repairAndCheckFlags();
         assertEquals(1,rob.visitedFlags());
         Flag flag1 = new Flag(3);
@@ -275,11 +294,24 @@ public class GameTest {
         assertEquals(1,rob.visitedFlags());
     }
     @Test
+    public void testRobotWon(){
+        Robot rob = robs[0];
+        for(int x = 0; x < 4; x++){
+            rob.visitFlag(new Flag(x+1));
+        }
+        assertEquals(rob,game.finished());
+    }
+    @Test
     public void testLimitedCards(){
         Robot rob = robs[0];
         rob.takeDamage(4);
         game.startRound();
         assertEquals(5,rob.getCards().length);
+        rob.takeDamage(4);
+        game.startRound();
+        assertNull(rob.getCards()[4]);
+        assertNull(rob.getCards()[3]);
+        assertNull(rob.getCards()[2]);
     }
     @Test
     public void testSpecialCase1ConveyorBelt(){

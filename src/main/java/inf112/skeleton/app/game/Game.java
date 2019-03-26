@@ -13,6 +13,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import sun.plugin.util.ProgressMonitorAdapter;
 
 /**
  * The class that controls most of the game. The game class is the class that
@@ -24,12 +25,10 @@ public class Game {
 	private Board board;
 	private Robot[] robots;
 	private ProgramCardDeck cardPack;
-	private int round;
 
 
 	public Game(Board board, int players) {
 		this.board = board;
-		this.round = 1;
 		robots = new Robot[players];
 		initializePlayers(players);
 	}
@@ -81,7 +80,7 @@ public class Game {
 	public void activateMovement() {
 		for (int x = 0; x < robots.length; x++) {
 			Robot rob = robots[x];
-			if (rob.isDestroyed() || rob.isPoweredDown()){
+			if (rob.isDestroyed()){
 				continue;
 			}
 			Position pos = rob.getPosition();
@@ -228,7 +227,7 @@ public class Game {
 	 */
 	public void shootLasers() {
 		for(Robot rob : robots){
-			if(rob.isPoweredDown()){
+			if(rob.isPoweredDown() || rob.isDestroyed()){
 				continue;
 			}
 			Direction shootingDir = rob.getDirection();
@@ -259,6 +258,9 @@ public class Game {
 	 */
 	public void repairAndCheckFlags() {
 		for(Robot rob : robots){
+			if (rob.isDestroyed()){
+				continue;
+			}
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
 				if(item instanceof Wrench) {
@@ -278,7 +280,7 @@ public class Game {
 	 * Checks if any robots have visited all flags.
 	 * @return the robot that have visited all flags, returns null if nobody has done it yet.
 	 */
-	private Robot finished() {
+	public Robot finished() {
 		for(Robot robot : robots){
 			if(robot.visitedFlags() == 4) {
 				return robot;
@@ -419,8 +421,17 @@ public class Game {
 	 */
 	// Metoden tar ikke hensyn til at man kan
 	public int[] findPriority(int cardnr) {
+
 		double[][] pri = new double[robots.length][2];
+		int count = 0;
 		for(int x = 0; x < robots.length; x++) {
+			ProgramCard card = robots[x].getCards()[cardnr];
+			if(card == null){
+				pri[x][1] = x;
+				pri[x][0] = -1;
+				count++;
+				continue;
+			}
 			pri[x][1] = x;
 			pri[x][0] = robots[x].getCards()[cardnr].getPriority();
 		}
@@ -429,9 +440,15 @@ public class Game {
 				return Double.compare(a[0], b[0]);
 			}
 		});
-		int[] prio = new int[robots.length];
+		int[] prio = new int[robots.length - count];
+		int index = 0;
 		for(int x = 0; x < robots.length; x++) {
-			prio[x] = (int) pri[x][1];
+			int prior = (int) pri[x][0];
+			if(prior == -1){
+				continue;
+			}
+			prio[index] = (int) pri[x][1];
+			index++;
 		}
 		return prio;
 	}
