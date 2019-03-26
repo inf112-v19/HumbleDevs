@@ -17,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.board.Direction;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
@@ -35,7 +36,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-//        insertPlayer(0, 0, "texture/robot.png");
+        insertPlayer(0, 0, "texture/robot.png");
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
@@ -51,6 +52,9 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * @param texturePath
      */
     public void insertPlayer(int x, int y, String texturePath) {
+        insertPlayer(x, y, texturePath, Direction.NORTH);
+    }
+    public void insertPlayer(int x, int y, String texturePath, Direction facingDir) {
         //Placing a player on the board
         //Create a new texture with the robot picture
         robotTexture = new Texture(Gdx.files.internal(texturePath));
@@ -60,11 +64,18 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         Cell cell = new Cell();
         //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
+
+        //Rotate
+        //By default, no rotation (should be facing NORTH)
+        if(facingDir == Direction.WEST) cell.setRotation(1);
+        else if(facingDir == Direction.SOUTH) cell.setRotation(2);
+        else if(facingDir == Direction.EAST) cell.setRotation(3);
         //Get layer to put cell in
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
         //place cell on layer in (x,y) coordinate
         layer.setCell(x, y, cell);
     }
+
 
     public void render() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
