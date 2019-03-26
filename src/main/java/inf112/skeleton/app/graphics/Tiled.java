@@ -36,7 +36,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-        insertPlayer(0, 0, "texture/robot.png");
+        insertPlayer(0, 0, "texture/robot1.png", Direction.EAST);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
@@ -46,7 +46,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * Insert a player/robot texture in a cell on the board.
      * The (x,y) position (0,0) is bottom left
      *
-     * insertPlayer(0, 0, "texture/robot.png"); //should place the robot texture in bottom left corner
+     * insertPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner
      * @param x
      * @param y
      * @param texturePath
