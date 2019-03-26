@@ -34,8 +34,6 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-        drawPlayer(0, 0, "texture/robot1.png", Direction.SOUTH);
-
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
     }
