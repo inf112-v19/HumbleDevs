@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -35,7 +34,7 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-        insertPlayer(0, 0, "texture/robot1.png", Direction.SOUTH);
+        drawPlayer(0, 0, "texture/robot1.png", Direction.SOUTH);
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
@@ -45,15 +44,15 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * Insert a player/robot texture in a cell on the board.
      * The (x,y) position (0,0) is bottom left
      *
-     * insertPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
+     * drawPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
      * @param x
      * @param y
      * @param texturePath
      */
-    public static void insertPlayer(int x, int y, String texturePath) {
-        insertPlayer(x, y, texturePath, Direction.NORTH);
+    public static void drawPlayer(int x, int y, String texturePath) {
+        drawPlayer(x, y, texturePath, Direction.NORTH);
     }
-    public static void insertPlayer(int x, int y, String texturePath, Direction facingDir) {
+    public static void drawPlayer(int x, int y, String texturePath, Direction facingDir) {
         //Placing a player on the board
         //Create a new texture with the robot picture
         Texture robotTexture = new Texture(Gdx.files.internal(texturePath));
