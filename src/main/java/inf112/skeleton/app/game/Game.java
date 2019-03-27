@@ -42,7 +42,7 @@ public class Game {
 	public void startRound() {
 		this.cardPack = new ProgramCardDeck();
 		for (Robot robot : robots) {
-			// Må først avgjøre om man ønsker å power down
+			// Må først avgjøre om man ønsker å "power down"
 			int numbCards = 9 - robot.getDamageTokens();
 			ProgramCard[] newCards = cardPack.getRandomCards(numbCards);
 			robot.chooseCards(newCards);
@@ -69,14 +69,13 @@ public class Game {
 	 *
 	 * @param nr the number of the phase in this round
 	 */
-	private void phase(int nr) {
+	public void phase(int nr) {
 		int[] prio = findPriority(nr);
 		for (int x = robots.length - 1; x >= 0; x--) {
 			int robot = prio[x];
 			robotDoTurn(robots[robot], nr);
 		}
 	}
-
 	/**
 	 * Method that does the movement actions on the board e.g. gear
 	 */
@@ -143,7 +142,6 @@ public class Game {
 			}
 		}
 	}
-
 	/**
 	 * Method that activates the activities on the board that doesn't change the robots placement
 	 * or/and rotation e.g. laser
@@ -253,7 +251,13 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
-					board.insertRobot(rob.getPosition(), rob);
+					if(board.isFree(rob.getPosition())){
+						board.insertRobot(rob.getPosition(), rob);
+					} else {
+						// Må la spilleren velge en posisjon ved siden av backup
+						// Roboten må oppdatere plasseringen sin
+					}
+
 				}
 			}
 		}
@@ -316,7 +320,7 @@ public class Game {
 		} else if (action == Action.MOVEFORWARD) {
 			int move = card.getMove();
 			while(move > 0) {
-				if(!rob.isDestroyed()) {
+				if(rob.isDestroyed()) {
 					break;
 				}
 				if(!robotMove(rob,rob.getDirection())) {
@@ -424,9 +428,7 @@ public class Game {
 	 * @param cardnr the number of the phase
 	 * @return an array with the right order
 	 */
-	// Metoden tar ikke hensyn til at man kan
 	public int[] findPriority(int cardnr) {
-
 		double[][] pri = new double[robots.length][2];
 		int count = 0;
 		for(int x = 0; x < robots.length; x++) {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.card.Action;
+import inf112.skeleton.app.card.ProgramCard;
+import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -379,5 +381,40 @@ public class GameTest {
         game.activateMovement();
         //assertEquals(new Position(2,3), rob1.getPosition());
         //assertEquals(new Position(2,4), rob2.getPosition());
+    }
+
+    @Test
+    public void testOnePhase(){
+        game.startRound();
+        Robot rob1 = robs[0];
+        Robot rob2 = robs[1];
+        Robot rob3 = robs[2];
+        ProgramCard[] cards = rob1.getCards();
+        cards[0] = new ProgramCard(2,100,Action.MOVEFORWARD);
+        cards = rob2.getCards();
+        cards[0] = new ProgramCard(2,110,Action.MOVEFORWARD);
+        cards = rob3.getCards();
+        cards[0] = new ProgramCard(2,120,Action.MOVEFORWARD);
+        game.phase(0);
+        assertEquals(new Position(2,4),rob1.getPosition());
+    }
+    @Test
+    public void testPhasePriority(){
+        game.startRound();
+        Robot rob1 = robs[0];
+        Robot rob2 = robs[1];
+        Robot rob3 = robs[2];
+        rob1.rotateRight();
+        ProgramCard[] cards = rob1.getCards();
+        cards[0] = new ProgramCard(2,140,Action.MOVEFORWARD);
+        cards = rob2.getCards();
+        cards[0] = new ProgramCard(2,110,Action.MOVEFORWARD);
+        cards = rob3.getCards();
+        cards[0] = new ProgramCard(2,120,Action.MOVEFORWARD);
+        game.phase(0);
+        assertEquals(new Position(4,2),rob1.getPosition());
+        assertEquals(new Position(5,4), rob2.getPosition());
+        assertEquals(new Position(6,4),rob3.getPosition());
+
     }
 }

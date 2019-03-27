@@ -28,10 +28,8 @@ public class Board implements IBoard {
         this.width = width;
         this.size = height * width;
         map = new ArrayList<>();
-        for (int i = 0; i < height;i++) {
-            for (int j = 0; j < width; j++) {
-                map.add(new Square());
-            }
+        for(int i = 0; i < size; i++){
+            map.add(new Square());
         }
     }
 
@@ -53,14 +51,11 @@ public class Board implements IBoard {
         this.width = (int) tiledMap.getProperties().get("width");
         this.size = height * width;
         map = new ArrayList<>();
-
-
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 map.add(new Square());
             }
         }
-
 
         for (int l = 0; l < tiledMap.getLayers().size(); l++) {
             TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(l);
@@ -110,7 +105,7 @@ public class Board implements IBoard {
         sq.addElement(element);
     }
 
-    //Uses the Tile ID (1-indexed based in position in tileset)
+    //Uses the Tile ID (1-indexed based in position in tileSet)
     public void insertItem(int x, int y, int id) {
         insertItem(x, y, createItemFromId(id));
     }
