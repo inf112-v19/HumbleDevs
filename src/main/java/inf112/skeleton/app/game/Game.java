@@ -13,6 +13,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import org.lwjgl.Sys;
 import sun.plugin.util.ProgressMonitorAdapter;
 
 /**
@@ -30,7 +31,9 @@ public class Game {
 	public Game(Board board, int players) {
 		this.board = board;
 		robots = new Robot[players];
-		initializePlayers(players);
+	}
+	public void setUp(){
+		initializePlayers(robots.length);
 	}
 
 	/**
@@ -114,11 +117,13 @@ public class Game {
 							robotMove(rob,((ConveyorBelt) var).getDirection());
 						}
 						if(rotate != null) {
-							if (rotate.equals(Action.LEFTTURN)) {
-								rob.rotateLeft();
-							}
-							if (rotate.equals(Action.RIGHTTURN)) {
-								rob.rotateRight();
+							if(!rob.getDirection().equals(((ConveyorBelt) temp).getDirection())){
+								if (rotate.equals(Action.LEFTTURN)) {
+									rob.rotateLeft();
+								}
+								if (rotate.equals(Action.RIGHTTURN)) {
+									rob.rotateRight();
+								}
 							}
 						}
 						updateBoard(startPos,rob.getPosition());
@@ -454,23 +459,25 @@ public class Game {
 	}
 
 	private void initializePlayers(int numb) {
+		ArrayList<Position> startDocks = board.getDockPositions();
 		for(int x = 0; x < numb; x++) {
-			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
-			robots[x] = per;
-			board.insertRobot(new Position(2+x,2), per);
+			Position pos = startDocks.get(x);
+			String filePath = "texture/robot" + x+1 + ".png";
+			Player player = new Player(Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
+			board.insertRobot(pos,player);
 		}
 	}
 	/**
-	 * Method only used to for test cases
+	 * Method only used to get the robots
 	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
 		return this.robots;
 	}
 	/**
-	 * Method to update the position of a robot on the board
+	 * Method to updates the position of a robot on the board
 	 * @param start the position where the robot was placed
-	 * @param end the position where to robot is moved to now
+	 * @param end the position where to robot is moved
 	 */
 	private void updateBoard(Position start, Position end) {
 		Robot rob = board.getRobot(start);

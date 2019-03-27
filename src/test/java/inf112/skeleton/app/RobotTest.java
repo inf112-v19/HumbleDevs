@@ -14,7 +14,7 @@ public class RobotTest {
 	
 	@Test
 	public void testMovement() {
-		Player rob = new Player(Direction.NORTH, 0,0,"Kåre Kålrabi");
+		Player rob = new Player(Direction.NORTH, 0,0,"Kåre Kålrabi", "testing");
 		rob.move(1);
 		assertEquals(new Position(0,1),rob.getPosition());
 		rob.move(Direction.EAST);
@@ -22,7 +22,7 @@ public class RobotTest {
 	}
 	@Test
 	public void testRotation() {
-		Player rob = new Player(Direction.NORTH, 0,0,"Albert");
+		Player rob = new Player(Direction.NORTH, 0,0,"Albert","testing");
 		rob.rotateLeft();
 		assertEquals(Direction.WEST, rob.getDirection());
 		rob.rotateRight();
@@ -30,7 +30,7 @@ public class RobotTest {
 	}
 	@Test
 	public void testLife() {
-		Player rob = new Player(Direction.NORTH, 0,0,"Raymond");
+		Player rob = new Player(Direction.NORTH, 0,0,"Raymond","testing");
 		rob.die();
 		rob.die();
 		assertFalse(rob.gameOver());
@@ -39,13 +39,11 @@ public class RobotTest {
 	}
 	@Test
 	public void testBackup() {
-		Player rob = new Player(Direction.NORTH, 0,0,"Odin");
+		Player rob = new Player(Direction.NORTH, 0,0,"Odin","testing");
 		Position pos = new Position(5,5);
 		rob.makeBackup(pos);
 		rob.die();
 		rob.respawn();
 		assertEquals(pos,rob.getPosition());
-		
 	}
-
 }

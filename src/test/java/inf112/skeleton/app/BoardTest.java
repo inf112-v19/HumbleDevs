@@ -4,10 +4,14 @@ import inf112.skeleton.app.GameObjects.Items.*;
 import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
+import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.board.Square;
 import inf112.skeleton.app.card.Action;
+import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -42,7 +46,7 @@ public class BoardTest {
     public void isFreeReturnsFalseWhenContainingRobot() {
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
-                board.getSquare(x,y).addRobot(new Player(Direction.NORTH, x, y,"testBot"));
+                board.getSquare(x,y).addRobot(new Player(Direction.NORTH, x, y,"testBot","testing"));
             }
         }
 
@@ -68,7 +72,6 @@ public class BoardTest {
             }
         }
     }
-
     /**
      * Needs to be updated if the tileSetLarge64 file is edited.
      * Follows top row-based 1-indexing from the tileSetLarge64.png
@@ -186,4 +189,27 @@ public class BoardTest {
         assertEquals(expected.isStart(), actual.isStart());
     }
 
+    @Test
+    public void testIndexCalculations(){
+        int index1 = board.toIndex(0,0);
+        assertEquals(0,index1);
+        int index2 = board.toIndex(0,1);
+        assertEquals(4,index2);
+        Position pos = board.getPositionFromIndex(index2);
+        assertEquals(new Position(0,1),pos);
+        Position pos1 = board.getPositionFromIndex(12);
+        assertEquals(new Position(0,3),pos1);
+    }
+
+    @Test
+    public void testDockPositions(){
+        for (int x = 0; x < 8; x++){
+            Dock dock = new Dock(x+1);
+            board.insertItem(board.getPositionFromIndex(x), dock);
+        }
+        ArrayList<Position> startDocks = board.getDockPositions();
+        for(int y = 0; y < 8; y++){
+            assertEquals(board.getPositionFromIndex(y), startDocks.get(y));
+        }
+    }
 }

@@ -3,6 +3,7 @@ package inf112.skeleton.app;
 import java.util.ArrayList;
 
 import inf112.skeleton.app.GameObjects.Items.*;
+import inf112.skeleton.app.GameObjects.Player;
 import inf112.skeleton.app.card.Action;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +32,13 @@ public class GameTest {
         this.board = board;
         board.insertItem(new Position(1,2), new Pit());
         Game game = new Game(board,3);
-        this.game = game;
         this.robs = game.getRobots();
+        for(int y = 0; y < 3; y++){
+            Player player = new Player(Direction.NORTH, 2+y,2, "Robot" + y, "dd");
+            robs[y] = player;
+            board.insertRobot(new Position(2+y,2), player);
+        }
+        this.game = game;
     }
 
     @Test
@@ -313,6 +319,11 @@ public class GameTest {
         assertNull(rob.getCards()[3]);
         assertNull(rob.getCards()[2]);
     }
+
+    /**
+     * If a robot is blocking the exit of a conveyor belt, then the exiting robot should not move when the
+     * conveyor belt is activated
+     */
     @Test
     public void testSpecialCase1ConveyorBelt(){
         ConveyorBelt cb = new ConveyorBelt(Direction.WEST,1);
@@ -334,13 +345,25 @@ public class GameTest {
         assertEquals(new Position(2,3), rob1.getPosition());
         assertEquals(Direction.EAST,rob1.getDirection());
     }
+    /**
+     * A robot should not be rotated when it moves onto a turning conveyor belt. It should keep its rotation and be moved that way.
+     * If there is another turning conveyor belt, the robot should only rotate 90 degrees.
+     */
     @Test
     public void testSpecialCase2ConveyorBelt(){
         ConveyorBelt cb1 = new ConveyorBelt(Direction.EAST,1,true);
+        ConveyorBelt cb2 = new ConveyorBelt(Direction.EAST,1);
+        ConveyorBelt cb3 = new ConveyorBelt(Direction.SOUTH,1,true);
         board.insertItem(2,3,cb1);
         Robot rob = robs[0];
         game.robotMove(rob, Direction.NORTH);
         assertEquals(Direction.NORTH, rob.getDirection());
+        game.activateMovement();
+        assertEquals(Direction.NORTH,rob.getDirection());
+        board.insertItem(3,3,cb2);
+        board.insertItem(4,3,cb3);
+        game.activateMovement();
+        assertEquals(Direction.EAST,rob.getDirection());
     }
     @Test
     public void testSpecialCase3ConveyorBelt(){

@@ -17,25 +17,22 @@ public abstract class Robot implements IRobot {
 
     private Direction dir;
     private Position pos;
-    private int lifeTokens;
+    private int lifeTokens = 3;
     private Position backup;
     private ProgramCard[] cards;
     private int visitedFlags = 0;
-    private int damageTokens;
+    private int damageTokens = 0;
     private boolean destroyed;
     private boolean poweredDown;
     private String name;
-    private String path;
+    private String filePath;
 
-    public Robot (Direction dir, int xPos, int yPos, String name, String path){
+    public Robot (Direction dir, int xPos, int yPos, String name, String filePath){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
-        this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
-        this.damageTokens = 0;
-        this.poweredDown = false;
         this.name = name;
-        this.path = path;
+        this.filePath = filePath;
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
@@ -155,7 +152,6 @@ public abstract class Robot implements IRobot {
             visitedFlags++;
             makeBackup(this.pos);
         }
-
     }
     @Override
     public void respawn() {
@@ -190,5 +186,9 @@ public abstract class Robot implements IRobot {
     @Override
     public int getDamageTokens(){
         return this.damageTokens;
+    }
+
+    public String getPath(){
+        return this.filePath;
     }
 }
