@@ -3,7 +3,6 @@ package inf112.skeleton.app.GameObjects.Items;
 public class RepairTool implements IItem {
 
 
-
     //Only wrench
     //Removes one damage token
     public RepairTool() {

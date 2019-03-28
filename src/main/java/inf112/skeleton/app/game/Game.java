@@ -37,7 +37,7 @@ public class Game {
 	}
 
 	/**
-	 * Starts the a new round by dealing new cards to every player
+	 * Starts a new round by dealing new cards to every player
 	 */
 	public void startRound() {
 		this.cardPack = new ProgramCardDeck();
@@ -49,8 +49,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Calls the methods to that makes up a round. Not every method this method uses is
-	 * implemented, but it gives a nice illustration on how the game should work.
+	 * Calls all the method that makes up one round.
 	 */
 	public void round() {
 		startRound();
@@ -66,7 +65,6 @@ public class Game {
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
 	 * is going to be used this round. For every robot the robotDoTurn - method is called.
-	 *
 	 * @param nr the number of the phase in this round
 	 */
 	public void phase(int nr) {
@@ -251,9 +249,7 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
-					if(board.isFree(rob.getPosition())){
-						board.insertRobot(rob.getPosition(), rob);
-					} else {
+					if(!board.insertRobot(rob.getPosition(), rob)){
 						// Må la spilleren velge en posisjon ved siden av backup
 						// Roboten må oppdatere plasseringen sin
 					}
@@ -272,12 +268,10 @@ public class Game {
 			}
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
-				if(item instanceof Wrench) {
+				if(item instanceof RepairTool) {
 					rob.makeBackup(rob.getPosition());
 					rob.repairDamage();
-				} else if(item instanceof Hammer){
-					rob.repairDamage();
-					rob.makeBackup(rob.getPosition());
+
 					// Draw option card
 				} else if(item instanceof Flag){
 					rob.visitFlag((Flag)item);
