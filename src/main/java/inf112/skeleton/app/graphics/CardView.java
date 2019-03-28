@@ -1,75 +1,38 @@
 package inf112.skeleton.app.graphics;
-
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import inf112.skeleton.app.card.*;
-
+import inf112.skeleton.app.gameObjects.Player;
 
 /**
- * A card representing a graphical UI where the player can choose his/hers cards
+ * A class representing a graphical UI where the player can choose his/hers cards
  */
-public class CardView implements ApplicationListener {
-    //Backend
-    private final int NUMPLAYERS;
-    ProgramCard[] arrOfCards;
 
-    // Graphical
-    private Stage stage;
-    private Skin skin;
+public class CardView {
+    //the player holding these cards
+    private Player player;
+    private ProgramCard[] deckOfNine;
 
-    public CardView(int numPlayers) {
+    /*/
+        @param the player to draw cards
+     */
+    public CardView(Player player) {
         ProgramCardDeck pcd = new ProgramCardDeck();
-        this.NUMPLAYERS = numPlayers;
-        arrOfCards = pcd.getRandomCards();
-    }
-
-    public void pickCards (ProgramCard[] arr) {
-
-    }
-
-    public ProgramCard[] getArrOfCards() {
-        return arrOfCards;
-    }
-
-    public void setArrOfCards(ProgramCard[] arrOfCards) {
-        this.arrOfCards = arrOfCards;
-    }
-
-    public void createHUD() {
-        stage = new Stage();
-        skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        deckOfNine = pcd.getRandomCards();
     }
 
 
-    @Override
-    public void create() {
-
+    public void pickCards() {
+        //TODO a player must be able to pick his own cards out of the 9
     }
 
-    @Override
-    public void resize(int width, int height) {
-
+    public ProgramCard[] makeFive(ProgramCard[] pc) {
+        ProgramCard[] arr = new ProgramCard[5];
+        for (int i = 0; i < deckOfNine.length; i++) {
+            arr[i] = deckOfNine[i];
+        }
+        deckOfNine = arr;
+        return deckOfNine;
     }
 
-    @Override
-    public void render() {
 
-    }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }
