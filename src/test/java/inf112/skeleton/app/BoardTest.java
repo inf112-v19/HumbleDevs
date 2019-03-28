@@ -126,8 +126,8 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItem(39, new ConveyorBelt(Direction.WEST, 1));
         insertElementByTileIdCreatesCorrectItem(40, new ConveyorBelt(Direction.EAST, 1));
 
-        insertElementByTileIdCreatesCorrectItem(35, new RepairTool());
-        insertElementByTileIdCreatesCorrectItem(36, new RepairTool());
+        insertElementByTileIdCreatesCorrectItem(35, new RepairTool(true));
+        insertElementByTileIdCreatesCorrectItem(36, new RepairTool(false));
 
         insertElementByTileIdCreatesCorrectItem(41, new Gear(Action.LEFTTURN));
         insertElementByTileIdCreatesCorrectItem(42, new Gear(Action.RIGHTTURN));
