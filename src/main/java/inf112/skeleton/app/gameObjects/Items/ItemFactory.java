@@ -96,9 +96,18 @@ public abstract class ItemFactory {
         if (id == 77) return new Laser(Direction.SOUTH, 2, true);
         if (id == 78) return new Laser(Direction.WEST, 2, true);
 
+        //Docks (starting positions for robots)
+        if (id == 85) return new Dock(1);
+        if (id == 86) return new Dock(2);
+        if (id == 87) return new Dock(3);
+        if (id == 88) return new Dock(4);
+        if (id == 89) return new Dock(5);
+        if (id == 90) return new Dock(6);
+        if (id == 91) return new Dock(7);
+        if (id == 92) return new Dock(8);
+
         //Missing items:
         // - triplelasers
-        // - weird stuff at the bottom of tmx file
         // - "triple" conveyorbelts
 
         return null;
