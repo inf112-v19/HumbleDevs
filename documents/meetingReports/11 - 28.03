@@ -1,0 +1,5 @@
+Møtereferat 28.03
+
+Møtet startet kl 08:30 i dag og vi jobbet effektivt frem til lab kl 10:15. Vi har jobbet med rapporten, og diskutert flere ting i forhold til denne. I tillegg til å skrive rapporten har Amalie gjort noen få endringer på mappestrukturen og navnene. IItem interfacet hadde to metoder som var overflødige, og disse er nå fjernet. Dette skapte selvsagt en del merge conflicts, og vi måtte bruke litt tid på å rette opp i disse. Joachim har jobbet med grafikken, der han skal vise kort. Bendik har oppdatert mappet og item factory og lagd noen tester. Even har bidratt til rapporten og ordnet på kodestrukturen i Board og Game. Linh kategoriserer OptionCards.
+
+Vi fikk tilbakemeldingen fra forrige innlevering og har diskutert rundt dette. Vi har brukt denne som retningslinjer for hvordan vi skriver den nye rapporten. 
