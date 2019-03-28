@@ -7,6 +7,7 @@ Our documentation (text submissions) through each iteration can be found [here i
 Direct links:
 * [Exercise 2](documents/assignments/oblig2.md)
 * [Exercise 3](documents/assignments/oblig3.md)
+* [Exercise 4](documents/assignments/oblig4.md)
 
 ## Known bugs
 Currently throws "WARNING: An illegal reflective access operation has occurred", 
