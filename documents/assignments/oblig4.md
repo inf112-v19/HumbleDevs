@@ -1,6 +1,7 @@
 Deloppgave 1: Prosjekt og prosjektstruktur
 					
 **Testrolle**
+
 Testrollen blir fordelt til Amalie, da det passer med arbeidsfordelingen og mengden arbeid. Ingen av oss har brukt Mockito før, og den første oppgaven blir å sette seg inn i dette. Deretter tar vi det i bruk og implementerer det inn i programmet. Det er ingen på gruppen som har erfaring med automatisk genererte tester, men vi ser på det som en fordel å bruke slike tester. Blant annet vil automatiske tester hente ut gjemt informasjon, gå mye raskere, være mer presise og vi vil bruke mindre tid på å skrive tester selv. 
 
 Alle har skrevet manuelle tester underveis til den koden vi selv har skrevet. Dette synes vi har fungert bra, da den som har skrevet koden har best kontroll på funksjonene og hva som er hensikten. Alle som har skrevet tester har selv ansvar for å skrive god dokumentasjon.
