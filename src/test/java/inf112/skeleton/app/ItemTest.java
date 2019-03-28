@@ -26,23 +26,10 @@ public class ItemTest {
 
         //Test to see if direction works
         assertEquals(laser.getDirection(), Direction.NORTH);
-        // Test to check symbol
-        assertEquals(laser.getSymbol(), '-');
         //Test to check damage
         assertEquals(damageMultiplier, 1);
         // Test name
         assertEquals(laser.getName(), "Laser");
-    }
-
-    //Hammer
-    @Test
-    public void TestThatWeCanMakeAHammer() {
-        Hammer hammer = new Hammer();
-
-        //Checks getName
-        assertEquals(hammer.getName(), "Hammer");
-        //Test getSymbol
-        assertEquals(hammer.getSymbol(), '€');
     }
 
     //Pit
@@ -52,19 +39,6 @@ public class ItemTest {
 
         //Checks getName
         assertEquals(pit.getName(), "Pit");
-        //Test getSymbol
-        assertEquals(pit.getSymbol(), '@');
-    }
-
-    //Wrench
-    @Test
-    public void TestThatWeCanMakeAWrench() {
-        Wrench w = new Wrench();
-
-        //Checks getName
-        assertEquals(w.getName(), "Wrench");
-        //Test getSymbol
-        assertEquals(w.getSymbol(), '$');
     }
 
     //LaserShoot
@@ -77,8 +51,6 @@ public class ItemTest {
 
         //Test to see if direction works
         assertEquals(lS.getDirection(), Direction.SOUTH);
-        // Test to check symbol
-        assertEquals(lS.getSymbol(), '>');
         //Test to check damage
         assertEquals(harm, 6);
         // Test name
@@ -93,8 +65,6 @@ public class ItemTest {
 
         ConveyorBelt cb = new ConveyorBelt(dir, movement, false);
 
-        // Test to check symbol
-        assertEquals(cb.getSymbol(), '_');
         //Test to check rotation
         assertEquals(dir, Direction.EAST);
         //Test to check movement
@@ -114,8 +84,6 @@ public class ItemTest {
         assertEquals(wall.getDir(), Direction.WEST);
         // Test name
         assertEquals(wall.getName(), "Wall");
-        //Test the symbol of the wall
-        assertEquals(wall.getSymbol(), '|');
     }
 
     //CornerWall
@@ -127,9 +95,6 @@ public class ItemTest {
         assertEquals(w.getDir2(), Direction.SOUTH);
         // Test name
         assertEquals(w.getName(), "CornerWall");
-        //Test the symbol of the wall
-        assertEquals(w.getSymbol(), '<');
-
     }
 
     //Gear
@@ -140,8 +105,6 @@ public class ItemTest {
 
         // Test name
         assertEquals(gear.getName(), "Gear");
-        //Test the symbol of the wall
-        assertEquals(gear.getSymbol(), '°');
         //checks that getAction resolves in the right action
         assertEquals(gear.getAction(), Action.LEFTTURN);
     }
