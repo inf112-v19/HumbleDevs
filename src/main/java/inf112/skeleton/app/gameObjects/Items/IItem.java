@@ -1,5 +1,4 @@
-package inf112.skeleton.app.GameObjects.Items;
-import inf112.skeleton.app.board.Direction;
+package inf112.skeleton.app.gameObjects.Items;
 
 
 /*

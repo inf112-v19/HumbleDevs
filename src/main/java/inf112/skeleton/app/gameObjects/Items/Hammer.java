@@ -1,4 +1,4 @@
-package inf112.skeleton.app.GameObjects.Items;
+package inf112.skeleton.app.gameObjects.Items;
 
 /**
  * Wrench class to fix the robots.

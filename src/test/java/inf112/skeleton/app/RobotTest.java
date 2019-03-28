@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import inf112.skeleton.app.GameObjects.Player;
+import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 

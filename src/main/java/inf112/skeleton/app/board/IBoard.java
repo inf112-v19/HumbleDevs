@@ -1,9 +1,8 @@
 package inf112.skeleton.app.board;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Robot;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public interface IBoard {

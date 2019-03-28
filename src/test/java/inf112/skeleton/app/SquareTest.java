@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import inf112.skeleton.app.GameObjects.Player;
-import inf112.skeleton.app.GameObjects.Robot;
-import inf112.skeleton.app.GameObjects.Items.Flag;
-import inf112.skeleton.app.GameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Player;
+import inf112.skeleton.app.gameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Items.Flag;
+import inf112.skeleton.app.gameObjects.Items.IItem;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.board.Square;

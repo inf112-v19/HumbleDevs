@@ -1,4 +1,4 @@
-package inf112.skeleton.app.GameObjects.Items;
+package inf112.skeleton.app.gameObjects.Items;
 
 /**
  * Flag class that keep track of the flags, witch all the robots have to visit to win.

@@ -2,15 +2,14 @@ package inf112.skeleton.app;
 
 import java.util.ArrayList;
 
-import inf112.skeleton.app.GameObjects.Items.*;
-import inf112.skeleton.app.GameObjects.Player;
+import inf112.skeleton.app.gameObjects.Items.*;
+import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
-import javafx.geometry.Pos;
 import org.junit.Before;
 import org.junit.Test;
 
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;

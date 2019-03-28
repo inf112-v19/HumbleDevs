@@ -1,6 +1,6 @@
-package inf112.skeleton.app.GameObjects;
+package inf112.skeleton.app.gameObjects;
 
-import inf112.skeleton.app.GameObjects.Items.Flag;
+import inf112.skeleton.app.gameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
