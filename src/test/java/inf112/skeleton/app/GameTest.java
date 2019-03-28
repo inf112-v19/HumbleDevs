@@ -148,21 +148,6 @@ public class GameTest {
     }
 
     @Test
-    public void testMovementIntoLaser(){
-        Robot rob = robs[0];
-        Laser laser = new Laser(Direction.SOUTH, 1);
-        Laser laser2 = new Laser(Direction.EAST, 1);
-        board.insertItem(2,2,laser2);
-        board.insertItem(2,3,laser);
-        game.robotMove(rob,Direction.NORTH);
-        assertEquals(new Position(2,2), rob.getPosition());
-        game.robotMove(rob, Direction.WEST);
-        assertEquals(new Position(2,2), rob.getPosition());
-        game.robotMove(rob,Direction.SOUTH);
-        assertEquals(new Position(2,1), rob.getPosition());
-    }
-
-    @Test
     public void testShootingLasers(){
         Robot rob = robs[0];
         Robot rob2 = robs[1];

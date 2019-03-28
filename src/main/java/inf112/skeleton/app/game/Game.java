@@ -99,9 +99,7 @@ public class Game {
 							if(is instanceof Pit){
 								rob.die();
 								board.removeRobot(rob.getPosition());
-							} else if (is instanceof Wall){
-								break outerloop;
-							} else if (is instanceof Laser){
+							} else if (is instanceof Wall) {
 								break outerloop;
 							} else if (is instanceof ConveyorBelt){
 								rotate = ((ConveyorBelt) is).getRotation();
@@ -375,12 +373,6 @@ public class Game {
 					return false;
 				}
 			}
-			if(obstruction instanceof Laser){
-				Direction laserDir = ((Laser) obstruction).getDirection();
-				if(laserDir.getOppositeDirection() == dir){
-					return false;
-				}
-			}
 		}
 		// Check for obstructions on the next tile
 		for(IItem it : items){
@@ -392,13 +384,7 @@ public class Game {
 			if(it instanceof Wall) {
 				Direction wallDir1 = ((Wall) it).getDir();
 				Direction wallDir2 = ((Wall) it).getDir2();
-				if(wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir){
-					return false;
-				}
-			}
-			if(it instanceof  Laser){
-				Direction laserDir = ((Laser) it).getDirection();
-				if (laserDir.getOppositeDirection() == dir){
+				if (wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir) {
 					return false;
 				}
 			}

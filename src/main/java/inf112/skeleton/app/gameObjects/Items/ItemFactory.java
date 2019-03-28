@@ -65,9 +65,9 @@ public abstract class ItemFactory {
         if (id == 40) return new ConveyorBelt(Direction.EAST, 1);
 
         //Hammer and wrench
-        if (id == 35) return new RepairTool();
+        if (id == 35) return new RepairTool(true);
         //Only wrench
-        if (id == 36) return new RepairTool();
+        if (id == 36) return new RepairTool(false);
 
         //Red gear (left)
         if (id == 41) return new Gear(Action.LEFTTURN);
