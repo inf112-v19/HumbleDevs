@@ -147,6 +147,15 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItem(76, new Laser(Direction.EAST, 2, true));
         insertElementByTileIdCreatesCorrectItem(77, new Laser(Direction.SOUTH, 2, true));
         insertElementByTileIdCreatesCorrectItem(78, new Laser(Direction.WEST, 2, true));
+
+        insertElementByTileIdCreatesCorrectItem(85, new Dock(1));
+        insertElementByTileIdCreatesCorrectItem(86, new Dock(2));
+        insertElementByTileIdCreatesCorrectItem(87, new Dock(3));
+        insertElementByTileIdCreatesCorrectItem(88, new Dock(4));
+        insertElementByTileIdCreatesCorrectItem(89, new Dock(5));
+        insertElementByTileIdCreatesCorrectItem(90, new Dock(6));
+        insertElementByTileIdCreatesCorrectItem(91, new Dock(7));
+        insertElementByTileIdCreatesCorrectItem(92, new Dock(8));
     }
 
     public void insertElementByTileIdCreatesCorrectItem(int tileId, IItem expectedItem) {
@@ -156,11 +165,23 @@ public class BoardTest {
         IItem actualItem = (IItem) sq.getElements().get(0);
         assertEquals(expectedItem.getClass(), actualItem.getClass());
 
+        assertEquals(expectedItem.getName(), actualItem.getName());
+
         if (actualItem instanceof Flag) flagHasCorrectProperties((Flag) expectedItem, (Flag) actualItem);
         if (actualItem instanceof ConveyorBelt) conveyorBeltHasCorrectProperties((ConveyorBelt) expectedItem, (ConveyorBelt) actualItem);
         if (actualItem instanceof Wall) wallHasCorrectProperties((Wall) expectedItem, (Wall) actualItem);
         if (actualItem instanceof Gear) gearHasCorrectProperties((Gear) expectedItem, (Gear) actualItem);
         if (actualItem instanceof Laser) laserHasCorrectProperties((Laser) expectedItem, (Laser) actualItem);
+        if (actualItem instanceof RepairTool) repairToolHasCorrectProperties((RepairTool) expectedItem, (RepairTool) actualItem);
+        if (actualItem instanceof Dock) dockHasCorrectProperties((Dock) expectedItem, (Dock) actualItem);
+    }
+
+    private void dockHasCorrectProperties(Dock expectedItem, Dock actualItem) {
+        assertEquals(expectedItem.getNumber(), expectedItem.getNumber());
+    }
+
+    private void repairToolHasCorrectProperties(RepairTool expectedItem, RepairTool actualItem) {
+        assertEquals(expectedItem.wrenchAndHammer(), actualItem.wrenchAndHammer());
     }
 
     public void flagHasCorrectProperties(Flag expected, Flag actual) {
