@@ -1,4 +1,4 @@
-package inf112.skeleton.app.GameObjects.Items;
+package inf112.skeleton.app.gameObjects.Items;
 
 /*
  * The game have to options for repairing tools. It is a wrench or a wrenchAndHammer combined.

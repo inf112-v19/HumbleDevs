@@ -1,4 +1,4 @@
-package inf112.skeleton.app.GameObjects.Items;
+package inf112.skeleton.app.gameObjects.Items;
 
 import inf112.skeleton.app.card.Action;
 

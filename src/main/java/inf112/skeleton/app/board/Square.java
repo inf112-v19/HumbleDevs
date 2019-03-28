@@ -1,6 +1,6 @@
 package inf112.skeleton.app.board;
 
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Robot;
 
 import java.util.ArrayList;
 

@@ -1,20 +1,18 @@
 package inf112.skeleton.app.game;
 
-import inf112.skeleton.app.GameObjects.Items.*;
-import inf112.skeleton.app.GameObjects.Items.ConveyorBelt;
+import inf112.skeleton.app.gameObjects.Items.*;
+import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
 
 import java.util.ArrayList;
 
-import inf112.skeleton.app.GameObjects.Player;
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Player;
+import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
-import org.lwjgl.Sys;
-import sun.plugin.util.ProgressMonitorAdapter;
 
 /**
  * The class that controls most of the game. The game class is the class that

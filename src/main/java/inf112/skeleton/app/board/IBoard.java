@@ -1,6 +1,6 @@
 package inf112.skeleton.app.board;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Items.IItem;
 
 import java.util.ArrayList;
 

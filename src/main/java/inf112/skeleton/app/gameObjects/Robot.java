@@ -1,5 +1,5 @@
-package inf112.skeleton.app.GameObjects;
-import inf112.skeleton.app.GameObjects.Items.Flag;
+package inf112.skeleton.app.gameObjects;
+import inf112.skeleton.app.gameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 
 import java.util.Random;
