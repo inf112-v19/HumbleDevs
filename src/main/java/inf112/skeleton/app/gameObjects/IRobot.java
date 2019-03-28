@@ -6,8 +6,6 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
 /**
  * Interface for the robot class
- * @author Even Kolsgaard
- *
  */
 public interface IRobot {
 

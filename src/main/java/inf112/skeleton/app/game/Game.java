@@ -17,8 +17,6 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 /**
  * The class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
- * @author Even Kolsgaard
- *
  */
 public class Game {
 	private Board board;

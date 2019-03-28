@@ -10,8 +10,6 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- * @author Even Kolsgaard
- *
  */
 public abstract class Robot implements IRobot {
 
