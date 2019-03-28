@@ -54,7 +54,7 @@ I tillegg til dette bruker vi også parprogrammering som vil gjøre at det som b
 En siste ting er at noen committer oftere enn andre, og dette kan skape en ujevn fordeling i committsene. Alt i alt er vi fornøyde med arbeidsfordelingen og mener at alle bidrar omtrent like mye i gruppen.
 
 **Krav MVP**
-- [] Man må kunne spille en komplett runde
+- [ ] Man må kunne spille en komplett runde
 Man må kunne vinne spillet spillet ved å besøke siste flagg (fullføre et spill)
 Det skal være lasere på brettet
 Det skal være hull på brettet
