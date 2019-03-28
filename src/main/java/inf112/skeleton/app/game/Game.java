@@ -270,13 +270,13 @@ public class Game {
 			}
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
-				if(item instanceof Wrench) {
+				if(item instanceof RepairTool) {
+				    RepairTool repairTool = (RepairTool) item;
 					rob.makeBackup(rob.getPosition());
 					rob.repairDamage();
-				} else if(item instanceof Hammer){
-					rob.repairDamage();
-					rob.makeBackup(rob.getPosition());
-					// Draw option card
+					if (repairTool.wrenchAndHammer()) {
+                        // Draw option card
+                    }
 				} else if(item instanceof Flag){
 					rob.visitFlag((Flag)item);
 				}
