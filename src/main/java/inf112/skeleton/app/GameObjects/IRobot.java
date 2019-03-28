@@ -48,6 +48,13 @@ public interface IRobot {
      * Take one damage
      */
     void takeDamage();
+
+    /**
+     * Take damage
+     * @param i number of damage
+     */
+    void takeDamage(int i);
+
     /**
      * Remove one damage token
      */
@@ -85,7 +92,8 @@ public interface IRobot {
     void respawn();
 
     /**
-     * Check that the robot is visiting the flag in the correct order. If it is then record it, else do nothing
+     * Check that the robot is visiting the flag in the correct order. The flag is registered if it's in the correct order,
+     * otherwise do nothing.
      */
     void visitFlag(Flag flag);
 
@@ -104,6 +112,23 @@ public interface IRobot {
      */
     void powerDown();
 
+    /**
+     * Checks if the robot is powered down
+     * @return true of the robot is powered down, false otherwise
+     */
+    boolean isPoweredDown();
+
+    /**
+     * Get the number of damage that the robot has taken. Can only be between 0 and 10
+     * @return the number of damage tokens that the robot have
+     */
+    int getDamageTokens();
+
+    /**
+     * Checks if the robot is destroyed
+     * @return true if the robot is destroyed, false otherwise
+     */
+    boolean isDestroyed();
 
 
 }

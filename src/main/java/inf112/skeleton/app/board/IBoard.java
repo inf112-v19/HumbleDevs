@@ -8,7 +8,7 @@ public interface IBoard {
     /**
      * Place an item on the board
      */
-    void insertItem(IPosition position, IItem item);
+    void insertItem(Position position, IItem item);
     void insertItem(int x, int y, IItem item);
 
     /**
@@ -22,14 +22,14 @@ public interface IBoard {
     /**
      * Get list of items in a position
      */
-    ArrayList<IItem> getItems(IPosition position);
+    ArrayList<IItem> getItems(Position position);
     ArrayList<IItem> getItems(int x, int y);
 
     /**
      * Check if a location on the board is free (contains no robot)
      * @return
      */
-    boolean isFree(IPosition position);
+    boolean isFree(Position position);
     boolean isFree(int x, int y);
 
     /**

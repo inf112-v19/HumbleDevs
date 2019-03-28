@@ -10,11 +10,6 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- *
- * Note to assignment 3:
- * 		- The chooseCards() - method is just to make the robot get some cards when we are testing the
- * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
- * 		  that are controlled by the computer.
  * @author Even Kolsgaard
  *
  */
@@ -22,33 +17,32 @@ public abstract class Robot implements IRobot {
 
     private Direction dir;
     private Position pos;
-    private int lifeTokens;
+    private int lifeTokens = 3;
     private Position backup;
     private ProgramCard[] cards;
     private int visitedFlags = 0;
-    private int damageTokens;
+    private int damageTokens = 0;
     private boolean destroyed;
     private boolean poweredDown;
     private String name;
+    private String filePath;
 
-    public Robot (Direction dir, int xPos, int yPos, String name){
+    public Robot (Direction dir, int xPos, int yPos, String name, String filePath){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
-        this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
-        this.damageTokens = 0;
-        this.poweredDown = false;
         this.name = name;
+        this.filePath = filePath;
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
         cards = new ProgramCard[5];
         Random rn = new Random();
-        int registers = 9 - damageTokens;
-        if(registers >= 5) {
-            registers = 5;
+        int register = 9 - getDamageTokens();
+        if(register > 5){
+            register = 5;
         }
-        for(int x = 0; x < registers; x++) {
+        for(int x = 0; x < register; x++) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
             this.cards[x] = s;
         }
@@ -125,6 +119,7 @@ public abstract class Robot implements IRobot {
         }
     }
 
+    @Override
     public void takeDamage(int damage){
         this.damageTokens = this.damageTokens + damage;
         if(damageTokens >= 10){
@@ -157,7 +152,6 @@ public abstract class Robot implements IRobot {
             visitedFlags++;
             makeBackup(this.pos);
         }
-
     }
     @Override
     public void respawn() {
@@ -174,16 +168,27 @@ public abstract class Robot implements IRobot {
         this.poweredDown = true;
     }
 
+    @Override
+    public boolean isPoweredDown(){
+        return poweredDown;
+    }
+
+    @Override
     public boolean isDestroyed() {
         return this.destroyed;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }
 
+    @Override
     public int getDamageTokens(){
         return this.damageTokens;
     }
 
+    public String getPath(){
+        return this.filePath;
+    }
 }

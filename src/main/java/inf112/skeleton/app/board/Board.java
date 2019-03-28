@@ -2,10 +2,12 @@ package inf112.skeleton.app.board;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import inf112.skeleton.app.GameObjects.Items.Dock;
 import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.GameObjects.Items.ItemFactory;
 import inf112.skeleton.app.GameObjects.Robot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -15,9 +17,9 @@ import java.util.ArrayList;
  *
  */
 public class Board implements IBoard {
-    protected final int width;
-    protected final int height;
-    protected final int size;
+    private final int width;
+    private final int height;
+    private final int size;
     private ArrayList<Square> map;
 
 
@@ -26,10 +28,8 @@ public class Board implements IBoard {
         this.width = width;
         this.size = height * width;
         map = new ArrayList<>();
-        for (int i = 0; i < height;i++) {
-            for (int j = 0; j < width; j++) {
-                map.add(new Square());
-            }
+        for(int i = 0; i < size; i++){
+            map.add(new Square());
         }
     }
 
@@ -51,14 +51,11 @@ public class Board implements IBoard {
         this.width = (int) tiledMap.getProperties().get("width");
         this.size = height * width;
         map = new ArrayList<>();
-
-
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 map.add(new Square());
             }
         }
-
 
         for (int l = 0; l < tiledMap.getLayers().size(); l++) {
             TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(l);
@@ -91,8 +88,8 @@ public class Board implements IBoard {
 
 
     @Override
-    public void insertItem(IPosition position, IItem element) {
-        Square sq = map.get(position.getIndex());
+    public void insertItem(Position position, IItem element) {
+        Square sq = map.get(toIndex(position));
         sq.addElement(element);
     }
 
@@ -108,7 +105,7 @@ public class Board implements IBoard {
         sq.addElement(element);
     }
 
-    //Uses the Tile ID (1-indexed based in position in tileset)
+    //Uses the Tile ID (1-indexed based in position in tileSet)
     public void insertItem(int x, int y, int id) {
         insertItem(x, y, createItemFromId(id));
     }
@@ -120,11 +117,10 @@ public class Board implements IBoard {
     }
 
     @Override
-    public ArrayList<IItem> getItems(IPosition position) {
-        Square sq = map.get(position.getIndex());
+    public ArrayList<IItem> getItems(Position position) {
+        Square sq = map.get(toIndex(position));
         return sq.getElements();
     }
-
     @Override
     public ArrayList<IItem> getItems(int x, int y) {
         int index = toIndex(x,y);
@@ -132,21 +128,21 @@ public class Board implements IBoard {
         return sq.getElements();
     }
 
-    public Robot getRobot(IPosition position) {
+    public Robot getRobot(Position position) {
         if(!isFree(position)) {
-            Square sq = map.get(position.getIndex());
+            Square sq = map.get(toIndex(position));
             return sq.getRobot();
         }
         return null;
     }
 
-    @Override// Sjekker for robot
-    public boolean isFree(IPosition position) {
-        Square sq = map.get(position.getIndex());
+    @Override
+    public boolean isFree(Position position) {
+        Square sq = map.get(toIndex(position));
         return !sq.occupied();
     }
 
-    @Override// Sjekker for robot
+    @Override
     public boolean isFree(int x, int y) {
         int index = toIndex(x,y);
         Square sq = map.get(index);
@@ -154,20 +150,44 @@ public class Board implements IBoard {
     }
 
     public void removeRobot(Position pos) {
-        Square sq = map.get(pos.getIndex());
+        Square sq = map.get(toIndex(pos));
         sq.removeRobot();
     }
 
     public void insertRobot(Position pos, Robot rob) {
-        Square sq = map.get(pos.getIndex());
+        Square sq = map.get(toIndex(pos));
         if(isFree(pos)) {
             sq.addRobot(rob);
         }
     }
 
+    public ArrayList<Position> getDockPositions(){
+        ArrayList<Position> docks = new ArrayList<>(8);
+        for(int x = 0; x < size; x++){
+            Position pos = getPositionFromIndex(x);
+            ArrayList<IItem> items = getItems(pos);
+            for(IItem item : items){
+                if(item instanceof Dock){
+                    docks.add(((Dock) item).getNumber()-1, getPositionFromIndex(x));
+                }
+            }
+        }
+        return docks;
+    }
+    public Position getPositionFromIndex(int index){
+        int div = index/width;
+        int rest = index%width;
+        return new Position(rest,div);
+    }
+
     @Override
     public int toIndex(int x, int y) {
         return (y * width) + x;
+    }
+    public int toIndex(Position pos){
+        int x = pos.getX();
+        int y = pos.getY();
+        return toIndex(x,y);
     }
 
     @Override

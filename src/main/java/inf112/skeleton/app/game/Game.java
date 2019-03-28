@@ -13,6 +13,8 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import org.lwjgl.Sys;
+import sun.plugin.util.ProgressMonitorAdapter;
 
 /**
  * The class that controls most of the game. The game class is the class that
@@ -24,27 +26,28 @@ public class Game {
 	private Board board;
 	private Robot[] robots;
 	private ProgramCardDeck cardPack;
-	private int round;
 
 
 	public Game(Board board, int players) {
 		this.board = board;
-		this.cardPack = new ProgramCardDeck();
-		this.round = 1;
 		robots = new Robot[players];
-		initializePlayers(players);
+	}
+	public void setUp(){
+		initializePlayers(robots.length);
 	}
 
 	/**
 	 * Starts the a new round by dealing new cards to every player
 	 */
 	public void startRound() {
+		this.cardPack = new ProgramCardDeck();
 		for (Robot robot : robots) {
-			ProgramCard[] newCards = cardPack.getRandomCards();
+			// Må først avgjøre om man ønsker å "power down"
+			int numbCards = 9 - robot.getDamageTokens();
+			ProgramCard[] newCards = cardPack.getRandomCards(numbCards);
 			robot.chooseCards(newCards);
 		}
 	}
-
 	/**
 	 * Calls the methods to that makes up a round. Not every method this method uses is
 	 * implemented, but it gives a nice illustration on how the game should work.
@@ -66,14 +69,13 @@ public class Game {
 	 *
 	 * @param nr the number of the phase in this round
 	 */
-	private void phase(int nr) {
+	public void phase(int nr) {
 		int[] prio = findPriority(nr);
 		for (int x = robots.length - 1; x >= 0; x--) {
 			int robot = prio[x];
 			robotDoTurn(robots[robot], nr);
 		}
 	}
-
 	/**
 	 * Method that does the movement actions on the board e.g. gear
 	 */
@@ -114,11 +116,13 @@ public class Game {
 							robotMove(rob,((ConveyorBelt) var).getDirection());
 						}
 						if(rotate != null) {
-							if (rotate.equals(Action.LEFTTURN)) {
-								rob.rotateLeft();
-							}
-							if (rotate.equals(Action.RIGHTTURN)) {
-								rob.rotateRight();
+							if(!rob.getDirection().equals(((ConveyorBelt) temp).getDirection())){
+								if (rotate.equals(Action.LEFTTURN)) {
+									rob.rotateLeft();
+								}
+								if (rotate.equals(Action.RIGHTTURN)) {
+									rob.rotateRight();
+								}
 							}
 						}
 						updateBoard(startPos,rob.getPosition());
@@ -138,7 +142,6 @@ public class Game {
 			}
 		}
 	}
-
 	/**
 	 * Method that activates the activities on the board that doesn't change the robots placement
 	 * or/and rotation e.g. laser
@@ -227,6 +230,9 @@ public class Game {
 	 */
 	public void shootLasers() {
 		for(Robot rob : robots){
+			if(rob.isPoweredDown() || rob.isDestroyed()){
+				continue;
+			}
 			Direction shootingDir = rob.getDirection();
 			Object obstruction = trackLaser(shootingDir,rob.getPosition());
 			if (obstruction instanceof Robot){
@@ -245,16 +251,25 @@ public class Game {
 			if(rob.isDestroyed()) {
 				if(!rob.gameOver()) {
 					rob.respawn();
-					board.insertRobot(rob.getPosition(), rob);
+					if(board.isFree(rob.getPosition())){
+						board.insertRobot(rob.getPosition(), rob);
+					} else {
+						// Må la spilleren velge en posisjon ved siden av backup
+						// Roboten må oppdatere plasseringen sin
+					}
+
 				}
 			}
 		}
 	}
 	/**
-	 * Checks if any of the robots are placed on fields that repair them
+	 * Checks if any of the robots are placed on fields that repairs them
 	 */
 	public void repairAndCheckFlags() {
 		for(Robot rob : robots){
+			if (rob.isDestroyed()){
+				continue;
+			}
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
 				if(item instanceof Wrench) {
@@ -274,7 +289,7 @@ public class Game {
 	 * Checks if any robots have visited all flags.
 	 * @return the robot that have visited all flags, returns null if nobody has done it yet.
 	 */
-	private Robot finished() {
+	public Robot finished() {
 		for(Robot robot : robots){
 			if(robot.visitedFlags() == 4) {
 				return robot;
@@ -305,7 +320,7 @@ public class Game {
 		} else if (action == Action.MOVEFORWARD) {
 			int move = card.getMove();
 			while(move > 0) {
-				if(!rob.isDestroyed()) {
+				if(rob.isDestroyed()) {
 					break;
 				}
 				if(!robotMove(rob,rob.getDirection())) {
@@ -415,7 +430,15 @@ public class Game {
 	 */
 	public int[] findPriority(int cardnr) {
 		double[][] pri = new double[robots.length][2];
+		int count = 0;
 		for(int x = 0; x < robots.length; x++) {
+			ProgramCard card = robots[x].getCards()[cardnr];
+			if(card == null){
+				pri[x][1] = x;
+				pri[x][0] = -1;
+				count++;
+				continue;
+			}
 			pri[x][1] = x;
 			pri[x][0] = robots[x].getCards()[cardnr].getPriority();
 		}
@@ -424,31 +447,39 @@ public class Game {
 				return Double.compare(a[0], b[0]);
 			}
 		});
-		int[] prio = new int[robots.length];
+		int[] prio = new int[robots.length - count];
+		int index = 0;
 		for(int x = 0; x < robots.length; x++) {
-			prio[x] = (int) pri[x][1];
+			int prior = (int) pri[x][0];
+			if(prior == -1){
+				continue;
+			}
+			prio[index] = (int) pri[x][1];
+			index++;
 		}
 		return prio;
 	}
 
 	private void initializePlayers(int numb) {
+		ArrayList<Position> startDocks = board.getDockPositions();
 		for(int x = 0; x < numb; x++) {
-			Player per = new Player(Direction.NORTH, 2+x, 2, "Robot" + x);
-			robots[x] = per;
-			board.insertRobot(new Position(2+x,2), per);
+			Position pos = startDocks.get(x);
+			String filePath = "texture/robot" + x+1 + ".png";
+			Player player = new Player(Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
+			board.insertRobot(pos,player);
 		}
 	}
 	/**
-	 * Method only used to for test cases
+	 * Method only used to get the robots
 	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
 		return this.robots;
 	}
 	/**
-	 * Method to update the position of a robot on the board
+	 * Method to updates the position of a robot on the board
 	 * @param start the position where the robot was placed
-	 * @param end the position where to robot is moved to now
+	 * @param end the position where to robot is moved
 	 */
 	private void updateBoard(Position start, Position end) {
 		Robot rob = board.getRobot(start);
