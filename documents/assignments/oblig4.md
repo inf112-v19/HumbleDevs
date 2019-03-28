@@ -52,3 +52,17 @@ Alle møtereferatene våre ligger under Documents/meetingReports. Det har funger
 Vi synes det har fungert bra med den arbeidsfordelingen vi har hatt, men dette gjenspeiler seg ikke helt i antall commits og antall kodelinjer. Da for eksempel Joachim jobber med libGDX og det har blitt mye tid på å finne de beste løsningene, men dette vil jevne seg utover etterhvert som det grafiske får en mer sentral plass i prosjektet.
 I tillegg til dette bruker vi også parprogrammering som vil gjøre at det som blir gjort bare blir registrert på en person.
 En siste ting er at noen committer oftere enn andre, og dette kan skape en ujevn fordeling i committsene. Alt i alt er vi fornøyde med arbeidsfordelingen og mener at alle bidrar omtrent like mye i gruppen.
+
+**Krav MVP**
+- [] Man må kunne spille en komplett runde
+Man må kunne vinne spillet spillet ved å besøke siste flagg (fullføre et spill)
+Det skal være lasere på brettet
+Det skal være hull på brettet
+Skademekanismer (spilleren får færre kort ved skade)
+Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem Fungerende samlebånd på brettet som flytter robotene
+Fungerende gyroer på brettet som flytter robotene game over etter 3 tapte liv multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) 
+Power down
+Samlebånd som går i dobbelt tempo
+Options-kort
+Plassere flagg selv før spillet starter
+Sette sammen ulike brett til større spillflate
