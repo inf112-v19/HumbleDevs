@@ -11,45 +11,44 @@ import inf112.skeleton.app.gameObjects.Robot;
  *
  */
 public interface ISquare<T> {
-	
-/**
- * Method that checks if there are any elements on this particular square
- * @return the list of element if they exists, otherwise null
- */
-public ArrayList<T> getElements();
-	
-/**
- * Checks if there already is a robot on this square
- * @return True if there is a robot on the square, otherwise False
- */
-public boolean occupied();
 
-/**
- * Method that adds a robot to the square, given that it's not occupied
- * @robot robot the robot to be added
- * @return True if it succeeded to add a robot, False otherwise
- */
-public boolean addRobot(Robot robot);
+    /**
+     * Method that checks if there are any elements on this particular square
+     * @return the list of element if they exists, otherwise null
+     */
+    public ArrayList<T> getElements();
 
-/**
- * Add an item to a square
- * @param elem the element to be added
- */
-public void addElement(T elem);
+    /**
+     * Checks if there already is a robot on this square
+     * @return True if there is a robot on the square, otherwise False
+     */
+    public boolean occupied();
 
-/**
- * Method to remove the robot from the square
- */
-public void removeRobot();
+    /**
+     * Method that adds a robot to the square, given that it's not occupied
+     * @robot robot the robot to be added
+     * @return True if it succeeded to add a robot, False otherwise
+     */
+    public boolean addRobot(Robot robot);
 
-/**
- * Clears all the elements from the list
- */
-public void removeElements();
+    /**
+     * Add an item to a square
+     * @param elem the element to be added
+     */
+    public void addElement(T elem);
 
-/**
- * @return the robot if there is one, otherwise return null
- */
-public Robot getRobot();
+    /**
+     * Method to remove the robot from the square
+     */
+    public void removeRobot();
 
+    /**
+     * Clears all the elements from the list
+     */
+    public void removeElements();
+
+    /**
+     * @return the robot if there is one, otherwise return null
+     */
+    public Robot getRobot();
 }

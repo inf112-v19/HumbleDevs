@@ -9,7 +9,6 @@ import inf112.skeleton.app.gameObjects.Robot;
 
 import java.util.ArrayList;
 
-
 /**
  * Board represented as a grid with width*height size.
  * Contains a Square for each position.
@@ -20,7 +19,6 @@ public class Board implements IBoard {
     private final int height;
     private final int size;
     private ArrayList<Square> map;
-
 
     public Board(int width, int height) {
         this.height = height;
@@ -99,11 +97,6 @@ public class Board implements IBoard {
         sq.addElement(element);
     }
 
-    public void insertItem(int index, IItem element) {
-        Square sq = map.get(index);
-        sq.addElement(element);
-    }
-
     //Uses the Tile ID (1-indexed based in position in tileSet)
     public void insertItem(int x, int y, int id) {
         insertItem(x, y, createItemFromId(id));
@@ -127,6 +120,7 @@ public class Board implements IBoard {
         return sq.getElements();
     }
 
+    @Override
     public Robot getRobot(Position position) {
         if(!isFree(position)) {
             Square sq = map.get(toIndex(position));
@@ -148,16 +142,20 @@ public class Board implements IBoard {
         return !sq.occupied();
     }
 
+    @Override
     public void removeRobot(Position pos) {
         Square sq = map.get(toIndex(pos));
         sq.removeRobot();
     }
 
-    public void insertRobot(Position pos, Robot rob) {
+    @Override
+    public boolean insertRobot(Position pos, Robot rob) {
         Square sq = map.get(toIndex(pos));
         if(isFree(pos)) {
             sq.addRobot(rob);
+            return true;
         }
+        return false;
     }
 
     public ArrayList<Position> getDockPositions(){
@@ -173,6 +171,7 @@ public class Board implements IBoard {
         }
         return docks;
     }
+    @Override
     public Position getPositionFromIndex(int index){
         int div = index/width;
         int rest = index%width;
@@ -183,6 +182,8 @@ public class Board implements IBoard {
     public int toIndex(int x, int y) {
         return (y * width) + x;
     }
+
+    @Override
     public int toIndex(Position pos){
         int x = pos.getX();
         int y = pos.getY();
