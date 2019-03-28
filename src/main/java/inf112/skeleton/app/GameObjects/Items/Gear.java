@@ -4,7 +4,6 @@ import inf112.skeleton.app.card.Action;
 
 /*
  * Gear class for rotation
- * @author Amalie Rovik
  */
 
 public class Gear implements IItem {
@@ -15,18 +14,8 @@ public class Gear implements IItem {
     }
 
     @Override
-    public int tileId() {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return "Gear";
-    }
-
-    @Override
-    public char getSymbol() {
-        return '°';
     }
 
     public Action getAction() {

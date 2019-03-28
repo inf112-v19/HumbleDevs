@@ -1,6 +1,5 @@
 package inf112.skeleton.app.GameObjects.Items;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.board.Direction;
 
 public class LaserShoot implements IItem {
@@ -14,18 +13,8 @@ public class LaserShoot implements IItem {
     }
 
     @Override
-    public int tileId() {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return "LaserShoot";
-    }
-
-    @Override
-    public char getSymbol() {
-        return '>';
     }
 
     public Direction getDirection() {

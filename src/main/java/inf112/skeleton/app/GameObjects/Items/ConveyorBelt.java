@@ -7,7 +7,6 @@ public class ConveyorBelt implements IItem {
 
     private Direction direction;
     private String name;
-    private char symbol;
 
     //Bending
     private Action rotation;
@@ -18,7 +17,6 @@ public class ConveyorBelt implements IItem {
         this.direction = direction;
         this.speed = speed;
         this.name = "ConveyorBelt";
-        this.symbol = '_';
     }
 
     // Constructor for "bending" conveyorbelts
@@ -26,7 +24,6 @@ public class ConveyorBelt implements IItem {
         this.direction = direction;
         this.speed = speed;
         this.name = "BendingConveyorBelt";
-        this.symbol = '_';
 
         if(clockwise) rotation = Action.RIGHTTURN;
         else rotation = Action.LEFTTURN;
@@ -49,17 +46,8 @@ public class ConveyorBelt implements IItem {
     }
 
     @Override
-    public int tileId() {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
-    public char getSymbol() {
-        return this.symbol;
-    }
 }

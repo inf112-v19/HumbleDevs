@@ -26,18 +26,8 @@ public class Laser implements IItem {
     }
 
     @Override
-    public int tileId() {
-        return 0;
-    }
-
-    @Override
     public String getName() {
         return "Laser";
-    }
-
-    @Override
-    public char getSymbol() {
-        return '-';
     }
 
     public Direction getDirection() {

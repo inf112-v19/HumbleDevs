@@ -1,12 +1,9 @@
 package inf112.skeleton.app.GameObjects.Items;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.board.Direction;
 
 /**
  * Wall class that makes all the walls in the game. A robot can´t cross a wall.
- * @author Amalie Rovik
- *
  */
 
 public class Wall implements IItem {
@@ -21,7 +18,6 @@ public class Wall implements IItem {
         this.dir = dir;
         this.corner = false;
         this.name = "Wall";
-        this.symbol = '|';
     }
 
     //Corner wall
@@ -30,7 +26,6 @@ public class Wall implements IItem {
         this.dir2 = dir2;
         this.corner = true;
         this.name = "CornerWall";
-        this.symbol = '<';
     }
 
     public Direction getDir() {
@@ -57,20 +52,8 @@ public class Wall implements IItem {
         this.corner = corner;
     }
 
-
-    @Override
-    public int tileId() {
-        return 0;
-    }
-
     @Override
     public String getName() {
         return this.name;
     }
-
-    @Override
-    public char getSymbol() {
-        return this.symbol;
-    }
-
 }
