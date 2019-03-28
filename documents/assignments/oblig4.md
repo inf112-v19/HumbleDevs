@@ -55,14 +55,16 @@ En siste ting er at noen committer oftere enn andre, og dette kan skape en ujevn
 
 **Krav MVP**
 - [ ] Man må kunne spille en komplett runde
-Man må kunne vinne spillet spillet ved å besøke siste flagg (fullføre et spill)
-Det skal være lasere på brettet
-Det skal være hull på brettet
-Skademekanismer (spilleren får færre kort ved skade)
-Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem Fungerende samlebånd på brettet som flytter robotene
-Fungerende gyroer på brettet som flytter robotene game over etter 3 tapte liv multiplayer over LAN eller Internet (trenger ikke gjøre noe fancy her, men må kunne spille på ulike maskiner mot hverandre) 
-Power down
-Samlebånd som går i dobbelt tempo
-Options-kort
-Plassere flagg selv før spillet starter
-Sette sammen ulike brett til større spillflate
+- [x] Man må kunne vinne spillet spillet ved å besøke siste flagg (fullføre et spill)
+- [x] Det skal være lasere på brettet
+- [x] Det skal være hull på brettet
+- [ ] Skademekanismer (spilleren får færre kort ved skade)
+- [x] Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem Fungerende samlebånd på brettet som flytter robotene
+- [ ] Fungerende gyroer på brettet som flytter robotene
+- [x] Game over etter 3 tapte liv
+- [ ] Multiplayer over LAN eller Internet 
+- [ ] Power down
+- [x] Samlebånd som går i dobbelt tempo
+- [ ] Options-kort
+- [ ] Plassere flagg selv før spillet starter
+- [ ] Sette sammen ulike brett til større spillflate
