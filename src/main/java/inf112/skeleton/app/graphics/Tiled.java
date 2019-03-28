@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -17,13 +16,13 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.board.Direction;
 
 
 public class Tiled extends ApplicationAdapter implements InputProcessor {
-    Texture robotTexture;
-    TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
+    private static TiledMap tiledMap;
+    private OrthographicCamera camera;
+    private TiledMapRenderer tiledMapRenderer;
 
     public void create() {
         float w = Gdx.graphics.getWidth();
@@ -35,8 +34,6 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
         Board board = new Board(tiledMap);
 
-//        insertPlayer(0, 0, "texture/robot.png");
-
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
     }
@@ -45,26 +42,35 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * Insert a player/robot texture in a cell on the board.
      * The (x,y) position (0,0) is bottom left
      *
-     * insertPlayer(0, 0, "texture/robot.png"); //should place the robot texture in bottom left corner
+     * drawPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
      * @param x
      * @param y
      * @param texturePath
      */
-    public void insertPlayer(int x, int y, String texturePath) {
+    public static void drawPlayer(int x, int y, String texturePath) {
+        drawPlayer(x, y, texturePath, Direction.NORTH);
+    }
+    public static void drawPlayer(int x, int y, String texturePath, Direction facingDir) {
         //Placing a player on the board
         //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal(texturePath));
+        Texture robotTexture = new Texture(Gdx.files.internal(texturePath));
         //Create a TextureRegion that is the entire size of the texture
         TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
         //Create a cell(tile) to add to the layer
         Cell cell = new Cell();
         //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
+        //Rotate
+        if(facingDir == Direction.WEST) cell.setRotation(1);
+        else if(facingDir == Direction.SOUTH) cell.setRotation(2);
+        else if(facingDir == Direction.EAST) cell.setRotation(3);
+        else cell.setRotation(0); //By default no rotation (should be facing NORTH)
         //Get layer to put cell in
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
         //place cell on layer in (x,y) coordinate
         layer.setCell(x, y, cell);
     }
+
 
     public void render() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
