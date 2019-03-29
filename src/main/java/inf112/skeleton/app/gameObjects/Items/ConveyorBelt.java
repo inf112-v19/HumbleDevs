@@ -7,8 +7,6 @@ public class ConveyorBelt implements IItem {
 
     private Direction direction;
     private String name;
-
-    //Bending
     private Action rotation;
     private int speed;
 
@@ -31,16 +29,24 @@ public class ConveyorBelt implements IItem {
 
     /**
      * Speed is a step speed multiplier, usually 1 or 2
-     * @return
+     * @return the step speed
      */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * Get the rotation of the conveyor belt
+     * @return the rotation, RIGHTTURN or LEFTTURN
+     */
     public Action getRotation() {
         return rotation;
     }
 
+    /**
+     * Get the direction that the conveyor belt points
+     * @return direction of the conveyor belt
+     */
     public Direction getDirection() {
         return direction;
     }
@@ -49,5 +55,4 @@ public class ConveyorBelt implements IItem {
     public String getName() {
         return this.name;
     }
-
 }

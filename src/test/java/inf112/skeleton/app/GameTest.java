@@ -53,6 +53,25 @@ public class GameTest {
         assertTrue(rob1.getCards()[1].getPriority() <= rob2.getCards()[1].getPriority());
         assertTrue(rob2.getCards()[1].getPriority() <= rob3.getCards()[1].getPriority());
     }
+    @Test
+    public void testMovingOutsideBoard(){
+        Robot rob = robs[0];
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        assertTrue(rob.isDestroyed());
+        Robot rob1 = robs[2];
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        assertTrue(rob1.isDestroyed());
+    }
 
     /**
      * If a robot has over 4 damage tokens, then his registers should start to lock. The method findPriority(),

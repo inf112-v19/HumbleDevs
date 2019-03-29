@@ -45,21 +45,6 @@ public abstract class Robot implements IRobot {
             this.cards[x] = s;
         }
     }
-
-    @Override
-    public void move(int i){
-        for(int j = 0; j < i; j++){
-            switch(this.dir){
-                case NORTH: this.pos.moveNorth();
-                    break;
-                case SOUTH: this.pos.moveSouth();
-                    break;
-                case EAST: this.pos.moveEast();
-                    break;
-                case WEST: this.pos.moveWest();
-            }
-        }
-    }
     @Override
     public void move(Direction dir) {
         switch(dir) {

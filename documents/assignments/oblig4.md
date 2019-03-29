@@ -1,10 +1,11 @@
-## Deloppgave 1: Prosjekt og prosjektstruktur
+#Obligatorisk oppgave 4
+### Deloppgave 1: Prosjekt og prosjektstruktur
 					
 **Testrolle**
 
 Testrollen blir fordelt til Amalie, da det passer med arbeidsfordelingen og mengden arbeid. Ingen av oss har brukt Mockito før, og den første oppgaven blir å sette seg inn i dette. Deretter tar vi det i bruk og implementerer det inn i programmet. Det er ingen på gruppen som har erfaring med automatisk genererte tester, men vi ser på det som en fordel å bruke slike tester. Blant annet vil automatiske tester hente ut gjemt informasjon, gå mye raskere, være mer presise og vi vil bruke mindre tid på å skrive tester selv. 
 
-Alle har skrevet manuelle tester underveis til den koden vi selv har skrevet. Dette synes vi har fungert bra, da den som har skrevet koden har best kontroll på funksjonene og hva som er hensikten. Alle som har skrevet tester har selv ansvar for å skrive god dokumentasjon.
+Det har til nå bare blitt skrevet automatiske tester, det har ikke vært et behov for manuelle. Dette synes vi har fungert bra, da den som har skrevet koden har best kontroll på funksjonene og hva som er hensikten. Alle som har skrevet tester har selv ansvar for å skrive god dokumentasjon.
 
 
 **Prosjektmetodikk**
@@ -36,9 +37,9 @@ Et vanskelig element er at vi ikke får oppgaven til innleveringen før bare dag
 
 **Tre forbedringspunkter**
 
-	1. Mer jevnt arbeid over hele sprinten
-	2. Kodestruktur, bedre refactoring
-	3. Ha flere deloppgaver i stedet for store oppgaver
+    1. Mer jevnt arbeid over hele sprinten
+    2. Kodestruktur, bedre refactoring
+    3. Ha flere deloppgaver i stedet for store oppgaver
 
 
 
@@ -53,14 +54,16 @@ Vi synes det har fungert bra med den arbeidsfordelingen vi har hatt, men dette g
 I tillegg til dette bruker vi også parprogrammering som vil gjøre at det som blir gjort bare blir registrert på en person.
 En siste ting er at noen committer oftere enn andre, og dette kan skape en ujevn fordeling i committsene. Alt i alt er vi fornøyde med arbeidsfordelingen og mener at alle bidrar omtrent like mye i gruppen.
 
-**Krav MVP**
-- [ ] Man må kunne spille en komplett runde
-- [x] Man må kunne vinne spillet spillet ved å besøke siste flagg (fullføre et spill)
+### Deloppgave 2: Krav
+**Status MVP krav**
+- [ ] Spille en komplett runde
+- [x] Vinne spillet ved å besøke siste flagg (fullføre et spill)
 - [x] Det skal være lasere på brettet
 - [x] Det skal være hull på brettet
 - [ ] Skademekanismer (spilleren får færre kort ved skade)
-- [x] Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem Fungerende samlebånd på brettet som flytter robotene
-- [ ] Fungerende gyroer på brettet som flytter robotene
+- [x] Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem
+- [x] Fungerende samlebånd på brettet som flytter robotene
+- [x] Fungerende gyroer på brettet som flytter robotene
 - [x] Game over etter 3 tapte liv
 - [ ] Multiplayer over LAN eller Internet 
 - [ ] Power down

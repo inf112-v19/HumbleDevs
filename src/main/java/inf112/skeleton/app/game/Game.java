@@ -21,8 +21,6 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 public class Game {
 	private Board board;
 	private Robot[] robots;
-	private ProgramCardDeck cardPack;
-
 
 	public Game(Board board, int players) {
 		this.board = board;
@@ -36,7 +34,7 @@ public class Game {
 	 * Starts the a new round by dealing new cards to every player
 	 */
 	public void startRound() {
-		this.cardPack = new ProgramCardDeck();
+		ProgramCardDeck cardPack = new ProgramCardDeck();
 		for (Robot robot : robots) {
 			// Må først avgjøre om man ønsker å "power down"
 			int numbCards = 9 - robot.getDamageTokens();
@@ -62,7 +60,6 @@ public class Game {
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
 	 * is going to be used this round. For every robot the robotDoTurn - method is called.
-	 *
 	 * @param nr the number of the phase in this round
 	 */
 	public void phase(int nr) {
@@ -157,7 +154,6 @@ public class Game {
 			}
 		}
 	}
-
 	/**
 	 * Method that returns the first obstacle you hit in a given direction from a position
 	 * @param shootingDir the direction of the line
@@ -251,7 +247,6 @@ public class Game {
 						// Må la spilleren velge en posisjon ved siden av backup
 						// Roboten må oppdatere plasseringen sin
 					}
-
 				}
 			}
 		}

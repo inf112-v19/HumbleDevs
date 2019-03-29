@@ -8,18 +8,18 @@ public class Square<IItem> implements ISquare<IItem>{
 	private Robot robot;
 	private ArrayList<IItem> elements;
 
-
 	public Square() {
 		this.robot = null;
 		elements = new ArrayList<>();
 	}
 
+	@Override
 	public ArrayList<IItem> getElements() {
 		ArrayList<IItem> list = (ArrayList<IItem>) elements.clone();
 		return list;
 	}
 
-
+	@Override
 	public boolean occupied() {
 		if(robot == null) {
 			return false;

@@ -12,6 +12,7 @@ public enum Direction {
 		SOUTH.opposite = NORTH;
 		EAST.opposite = WEST;
 		WEST.opposite = EAST;
+
 		NORTH.left = WEST;
 		SOUTH.left = EAST;
 		EAST.left = NORTH;
@@ -22,12 +23,26 @@ public enum Direction {
 		EAST.right = SOUTH;
 		WEST.right = NORTH;
 	}
+	/**
+	 * Get the opposite direction
+	 * @return the opposite direction
+	 */
 	public Direction getOppositeDirection() {
 		return opposite;
 	}
+
+	/**
+	 * Get the direction to the left
+	 * @return direction to the left
+	 */
 	public Direction left() {
 		return left;
 	}
+
+	/**
+	 * Get the direction to the right
+	 * @return direction to the right
+	 */
 	public Direction right() {
 		return right;
 	}
