@@ -1,6 +1,5 @@
-package inf112.skeleton.app.GameObjects.Items;
+package inf112.skeleton.app.gameObjects.Items;
 
-import inf112.skeleton.app.GameObjects.Items.IItem;
 import inf112.skeleton.app.board.Direction;
 
 public class Laser implements IItem {

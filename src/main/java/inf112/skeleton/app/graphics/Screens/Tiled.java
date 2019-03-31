@@ -1,13 +1,10 @@
-package inf112.skeleton.app.graphics;
+package inf112.skeleton.app.graphics.Screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -16,29 +13,35 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.graphics.GUI;
 
-
-public class Tiled extends ApplicationAdapter implements InputProcessor {
+public class Tiled extends ApplicationAdapter implements Screen {
     Texture robotTexture;
     TiledMap tiledMap;
     OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
+    private SpriteBatch batch;
+    private PlayerHUD playerHud;
+    private final GUI game;
+
+    public Tiled(final GUI game) {
+        this.game = game;
+        camera = new OrthographicCamera();
+
+    }
 
     public void create() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
+        batch = new SpriteBatch();
 
+        // 1100 - 768 = 332
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
         camera.update();
         tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
-        Board board = new Board(tiledMap);
-
-//        insertPlayer(0, 0, "texture/robot.png");
-
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor((InputProcessor) this);
     }
 
     /**
@@ -67,12 +70,20 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
     }
 
     public void render() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+
         camera.update();
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+
+    }
+
+    public void draw() {
+
     }
 
     public boolean keyDown(int keycode) {
@@ -120,9 +131,19 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
         return false;
     }
 
-    public TiledMap getTiledMap() {
-        return tiledMap;
+
+    @Override
+    public void show() {
+
     }
 
+    @Override
+    public void render(float delta) {
 
+    }
+
+    @Override
+    public void hide() {
+
+    }
 }

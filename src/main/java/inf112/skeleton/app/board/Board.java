@@ -2,9 +2,9 @@ package inf112.skeleton.app.board;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.ItemFactory;
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Items.ItemFactory;
+import inf112.skeleton.app.gameObjects.Robot;
 
 import java.util.ArrayList;
 

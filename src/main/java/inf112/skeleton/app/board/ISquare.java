@@ -2,7 +2,7 @@ package inf112.skeleton.app.board;
 
 import java.util.ArrayList;
 
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Robot;
 
 /**
  * The interface of a square on the map

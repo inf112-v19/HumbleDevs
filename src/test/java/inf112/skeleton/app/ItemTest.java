@@ -1,6 +1,6 @@
 package inf112.skeleton.app;
 
-import inf112.skeleton.app.GameObjects.Items.*;
+import inf112.skeleton.app.gameObjects.Items.*;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.Action;
 import org.junit.Test;

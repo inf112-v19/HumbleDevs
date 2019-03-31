@@ -1,20 +1,20 @@
 
 package inf112.skeleton.app.game;
 
-import inf112.skeleton.app.GameObjects.Items.ConveyorBelt;
-import inf112.skeleton.app.GameObjects.Items.Flag;
-import inf112.skeleton.app.GameObjects.Items.Gear;
-import inf112.skeleton.app.GameObjects.Items.Hammer;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.Laser;
-import inf112.skeleton.app.GameObjects.Items.Pit;
-import inf112.skeleton.app.GameObjects.Items.Wall;
-import inf112.skeleton.app.GameObjects.Items.Wrench;
+import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
+import inf112.skeleton.app.gameObjects.Items.Flag;
+import inf112.skeleton.app.gameObjects.Items.Gear;
+import inf112.skeleton.app.gameObjects.Items.Hammer;
+import inf112.skeleton.app.gameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Items.Laser;
+import inf112.skeleton.app.gameObjects.Items.Pit;
+import inf112.skeleton.app.gameObjects.Items.Wall;
+import inf112.skeleton.app.gameObjects.Items.Wrench;
 
 import java.util.ArrayList;
 
-import inf112.skeleton.app.GameObjects.Player;
-import inf112.skeleton.app.GameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Player;
+import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;

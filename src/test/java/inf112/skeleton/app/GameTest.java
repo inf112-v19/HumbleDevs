@@ -3,22 +3,18 @@ package inf112.skeleton.app;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import inf112.skeleton.app.GameObjects.Robot;
-import inf112.skeleton.app.GameObjects.Items.IItem;
-import inf112.skeleton.app.GameObjects.Items.Pit;
+import inf112.skeleton.app.gameObjects.Robot;
+import inf112.skeleton.app.gameObjects.Items.IItem;
+import inf112.skeleton.app.gameObjects.Items.Pit;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
-import inf112.skeleton.app.board.IBoard;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.board.Square;
-import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.game.Game;
 
 public class GameTest {

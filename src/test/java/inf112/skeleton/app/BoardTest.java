@@ -2,8 +2,8 @@ package inf112.skeleton.app;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import inf112.skeleton.app.GameObjects.Items.DefaultTile;
-import inf112.skeleton.app.GameObjects.Player;
+import inf112.skeleton.app.gameObjects.Items.DefaultTile;
+import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Square;
