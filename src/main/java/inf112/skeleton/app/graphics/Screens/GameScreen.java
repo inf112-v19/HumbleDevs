@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -91,6 +92,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         if (selectedCards.size() == 5) {
             addPlayerWithCardsToHashmap(selectedCards);
             selectedCards.clear();
+            presentCards();
         }
     }
 
@@ -133,13 +135,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         for (int i = 0; i < cards.length; i++) {
             // Her kan vi hente retning av kort og bruke assetmanager til å hente riktig bilde cards[i].getMove();
             Texture texture = new Texture(Gdx.files.internal("texture/test.jpg"));
-            Image img = new Image(texture);
+            final Image img = new Image(texture);
+
             final int finalI = i;
             img.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     addCardToSelected(cards[finalI]);
-                    //selectedCards.add() her må vi adde typen kort, altså cards.getMove();
+                    img.setColor(Color.GREEN);
+
                 }
             });
             table.add(img).padBottom(20);
