@@ -21,7 +21,6 @@ public class Tiled extends ApplicationAdapter implements Screen {
     OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
     private SpriteBatch batch;
-    private PlayerHUD playerHud;
     private final GUI game;
 
     public Tiled(final GUI game) {

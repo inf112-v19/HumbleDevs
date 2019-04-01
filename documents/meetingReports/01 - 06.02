@@ -1,0 +1,27 @@
+
+Første møte (06.02)
+Alle var tilstede.
+
+Vi diskuterte hvordan vi skal lage brettet, om det skal være dynamisk eller ikke i startfasen.
+Vil ha brett på 12*12.
+
+Snakket også om hvordan roboten skulle implementeres.
+
+Vi fant endelig gruppenavn, det ble HumbleDevs.
+
+Bendik tegnet på tavlen hvilke klasser vi skal ha med i begynnelsen:
+    Board:
+        - List<tile>
+    Tile:
+
+    Robot:
+        - int x
+        - int y
+        - Dir dir
+    GUI:
+
+Vi har også skrevet en mer detaljert rapport til oblig1, som leveres på fredag.
+
+Even hjalp til med koden som Linh hadde startet på.
+
+Joachim og Bendik har jobbet med å vise brettet og roboten. De har også sett på grafikken til spillet.
