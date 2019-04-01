@@ -71,3 +71,10 @@ En siste ting er at noen committer oftere enn andre, og dette kan skape en ujevn
 - [ ] Options-kort
 - [ ] Plassere flagg selv før spillet starter
 - [ ] Sette sammen ulike brett til større spillflate
+
+**Hvordan funker main nå?** 
+
+Main er foreløpig satt opp så den kjører et test-spill med 3 spillere. Det funker nå å klikke på 5 kort til hver person,
+ og deretter kommer det opp en sidebar med oversikt over de 3 spillerne, hvor mange liv de har og hvilke kort de har. 
+ Det mangler fortsatt en del ting på denne grafiske implementasjonen (bl.a. koble det opp mot bevegelse, spillogikk), 
+ men dette er for å illustrere hvor vi er kommet.
