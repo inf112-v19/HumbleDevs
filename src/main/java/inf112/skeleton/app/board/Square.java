@@ -7,19 +7,19 @@ import java.util.ArrayList;
 public class Square<IItem> implements ISquare<IItem>{
 	private Robot robot;
 	private ArrayList<IItem> elements;
-	
-	
+
 	public Square() {
 		this.robot = null;
 		elements = new ArrayList<>();
 	}
 
+	@Override
 	public ArrayList<IItem> getElements() {
-	    ArrayList<IItem> list = (ArrayList<IItem>) elements.clone();
-	    return list;
-    }
-	
+		ArrayList<IItem> list = (ArrayList<IItem>) elements.clone();
+		return list;
+	}
 
+	@Override
 	public boolean occupied() {
 		if(robot == null) {
 			return false;
@@ -37,7 +37,7 @@ public class Square<IItem> implements ISquare<IItem>{
 	}
 	@Override
 	public void addElement(IItem elem) {
-			elements.add(elem);
+		elements.add(elem);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class Square<IItem> implements ISquare<IItem>{
 
 	@Override
 	public void removeElements() {
-        elements.clear();
+		elements.clear();
 	}
 
 	@Override
@@ -57,5 +57,4 @@ public class Square<IItem> implements ISquare<IItem>{
 		}
 		return null;
 	}
-
 }

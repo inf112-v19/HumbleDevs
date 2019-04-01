@@ -17,14 +17,10 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 /**
  * The class that controls most of the game. The game class is the class that
  * keeps track of everything that happens.
- * @author Even Kolsgaard
- *
  */
 public class Game {
 	private Board board;
 	private Robot[] robots;
-	private ProgramCardDeck cardPack;
-
 
 	public Game(Board board, int players) {
 		this.board = board;
@@ -38,7 +34,7 @@ public class Game {
 	 * Starts the a new round by dealing new cards to every player
 	 */
 	public void startRound() {
-		this.cardPack = new ProgramCardDeck();
+		ProgramCardDeck cardPack = new ProgramCardDeck();
 		for (Robot robot : robots) {
 			// Må først avgjøre om man ønsker å "power down"
 			int numbCards = 9 - robot.getDamageTokens();
@@ -56,7 +52,7 @@ public class Game {
 			phase(x);
 			activateMovement();
 			activatePassiveItems();
-			shootLasers();
+			robotShootLasers();
 			repairAndCheckFlags();
 		}
 		respawnRobots();
@@ -64,7 +60,6 @@ public class Game {
 	/**
 	 * Starts one phase. The robots are first sorted with respect to the priority of the card that
 	 * is going to be used this round. For every robot the robotDoTurn - method is called.
-	 *
 	 * @param nr the number of the phase in this round
 	 */
 	public void phase(int nr) {
@@ -101,9 +96,7 @@ public class Game {
 							if(is instanceof Pit){
 								rob.die();
 								board.removeRobot(rob.getPosition());
-							} else if (is instanceof Wall){
-								break outerloop;
-							} else if (is instanceof Laser){
+							} else if (is instanceof Wall) {
 								break outerloop;
 							} else if (is instanceof ConveyorBelt){
 								rotate = ((ConveyorBelt) is).getRotation();
@@ -161,7 +154,6 @@ public class Game {
 			}
 		}
 	}
-
 	/**
 	 * Method that returns the first obstacle you hit in a given direction from a position
 	 * @param shootingDir the direction of the line
@@ -195,6 +187,7 @@ public class Game {
 						return item;
 					}
 				}
+				// Vil være unødvendig hvis lasere ikke kan plasseres på baksiden vegger
 				if (item instanceof Laser) {
 					Direction turretDir = ((Laser) item).getDirection();
 					if (turretDir == shootingDir) {
@@ -226,7 +219,7 @@ public class Game {
 	/**
 	 * Every robot shoots their laser
 	 */
-	public void shootLasers() {
+	public void robotShootLasers() {
 		for(Robot rob : robots){
 			if(rob.isPoweredDown() || rob.isDestroyed()){
 				continue;
@@ -255,7 +248,6 @@ public class Game {
 						// Må la spilleren velge en posisjon ved siden av backup
 						// Roboten må oppdatere plasseringen sin
 					}
-
 				}
 			}
 		}
@@ -271,12 +263,11 @@ public class Game {
 			ArrayList<IItem> items = board.getItems(rob.getPosition());
 			for(IItem item : items){
 				if(item instanceof RepairTool) {
-				    RepairTool repairTool = (RepairTool) item;
 					rob.makeBackup(rob.getPosition());
 					rob.repairDamage();
-					if (repairTool.wrenchAndHammer()) {
-                        // Draw option card
-                    }
+					if(((RepairTool) item).wrenchAndHammer()){
+						// Draw option card
+					}
 				} else if(item instanceof Flag){
 					rob.visitFlag((Flag)item);
 				}
@@ -378,12 +369,6 @@ public class Game {
 					return false;
 				}
 			}
-			if(obstruction instanceof Laser){
-				Direction laserDir = ((Laser) obstruction).getDirection();
-				if(laserDir.getOppositeDirection() == dir){
-					return false;
-				}
-			}
 		}
 		// Check for obstructions on the next tile
 		for(IItem it : items){
@@ -395,13 +380,7 @@ public class Game {
 			if(it instanceof Wall) {
 				Direction wallDir1 = ((Wall) it).getDir();
 				Direction wallDir2 = ((Wall) it).getDir2();
-				if(wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir){
-					return false;
-				}
-			}
-			if(it instanceof  Laser){
-				Direction laserDir = ((Laser) it).getDirection();
-				if (laserDir.getOppositeDirection() == dir){
+				if (wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir) {
 					return false;
 				}
 			}
@@ -468,7 +447,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Method only used to get the robots
+	 * Method used to get the robots
 	 * @return array of robots
 	 */
 	public Robot[] getRobots() {

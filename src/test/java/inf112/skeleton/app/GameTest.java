@@ -53,6 +53,25 @@ public class GameTest {
         assertTrue(rob1.getCards()[1].getPriority() <= rob2.getCards()[1].getPriority());
         assertTrue(rob2.getCards()[1].getPriority() <= rob3.getCards()[1].getPriority());
     }
+    @Test
+    public void testMovingOutsideBoard(){
+        Robot rob = robs[0];
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH);
+        assertTrue(rob.isDestroyed());
+        Robot rob1 = robs[2];
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST);
+        assertTrue(rob1.isDestroyed());
+    }
 
     /**
      * If a robot has over 4 damage tokens, then his registers should start to lock. The method findPriority(),
@@ -148,30 +167,15 @@ public class GameTest {
     }
 
     @Test
-    public void testMovementIntoLaser(){
-        Robot rob = robs[0];
-        Laser laser = new Laser(Direction.SOUTH, 1);
-        Laser laser2 = new Laser(Direction.EAST, 1);
-        board.insertItem(2,2,laser2);
-        board.insertItem(2,3,laser);
-        game.robotMove(rob,Direction.NORTH);
-        assertEquals(new Position(2,2), rob.getPosition());
-        game.robotMove(rob, Direction.WEST);
-        assertEquals(new Position(2,2), rob.getPosition());
-        game.robotMove(rob,Direction.SOUTH);
-        assertEquals(new Position(2,1), rob.getPosition());
-    }
-
-    @Test
     public void testShootingLasers(){
         Robot rob = robs[0];
         Robot rob2 = robs[1];
         rob2.rotateLeft();
-        game.shootLasers();
+        game.robotShootLasers();
         assertEquals(1,rob.getDamageTokens());
         Wall wall = new Wall(Direction.WEST);
         board.insertItem(3,2,wall);
-        game.shootLasers();
+        game.robotShootLasers();
         assertEquals(1,rob.getDamageTokens());
     }
     @Test
@@ -182,20 +186,20 @@ public class GameTest {
         //Wall behind robot, should take damage
         Wall wall = new Wall(Direction.EAST);
         board.insertItem(3,2,wall);
-        game.shootLasers();
+        game.robotShootLasers();
         assertEquals(1,rob2.getDamageTokens());
         // Wall behind shooter on his tile, target should take damage
         Wall wall2 = new Wall(Direction.WEST);
         board.insertItem(2,2,wall2);
-        game.shootLasers();
+        game.robotShootLasers();
         assertEquals(2,rob2.getDamageTokens());
         // Wall in front of robot on targets tile, should not take damage
         Wall wall3 = new Wall(Direction.WEST);
         board.insertItem(3,2,wall3);
-        game.shootLasers();
+        game.robotShootLasers();
         assertEquals(2,rob2.getDamageTokens());
         rob2.takeDamage(7);
-        game.shootLasers();
+        game.robotShootLasers();
     }
 
     @Test
@@ -365,21 +369,6 @@ public class GameTest {
         board.insertItem(4,3,cb3);
         game.activateMovement();
         assertEquals(Direction.EAST,rob.getDirection());
-    }
-    @Test
-    public void testSpecialCase3ConveyorBelt(){
-        ConveyorBelt cb1 = new ConveyorBelt(Direction.NORTH,1);
-        Robot rob1 = robs[0];
-        Robot rob2 = robs[1];
-        game.robotMove(rob2,Direction.NORTH);
-        game.robotMove(rob2,Direction.WEST);
-        assertEquals(new Position(2,2), rob1.getPosition());
-        assertEquals(new Position(2,3), rob2.getPosition());
-        board.insertItem(2,2,cb1);
-        board.insertItem(2,3,cb1);
-        game.activateMovement();
-        //assertEquals(new Position(2,3), rob1.getPosition());
-        //assertEquals(new Position(2,4), rob2.getPosition());
     }
 
     @Test

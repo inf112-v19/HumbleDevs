@@ -4,7 +4,6 @@ public class DefaultTile implements IItem{
     private String name = "DefaultTile";
 
     public DefaultTile() {
-
     }
 
     @Override

@@ -43,9 +43,9 @@ public class Tiled extends ApplicationAdapter implements InputProcessor {
      * The (x,y) position (0,0) is bottom left
      *
      * drawPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
-     * @param x
-     * @param y
-     * @param texturePath
+     * @param x position
+     * @param y position
+     * @param texturePath the path to the texture
      */
     public static void drawPlayer(int x, int y, String texturePath) {
         drawPlayer(x, y, texturePath, Direction.NORTH);

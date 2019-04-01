@@ -6,17 +6,8 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
 /**
  * Interface for the robot class
- * @author Even Kolsgaard
- *
  */
 public interface IRobot {
-
-    /**
-     * Move the robot i steps in the direction that the robot is facing
-     * @param i number of steps to move
-     */
-    void move(int i);
-
     /**
      * Move the robot one step in the given direction
      * @param dir
@@ -129,6 +120,4 @@ public interface IRobot {
      * @return true if the robot is destroyed, false otherwise
      */
     boolean isDestroyed();
-
-
 }

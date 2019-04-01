@@ -15,7 +15,7 @@ public class RobotTest {
 	@Test
 	public void testMovement() {
 		Player rob = new Player(Direction.NORTH, 0,0,"Kåre Kålrabi", "testing");
-		rob.move(1);
+		rob.move(rob.getDirection());
 		assertEquals(new Position(0,1),rob.getPosition());
 		rob.move(Direction.EAST);
 		assertEquals(new Position(1,1),rob.getPosition());

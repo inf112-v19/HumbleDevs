@@ -32,18 +32,28 @@ public class Position implements IPosition {
         Position position = (Position) that;
         return xPos == position.xPos && yPos == position.yPos;
     }
+
+    @Override
     public void moveEast() {
 		this.xPos++;
 	}
+
+	@Override
 	public void moveWest() {
 		this.xPos--;
 	}
+
+	@Override
 	public void moveNorth() {
 		this.yPos++;
 	}
+
+	@Override
 	public void moveSouth() {
 		this.yPos--;
 	}
+
+	@Override
 	public void move(Direction dir){
         switch(dir){
             case NORTH:

@@ -10,8 +10,6 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- * @author Even Kolsgaard
- *
  */
 public abstract class Robot implements IRobot {
 
@@ -45,21 +43,6 @@ public abstract class Robot implements IRobot {
         for(int x = 0; x < register; x++) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
             this.cards[x] = s;
-        }
-    }
-
-    @Override
-    public void move(int i){
-        for(int j = 0; j < i; j++){
-            switch(this.dir){
-                case NORTH: this.pos.moveNorth();
-                    break;
-                case SOUTH: this.pos.moveSouth();
-                    break;
-                case EAST: this.pos.moveEast();
-                    break;
-                case WEST: this.pos.moveWest();
-            }
         }
     }
     @Override
