@@ -49,7 +49,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private Skin skin;
     private AssetManager assetManager;
 
-
     public GameScreen(final GUI game, Player[] players) {
         this.game = game;
         this.assetManager = new AssetManager();
