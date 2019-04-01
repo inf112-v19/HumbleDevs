@@ -80,10 +80,10 @@ public abstract class ItemFactory {
         if (id == 68) return new Laser(Direction.WEST, 1);
 
         //Lasterstart north
-        if (id == 69) return new Laser(Direction.NORTH, 1, true);
-        if (id == 70) return new Laser(Direction.EAST, 1, true);
-        if (id == 71) return new Laser(Direction.SOUTH, 1, true);
-        if (id == 72) return new Laser(Direction.WEST, 1, true);
+        if (id == 69) return new Laser(Direction.NORTH, 1);
+        if (id == 70) return new Laser(Direction.EAST, 1);
+        if (id == 71) return new Laser(Direction.SOUTH, 1);
+        if (id == 72) return new Laser(Direction.WEST, 1);
 
         //DoubleLaser vertical
         if (id == 73) return new Laser(Direction.NORTH, 2);
@@ -91,10 +91,10 @@ public abstract class ItemFactory {
         if (id == 74) return new Laser(Direction.WEST, 2);
 
         //DoubleLasterstart north
-        if (id == 75) return new Laser(Direction.NORTH, 2, true);
-        if (id == 76) return new Laser(Direction.EAST, 2, true);
-        if (id == 77) return new Laser(Direction.SOUTH, 2, true);
-        if (id == 78) return new Laser(Direction.WEST, 2, true);
+        if (id == 75) return new Laser(Direction.NORTH, 2);
+        if (id == 76) return new Laser(Direction.EAST, 2);
+        if (id == 77) return new Laser(Direction.SOUTH, 2);
+        if (id == 78) return new Laser(Direction.WEST, 2);
 
         //Docks (starting positions for robots)
         if (id == 85) return new Dock(1);

@@ -1,7 +1,7 @@
 package inf112.skeleton.app.gameObjects.Items;
 
-/*
- * Pit class. If a robot class crosses a Pit it
+/**
+ * Class for a bottomless pit. The robot will die if it falls down.
  */
 
 public class Pit implements IItem {

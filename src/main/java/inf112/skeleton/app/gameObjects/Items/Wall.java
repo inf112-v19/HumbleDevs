@@ -9,14 +9,11 @@ import inf112.skeleton.app.board.Direction;
 public class Wall implements IItem {
     private Direction dir = null;
     private Direction dir2 = null;
-    private boolean corner;
     private String name;
-    private char symbol;
 
     //Single wall
     public Wall(Direction dir) {
         this.dir = dir;
-        this.corner = false;
         this.name = "Wall";
     }
 
@@ -24,32 +21,23 @@ public class Wall implements IItem {
     public Wall(Direction dir1, Direction dir2) {
         this.dir = dir1;
         this.dir2 = dir2;
-        this.corner = true;
         this.name = "CornerWall";
     }
 
+    /**
+     * Get the direction of the first wall
+     * @return direction of the first wall
+     */
     public Direction getDir() {
         return dir;
     }
 
-    public void setDir(Direction dir) {
-        this.dir = dir;
-    }
-
+    /**
+     * Get the direction of the second wall, given that it is a corner wall
+     * @return direction of the second wall
+     */
     public Direction getDir2() {
         return dir2;
-    }
-
-    public void setDir2(Direction dir2) {
-        this.dir2 = dir2;
-    }
-
-    public boolean isCorner() {
-        return corner;
-    }
-
-    public void setCorner (boolean corner) {
-        this.corner = corner;
     }
 
     @Override

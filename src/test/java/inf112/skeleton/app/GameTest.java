@@ -220,7 +220,6 @@ public class GameTest {
         Laser laser = new Laser(Direction.SOUTH,2);
         LaserShoot shoot = new LaserShoot(Direction.SOUTH,2);
         board.insertItem(2,5,laser);
-        board.insertItem(2,5,shoot);
         board.insertItem(2,4,shoot);
         board.insertItem(2,3,shoot);
         board.insertItem(2,2,shoot);
@@ -403,6 +402,5 @@ public class GameTest {
         assertEquals(new Position(4,2),rob1.getPosition());
         assertEquals(new Position(5,4), rob2.getPosition());
         assertEquals(new Position(6,4),rob3.getPosition());
-
     }
 }

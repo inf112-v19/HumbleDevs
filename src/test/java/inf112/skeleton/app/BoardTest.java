@@ -135,18 +135,18 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItem(67, new Laser(Direction.NORTH, 1));
         insertElementByTileIdCreatesCorrectItem(68, new Laser(Direction.WEST, 1));
 
-        insertElementByTileIdCreatesCorrectItem(69, new Laser(Direction.NORTH, 1, true));
-        insertElementByTileIdCreatesCorrectItem(70, new Laser(Direction.EAST, 1, true));
-        insertElementByTileIdCreatesCorrectItem(71, new Laser(Direction.SOUTH, 1, true));
-        insertElementByTileIdCreatesCorrectItem(72, new Laser(Direction.WEST, 1, true));
+        insertElementByTileIdCreatesCorrectItem(69, new Laser(Direction.NORTH, 1));
+        insertElementByTileIdCreatesCorrectItem(70, new Laser(Direction.EAST, 1));
+        insertElementByTileIdCreatesCorrectItem(71, new Laser(Direction.SOUTH, 1));
+        insertElementByTileIdCreatesCorrectItem(72, new Laser(Direction.WEST, 1));
 
         insertElementByTileIdCreatesCorrectItem(73, new Laser(Direction.NORTH, 2));
         insertElementByTileIdCreatesCorrectItem(74, new Laser(Direction.WEST, 2));
 
-        insertElementByTileIdCreatesCorrectItem(75, new Laser(Direction.NORTH, 2, true));
-        insertElementByTileIdCreatesCorrectItem(76, new Laser(Direction.EAST, 2, true));
-        insertElementByTileIdCreatesCorrectItem(77, new Laser(Direction.SOUTH, 2, true));
-        insertElementByTileIdCreatesCorrectItem(78, new Laser(Direction.WEST, 2, true));
+        insertElementByTileIdCreatesCorrectItem(75, new Laser(Direction.NORTH, 2));
+        insertElementByTileIdCreatesCorrectItem(76, new Laser(Direction.EAST, 2));
+        insertElementByTileIdCreatesCorrectItem(77, new Laser(Direction.SOUTH, 2));
+        insertElementByTileIdCreatesCorrectItem(78, new Laser(Direction.WEST, 2));
 
         insertElementByTileIdCreatesCorrectItem(85, new Dock(1));
         insertElementByTileIdCreatesCorrectItem(86, new Dock(2));
@@ -206,7 +206,6 @@ public class BoardTest {
     public void laserHasCorrectProperties(Laser expected, Laser actual) {
         assertEquals(expected.getDirection(), actual.getDirection());
         assertEquals(expected.getDamageMultiplier(), actual.getDamageMultiplier());
-        assertEquals(expected.isStart(), actual.isStart());
     }
 
     @Test

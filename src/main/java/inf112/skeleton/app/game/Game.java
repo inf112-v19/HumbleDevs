@@ -145,7 +145,7 @@ public class Game {
 					Direction dir = ((LaserShoot) item).getDirection().getOppositeDirection();
 					Object obstruction = trackLaser(dir,rob.getPosition());
 					if (obstruction instanceof Laser){
-						rob.takeDamage(((LaserShoot)item).getHarm());
+						rob.takeDamage(((LaserShoot)item).getRays());
 						if (rob.isDestroyed()){
 							board.removeRobot(rob.getPosition());
 						}
