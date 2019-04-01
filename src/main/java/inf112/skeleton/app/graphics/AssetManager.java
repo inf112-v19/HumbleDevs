@@ -6,33 +6,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AssetManager {
-    private Map<String, Texture> map;
+    private Map<String, Texture> stringMap;
+    private Map<Integer, Texture> intMap;
 
     public AssetManager () {
-        this.map = new HashMap<>();
-        this.map.put("darkPinkRobot", new Texture("texture/robot1.png"));
-        this.map.put("blueRobot", new Texture("texture/robot2.png"));
-        this.map.put("greenRobot", new Texture("texture/robot3.png"));
-        this.map.put("redRobot", new Texture("texture/robot4.png"));
-        this.map.put("lightPinkRobot", new Texture("texture/robot5.png"));
-        this.map.put("blueRobot", new Texture("texture/robot6.png"));
-        this.map.put("blackRobot", new Texture("texture/robot7.png"));
-        this.map.put("yellowRobot", new Texture("texture/robot8.png"));
+        this.stringMap = new HashMap<>();
+        this.stringMap.put("darkPinkRobot", new Texture("texture/robot1.png"));
+        this.stringMap.put("blueRobot", new Texture("texture/robot2.png"));
+        this.stringMap.put("greenRobot", new Texture("texture/robot3.png"));
+        this.stringMap.put("redRobot", new Texture("texture/robot4.png"));
+        this.stringMap.put("lightPinkRobot", new Texture("texture/robot5.png"));
+        this.stringMap.put("blueRobot", new Texture("texture/robot6.png"));
+        this.stringMap.put("blackRobot", new Texture("texture/robot7.png"));
+        this.stringMap.put("yellowRobot", new Texture("texture/robot8.png"));
 
+        this.intMap = new HashMap<>();
+        this.intMap.put(0, new Texture("texture/robot1.png"));
+        this.intMap.put(1, new Texture("texture/robot2.png"));
+        this.intMap.put(2, new Texture("texture/robot3.png"));
+        this.intMap.put(3, new Texture("texture/robot4.png"));
+        this.intMap.put(4, new Texture("texture/robot5.png"));
+        this.intMap.put(5, new Texture("texture/robot6.png"));
+        this.intMap.put(6, new Texture("texture/robot7.png"));
+        this.intMap.put(7, new Texture("texture/robot8.png"));
 
-
-        this.map.put("robot", new Texture("texture/robot.png"));
-        this.map.put("testCards", new Texture("texture/test.jpg"));
     }
 
-    public void addTexture(String name, Texture texture) {
-        if (!map.containsKey(name)) {
-            map.put(name, texture);
-        }
+
+    public Texture getTextureByIndex (int index) {
+        return intMap.get(index);
     }
 
     public Texture getTexture (String name) {
-        return map.get(name);
+        return stringMap.get(name);
     }
 
 

@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 import inf112.skeleton.app.gameObjects.Player;
+import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
 import java.util.ArrayList;
@@ -46,10 +47,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private int playerCounter;
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
+    private AssetManager assetManager;
 
 
     public GameScreen(final GUI game, Player[] players) {
         this.game = game;
+        this.assetManager = new AssetManager();
         this.stage = new Stage();
         this.table = new Table();
         this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
@@ -80,7 +83,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addCardToSelected(ProgramCard card) {
-        System.out.println(playerCounter);
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
             addPlayerWithCardsToHashmap(selectedCards);
@@ -108,8 +110,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private void drawHUD() {
         table.top();
         for (int i = 0; i < players.length; i++) {
-            //Her kan vi tegne roboten (typ fargen) på hudden
-            Image robot = new Image(new Texture("texture/test.jpg"));
+            Image robot = new Image(assetManager.getTextureByIndex(i));
             table.add(robot);
             Label nameLabel = new Label(players[i].getName(), skin);
             table.add(nameLabel);
