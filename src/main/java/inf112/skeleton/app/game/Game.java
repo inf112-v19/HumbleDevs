@@ -52,7 +52,7 @@ public class Game {
 			phase(x);
 			activateMovement();
 			activatePassiveItems();
-			shootLasers();
+			robotShootLasers();
 			repairAndCheckFlags();
 		}
 		respawnRobots();
@@ -187,6 +187,7 @@ public class Game {
 						return item;
 					}
 				}
+				// Vil være unødvendig hvis lasere ikke kan plasseres på baksiden vegger
 				if (item instanceof Laser) {
 					Direction turretDir = ((Laser) item).getDirection();
 					if (turretDir == shootingDir) {
@@ -218,7 +219,7 @@ public class Game {
 	/**
 	 * Every robot shoots their laser
 	 */
-	public void shootLasers() {
+	public void robotShootLasers() {
 		for(Robot rob : robots){
 			if(rob.isPoweredDown() || rob.isDestroyed()){
 				continue;
@@ -446,7 +447,7 @@ public class Game {
 		}
 	}
 	/**
-	 * Method only used to get the robots
+	 * Method used to get the robots
 	 * @return array of robots
 	 */
 	public Robot[] getRobots() {
