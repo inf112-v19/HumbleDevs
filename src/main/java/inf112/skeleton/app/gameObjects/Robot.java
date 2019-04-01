@@ -1,4 +1,5 @@
 package inf112.skeleton.app.gameObjects;
+import inf112.skeleton.app.gameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 
 import java.util.Random;
@@ -9,56 +10,39 @@ import inf112.skeleton.app.card.ProgramCard;
 /**
  * The class that represents a robot. It's abstract because this makes it easier to make a robot
  * that is controlled by the computer.
- *
- * Note to assignment 3:
- * 		- The chooseCards() - method is just to make the robot get som cards when we are testing the
- * 		  other methods. We may want to have this implentation for the "stupid" version of the robots
- * 		  that are controlled by the computer.
- * @author Even Kolsgaard
- *
  */
 public abstract class Robot implements IRobot {
 
     private Direction dir;
     private Position pos;
-    private int lifeTokens;
+    private int lifeTokens = 3;
     private Position backup;
     private ProgramCard[] cards;
     private int visitedFlags = 0;
-    private int damageTokens;
+    private int damageTokens = 0;
     private boolean destroyed;
     private boolean poweredDown;
+    private String name;
+    private String filePath;
 
-    public Robot (Direction dir, int xPos, int yPos){
+    public Robot (Direction dir, int xPos, int yPos, String name, String filePath){
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
-        this.lifeTokens = 3;
         this.backup = new Position(xPos, yPos);
-        this.damageTokens = 0;
-        this.poweredDown = false;
+        this.name = name;
+        this.filePath = filePath;
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
         cards = new ProgramCard[5];
         Random rn = new Random();
-        for(int x = 0; x < 5; x++) {
+        int register = 9 - getDamageTokens();
+        if(register > 5){
+            register = 5;
+        }
+        for(int x = 0; x < register; x++) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
             this.cards[x] = s;
-        }
-    }
-
-    @Override
-    public void move(int i){
-        for(int j = 0; j < i; j++){
-            switch(this.dir){
-                case NORTH: this.pos.moveNorth();
-                    break;
-                case SOUTH: this.pos.moveSouth();
-                    break;
-                case EAST: this.pos.moveEast();
-                    break;
-                case WEST: this.pos.moveWest();
-            }
         }
     }
     @Override
@@ -109,15 +93,19 @@ public abstract class Robot implements IRobot {
         return this.pos.getY();
     }
 
-    public int getLifeTokens() {
-        return this.lifeTokens;
-    }
-
-
     @Override
     public void takeDamage(){
         this.damageTokens++;
         if(this.damageTokens == 10) {
+            this.die();
+            damageTokens = 0;
+        }
+    }
+
+    @Override
+    public void takeDamage(int damage){
+        this.damageTokens = this.damageTokens + damage;
+        if(damageTokens >= 10){
             this.die();
             damageTokens = 0;
         }
@@ -142,14 +130,16 @@ public abstract class Robot implements IRobot {
         this.lifeTokens--;
     }
     @Override
-    public void visitFlag() {
-        this.visitedFlags++;
-        makeBackup(this.pos);
+    public void visitFlag(Flag flag) {
+        if(visitedFlags == (flag.getFlagNum() - 1)){
+            visitedFlags++;
+            makeBackup(this.pos);
+        }
     }
     @Override
     public void respawn() {
         this.destroyed = false;
-        this.pos = backup;
+        this.pos = new Position(backup.getX(),backup.getY());
     }
     @Override
     public int visitedFlags() {
@@ -161,12 +151,34 @@ public abstract class Robot implements IRobot {
         this.poweredDown = true;
     }
 
+    @Override
+    public boolean isPoweredDown(){
+        return poweredDown;
+    }
+
+    @Override
     public boolean isDestroyed() {
         return this.destroyed;
     }
 
-    public int getDamageTokens() {
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public int getDamageTokens(){
         return this.damageTokens;
     }
 
+    public String getPath(){
+        return this.filePath;
+    }
+
+    public int getLifeTokens(){
+        return lifeTokens;
+    }
+    public String getName(){
+        return name;
+    }
 }

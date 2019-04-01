@@ -1,21 +1,13 @@
 package inf112.skeleton.app.gameObjects;
 
+import inf112.skeleton.app.gameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
 /**
  * Interface for the robot class
- * @author Even Kolsgaard
- *
  */
 public interface IRobot {
-
-    /**
-     * Move the robot i steps in the direction that the robot is facing
-     * @param i number of steps to move
-     */
-    void move(int i);
-
     /**
      * Move the robot one step in the given direction
      * @param dir
@@ -47,6 +39,13 @@ public interface IRobot {
      * Take one damage
      */
     void takeDamage();
+
+    /**
+     * Take damage
+     * @param i number of damage
+     */
+    void takeDamage(int i);
+
     /**
      * Remove one damage token
      */
@@ -84,9 +83,10 @@ public interface IRobot {
     void respawn();
 
     /**
-     * Visit a flag. Flags visited must increments and the backup - position is updated
+     * Check that the robot is visiting the flag in the correct order. The flag is registered if it's in the correct order,
+     * otherwise do nothing.
      */
-    void visitFlag();
+    void visitFlag(Flag flag);
 
     /**
      * @return the robots cards for one round
@@ -103,13 +103,21 @@ public interface IRobot {
      */
     void powerDown();
 
+    /**
+     * Checks if the robot is powered down
+     * @return true of the robot is powered down, false otherwise
+     */
+    boolean isPoweredDown();
 
     /**
-     *
-     * @return number of lifetokens
+     * Get the number of damage that the robot has taken. Can only be between 0 and 10
+     * @return the number of damage tokens that the robot have
      */
-    int getLifeTokens();
+    int getDamageTokens();
 
-
-
+    /**
+     * Checks if the robot is destroyed
+     * @return true if the robot is destroyed, false otherwise
+     */
+    boolean isDestroyed();
 }

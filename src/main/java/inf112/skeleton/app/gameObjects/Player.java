@@ -13,23 +13,9 @@ public class Player extends Robot {
 
 
     public Player(Direction dir, int xPos, int yPos, String name, String path) {
-        super(dir, xPos, yPos);
+        super(dir, xPos, yPos, name, path);
         this.name = name;
         this.path = path;
-    }
-
-    @Override
-    public void move(int i) {
-
-    }
-
-    @Override
-    public void visitFlag() {
-
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {

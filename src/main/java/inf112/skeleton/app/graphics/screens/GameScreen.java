@@ -138,7 +138,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9); // 9 cards here
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();

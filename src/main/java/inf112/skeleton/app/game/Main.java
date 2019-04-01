@@ -12,7 +12,7 @@ public class Main {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally";
         cfg.width = 1100;
-        cfg.height = 1000;
+        cfg.height = 768;
         new LwjglApplication(new GUI(), cfg);
     }
 }
