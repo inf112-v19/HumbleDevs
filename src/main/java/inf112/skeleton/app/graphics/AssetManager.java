@@ -36,7 +36,6 @@ public class AssetManager {
 
     }
 
-
     public Texture getTextureByIndex (int index) {
         return intMap.get(index);
     }

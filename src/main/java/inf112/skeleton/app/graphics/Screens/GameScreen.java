@@ -61,13 +61,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
-        tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
+        tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         camera = new OrthographicCamera();
         renderer = new OrthogonalTiledMapRenderer(tiledMap);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
+
         map = new HashMap<>();
+
         createCardTable(table);
     }
 
