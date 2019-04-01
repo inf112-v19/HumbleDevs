@@ -4,8 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.gameObjects.Player;
-import inf112.skeleton.app.graphics.Screens.PlayerHUD;
-import inf112.skeleton.app.graphics.Screens.GameScreen;
+import inf112.skeleton.app.graphics.screens.PlayerHUD;
+import inf112.skeleton.app.graphics.screens.GameScreen;
 
 public class GUI extends Game {
     PlayerHUD playerHUD;

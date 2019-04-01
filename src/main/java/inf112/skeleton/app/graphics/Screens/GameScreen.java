@@ -1,4 +1,4 @@
-package inf112.skeleton.app.graphics.Screens;
+package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -82,7 +81,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void addCardToSelected(ProgramCard card) {
         System.out.println(playerCounter);
-        System.out.println(players.length);
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
             addPlayerWithCardsToHashmap(selectedCards);

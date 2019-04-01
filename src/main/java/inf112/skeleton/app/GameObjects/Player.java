@@ -18,7 +18,7 @@ public class Player extends Robot {
 
     public Player(Direction dir, int xPos, int yPos, String name) {
 		super(dir, xPos, yPos);
-		this.name = "Joachim";
+		this.name = name;
 		q = new PriorityQueue<>();
 	}
 
@@ -38,6 +38,17 @@ public class Player extends Robot {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Player[] getSomePlayers() {
+        Player[] arr = new Player[3];
+        Player player1 = new Player(null, 0, 0, "Joachim");
+        Player player2 = new Player(null, 0, 0, "Joach");
+        Player player3 = new Player(null, 0, 0, "Joa");
+        arr[0] = player1;
+        arr[1] = player2;
+        arr[2] = player3;
+        return arr;
     }
 
 

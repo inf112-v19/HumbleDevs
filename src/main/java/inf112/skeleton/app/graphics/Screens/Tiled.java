@@ -1,4 +1,4 @@
-package inf112.skeleton.app.graphics.Screens;
+package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
