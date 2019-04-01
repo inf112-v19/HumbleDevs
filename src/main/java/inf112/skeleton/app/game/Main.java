@@ -3,7 +3,7 @@ package inf112.skeleton.app.game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import inf112.skeleton.app.graphics.Tiled;
+import inf112.skeleton.app.graphics.GUI;
 
 
 public class Main {
@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally";
-        cfg.width = 768;
-        cfg.height = 768;
-        new LwjglApplication(new Tiled(), cfg);
+        cfg.width = 1100;
+        cfg.height = 1000;
+        new LwjglApplication(new GUI(), cfg);
     }
 }
