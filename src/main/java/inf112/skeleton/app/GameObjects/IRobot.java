@@ -104,5 +104,12 @@ public interface IRobot {
     void powerDown();
 
 
+    /**
+     *
+     * @return number of lifetokens
+     */
+    int getLifeTokens();
+
+
 
 }

@@ -109,12 +109,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     private void drawHUD() {
         table.top();
+        table.pad(0, 0, 0, 0);
         for (int i = 0; i < players.length; i++) {
             Image robot = new Image(assetManager.getTextureByIndex(i));
             table.add(robot);
             Label nameLabel = new Label(players[i].getName(), skin);
             table.add(nameLabel);
-            //getName?
+
+            for (int j = 0; j < players[i].getLifeTokens(); j++) {
+                Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
+               table.add(lifetoken);
+            }
+
             table.row();
             for (int j = 0; j < 5; j++) {
                 //Igjen, hashmap for å hente ritig bilde fra .getMove()

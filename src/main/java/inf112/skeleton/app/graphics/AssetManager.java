@@ -11,6 +11,8 @@ public class AssetManager {
 
     public AssetManager () {
         this.stringMap = new HashMap<>();
+
+        //robots and their colors
         this.stringMap.put("darkPinkRobot", new Texture("texture/robot1.png"));
         this.stringMap.put("blueRobot", new Texture("texture/robot2.png"));
         this.stringMap.put("greenRobot", new Texture("texture/robot3.png"));
@@ -19,6 +21,8 @@ public class AssetManager {
         this.stringMap.put("blueRobot", new Texture("texture/robot6.png"));
         this.stringMap.put("blackRobot", new Texture("texture/robot7.png"));
         this.stringMap.put("yellowRobot", new Texture("texture/robot8.png"));
+
+        this.stringMap.put("lifeIcon", new Texture("texture/lifeicon.png"));
 
         this.intMap = new HashMap<>();
         this.intMap.put(0, new Texture("texture/robot1.png"));

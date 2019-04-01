@@ -109,6 +109,11 @@ public abstract class Robot implements IRobot {
         return this.pos.getY();
     }
 
+    public int getLifeTokens() {
+        return this.lifeTokens;
+    }
+
+
     @Override
     public void takeDamage(){
         this.damageTokens++;
