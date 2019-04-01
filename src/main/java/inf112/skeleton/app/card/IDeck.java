@@ -1,26 +1,29 @@
 package inf112.skeleton.app.card;
-
-import java.util.ArrayList;
-
 /**
- * Interface of a deck of cards. A deck contains a number of cards and for every card drawn, the deck gets smaller.
+ * Class keeps the track of the index of the next card
+ *
+ * @author Linh Nguyen
+ *
  */
 public interface IDeck {
 
     /**
-     * Chooses i random cards from the card pack
-     * @param i the number of cards to return
+     * Chooses random card from the card pack
      */
-    ProgramCard [] getRandomCards(int i);
+    ProgramCard[] getRandomCards();
 
     /**
-     * The size of the deck
+     * the size of the deck
      */
     int size();
 
+
     /**
-     * Get the cards that remains in the deck
+     * gets the current cards
+     *
      * @return cards
      */
-    ArrayList<ProgramCard> getCards();
+    ProgramCard[] getCards();
+
+
 }
