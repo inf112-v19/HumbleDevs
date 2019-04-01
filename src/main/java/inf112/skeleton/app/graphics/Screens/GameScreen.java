@@ -2,18 +2,14 @@ package inf112.skeleton.app.graphics.Screens;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -24,9 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 import inf112.skeleton.app.gameObjects.Player;
@@ -34,7 +27,6 @@ import inf112.skeleton.app.graphics.GUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -48,20 +40,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private Stage stage;
     public BitmapFont font;
-    private Table table;
+    public Table table;
     private Player[] players;
     private ProgramCardDeck programCardDeck;
     private Map<Player, ArrayList> map;
     private int playerCounter;
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
+    private Skin skin;
 
 
-
-    public GameScreen(final GUI game) {
+    public GameScreen(final GUI game, Player[] players) {
         this.game = game;
         this.stage = new Stage();
         this.table = new Table();
-        this.players = new Player[4]; //getPlayers()
+        this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        this.players = players;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
         font = new BitmapFont();
@@ -77,27 +70,34 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         createCardTable(table);
     }
 
+
     public void createCardTable(Table table) {
         table.setWidth(332);
         table.setHeight(600); //temp
         table.setPosition(768, 100);
 
         presentCards();
-        //viktig
         stage.addActor(table);
     }
 
     public void addCardToSelected(ProgramCard card) {
+        System.out.println(playerCounter);
+        System.out.println(players.length);
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
             addPlayerWithCardsToHashmap(selectedCards);
             selectedCards.clear();
+            if (playerCounter == players.length) {
+                table.clear();
+                drawHUD();
+                return;
+            }
             presentCards();
         }
     }
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        if (playerCounter == players.length - 1) {
+        if (playerCounter == players.length) {
             table.clear();
             drawHUD();
             return;
@@ -108,10 +108,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
     private void drawHUD() {
+        table.top();
         for (int i = 0; i < players.length; i++) {
             //Her kan vi tegne roboten (typ fargen) på hudden
             Image robot = new Image(new Texture("texture/test.jpg"));
             table.add(robot);
+            Label nameLabel = new Label(players[i].getName(), skin);
+            table.add(nameLabel);
             //getName?
             table.row();
             for (int j = 0; j < 5; j++) {
@@ -127,9 +130,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void presentCards() {
         table.clear();
         final ProgramCard[] cards = programCardDeck.getRandomCards(); // 9 cards here
-        Skin skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
         Label infoLabel = new Label("Velg 5 kort", skin);
-        Label playerLabel = new Label("Det er " + players[playerCounter] + " sin tur", skin); //getName her når vi får spillerlisten
+        Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
 
         for (int i = 0; i < cards.length; i++) {
@@ -143,15 +145,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     addCardToSelected(cards[finalI]);
                     img.setColor(Color.GREEN);
-
                 }
             });
             table.add(img).padBottom(20);
             table.row();
         }
     }
-
-
 
     public void update(float delta) {
         stage.act(delta);
@@ -182,14 +181,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Her kan vi tegne :D
         game.batch.end();
-    }
-
-    public void drawCards(int players) {
-        for (int i = 0; i < players; i++) {
-            ShapeRenderer shapeRenderer = new ShapeRenderer();
-            shapeRenderer.begin();
-            shapeRenderer.rect(0, 0, 768, 300);
-        }
     }
 
     @Override
