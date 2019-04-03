@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.graphics.GUI;
 
 public class Tiled extends ApplicationAdapter implements Screen {
@@ -34,7 +35,6 @@ public class Tiled extends ApplicationAdapter implements Screen {
         float h = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
 
-        // 1100 - 768 = 332
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w, h);
         camera.update();
@@ -47,21 +47,29 @@ public class Tiled extends ApplicationAdapter implements Screen {
      * Insert a player/robot texture in a cell on the board.
      * The (x,y) position (0,0) is bottom left
      *
-     * insertPlayer(0, 0, "texture/robot.png"); //should place the robot texture in bottom left corner
-     * @param x
-     * @param y
-     * @param texturePath
+     * drawPlayer(0, 0, "texture/robot1.png"); //should place the robot texture in bottom left corner, facing North
+     * @param x position
+     * @param y position
+     * @param texturePath the path to the texture
      */
-    public void insertPlayer(int x, int y, String texturePath) {
+    public void drawPlayer(int x, int y, String texturePath) {
+        drawPlayer(x, y, texturePath, Direction.NORTH);
+    }
+    public void drawPlayer(int x, int y, String texturePath, Direction facingDir) {
         //Placing a player on the board
         //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal(texturePath));
+        Texture robotTexture = new Texture(Gdx.files.internal(texturePath));
         //Create a TextureRegion that is the entire size of the texture
         TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
         //Create a cell(tile) to add to the layer
         Cell cell = new Cell();
         //Set the graphic for the new cell
         cell.setTile(new StaticTiledMapTile(textureRegion));
+        //Rotate
+        if(facingDir == Direction.WEST) cell.setRotation(1);
+        else if(facingDir == Direction.SOUTH) cell.setRotation(2);
+        else if(facingDir == Direction.EAST) cell.setRotation(3);
+        else cell.setRotation(0); //By default no rotation (should be facing NORTH)
         //Get layer to put cell in
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
         //place cell on layer in (x,y) coordinate
