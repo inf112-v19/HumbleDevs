@@ -78,3 +78,18 @@ Main er foreløpig satt opp så den kjører et test-spill med 3 spillere. Det fu
  og deretter kommer det opp en sidebar med oversikt over de 3 spillerne, hvor mange liv de har og hvilke kort de har. 
  Det mangler fortsatt en del ting på denne grafiske implementasjonen (bl.a. koble det opp mot bevegelse, spillogikk), 
  men dette er for å illustrere hvor vi er kommet.
+
+
+**Class Diagram**
+
+Kun de mest essensielle klassene er tatt med her.
+* Første kolonne er grafikk-klassene; GUI er en slags "Graphic main", GameScreen kontrollerer organisering/fordeling av 
+skjerm, og Tiled tar seg av den grafiske representasjonen av brettet.
+* Game styrer spillogikk/forretningsregler, spillets gang.
+* Board, Square og IItem er klasser for å representere brettet. Board inneholder en Square i hver posisjon som igjen 
+inneholder en liste av IItems og evnt. en Robot. 
+* Robot kan være enten en spiller (se Player klassen) eller AI (til senere..), og har en liste av ProgramCard (s).
+
+
+
+![Class diagram second iteration](../classDiagrams/classDiagramIteration3.png)
