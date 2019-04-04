@@ -56,20 +56,20 @@ public class GameTest {
     @Test
     public void testMovingOutsideBoard(){
         Robot rob = robs[0];
-        game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH,false);
+        game.robotMove(rob,Direction.SOUTH,false);
+        game.robotMove(rob,Direction.SOUTH,false);
         assertTrue(rob.isDestroyed());
         Robot rob1 = robs[2];
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
-        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
+        game.robotMove(rob1, Direction.EAST,false);
         assertTrue(rob1.isDestroyed());
     }
 
@@ -91,7 +91,7 @@ public class GameTest {
         Robot rob1 = robs[0];
         Position pos = rob1.getPosition();
         assertEquals(new Position(2,2), pos);
-        game.robotMove(rob1, Direction.NORTH);
+        game.robotMove(rob1, Direction.NORTH,false);
         assertEquals(new Position(2,3),pos);
     }
     /**
@@ -100,7 +100,7 @@ public class GameTest {
     @Test
     public void testPit() {
         Robot rob1 = robs[0];
-        game.robotMove(rob1, Direction.WEST);
+        game.robotMove(rob1, Direction.WEST,false);
         assertTrue(rob1.isDestroyed());
         assertNull(board.getRobot(rob1.getPosition()));
     }
@@ -108,7 +108,7 @@ public class GameTest {
     @Test
     public void testUpdateBoard() {
         Robot rob1 = robs[0];
-        game.robotMove(rob1, rob1.getDirection());
+        game.robotMove(rob1, rob1.getDirection(),false);
         assertEquals(new Position(2,3),rob1.getPosition());
         Robot rob2 = board.getRobot(new Position(2,3));
         assertEquals(rob1,rob2);
@@ -121,7 +121,7 @@ public class GameTest {
         Robot rob1 = robs[0];
         Robot rob2 = robs[1];
         Robot rob3 = robs[2];
-        game.robotMove(rob1, Direction.EAST);
+        game.robotMove(rob1, Direction.EAST,false);
         assertEquals(new Position(3,2),rob1.getPosition());
         assertEquals(new Position(4,2),rob2.getPosition());
         assertEquals(new Position(5,2),rob3.getPosition());
@@ -133,7 +133,7 @@ public class GameTest {
     @Test
     public void respawnTest() {
         Robot rob1 = robs[0];
-        game.robotMove(rob1, Direction.WEST);
+        game.robotMove(rob1, Direction.WEST,false);
         assertTrue(rob1.isDestroyed());
         game.respawnRobots();
         assertEquals(new Position(2,2), rob1.getPosition());
@@ -145,14 +145,14 @@ public class GameTest {
         Robot rob = robs[0];
         Wall wall = new Wall(Direction.NORTH);
         board.insertItem(2,0,wall);
-        game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH,false);
+        game.robotMove(rob,Direction.SOUTH,false);
         assertEquals(new Position(2,1),rob.getPosition());
         Wall wall2 = new Wall(Direction.EAST);
         Wall wall3 = new Wall(Direction.WEST);
         board.insertItem(2,1,wall2);
         board.insertItem(3,2,wall3);
-        game.robotMove(rob,Direction.EAST);
+        game.robotMove(rob,Direction.EAST,false);
         assertEquals(new Position(2,1),rob.getPosition());
     }
     @Test
@@ -160,9 +160,9 @@ public class GameTest {
         Robot rob = robs[0];
         Wall cornerWall = new Wall(Direction.WEST, Direction.SOUTH);
         board.insertItem(2,1,cornerWall);
-        game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.SOUTH);
-        game.robotMove(rob,Direction.WEST);
+        game.robotMove(rob,Direction.SOUTH,false);
+        game.robotMove(rob,Direction.SOUTH,false);
+        game.robotMove(rob,Direction.WEST,false);
         assertEquals(new Position(2,1),rob.getPosition());
     }
 
@@ -247,7 +247,7 @@ public class GameTest {
         board.insertItem(3,0,cb3);
         board.insertItem(2,0,cb4);
         board.insertItem(2,0,cb4);
-        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH,false);
         game.activateMovement();
         assertEquals(new Position(3,0),rob.getPosition());
         game.activateMovement();
@@ -262,7 +262,7 @@ public class GameTest {
         board.insertItem(2,1,cb);
         board.insertItem(2,0,cb2);
         board.insertItem(1,0,cb3);
-        game.robotMove(rob,Direction.SOUTH);
+        game.robotMove(rob,Direction.SOUTH,false);
         game.activateMovement();
         assertEquals(new Position(2,0), rob.getPosition());
         game.activateMovement();
@@ -298,7 +298,7 @@ public class GameTest {
         game.repairAndCheckFlags();
         assertEquals(1,rob.visitedFlags());
         Flag flag1 = new Flag(3);
-        game.robotMove(rob,Direction.NORTH);
+        game.robotMove(rob,Direction.NORTH,false);
         board.insertItem(2,3,flag1);
         game.repairAndCheckFlags();
         assertEquals(1,rob.visitedFlags());
@@ -360,7 +360,7 @@ public class GameTest {
         ConveyorBelt cb3 = new ConveyorBelt(Direction.SOUTH,1,true);
         board.insertItem(2,3,cb1);
         Robot rob = robs[0];
-        game.robotMove(rob, Direction.NORTH);
+        game.robotMove(rob, Direction.NORTH,false);
         assertEquals(Direction.NORTH, rob.getDirection());
         game.activateMovement();
         assertEquals(Direction.NORTH,rob.getDirection());
@@ -368,6 +368,35 @@ public class GameTest {
         board.insertItem(4,3,cb3);
         game.activateMovement();
         assertEquals(Direction.EAST,rob.getDirection());
+    }
+
+    /**
+     * The conveyorBelt should move the robots simultaneously
+     */
+    @Test
+    public void testConveyorBeltQueue(){
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.EAST,1);
+        board.insertItem(2,2,cb1);
+        board.insertItem(3,2,cb1);
+        board.insertItem(4,2,cb1);
+        game.activateMovement();
+        assertEquals(new Position(3,2),robs[0].getPosition());
+        assertEquals(new Position(4,2),robs[1].getPosition());
+        assertEquals(new Position(5,2),robs[2].getPosition());
+    }
+
+    /**
+     * The conveyor belt should not move the robots if there is a robot at the end blocking the exit
+     */
+    @Test
+    public void testSpecialCase3ConveyorBelt(){
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.EAST,1);
+        board.insertItem(2,2,cb1);
+        board.insertItem(3,2,cb1);
+        game.activateMovement();
+        assertEquals(new Position(2,2),robs[0].getPosition());
+        assertEquals(new Position(3,2),robs[1].getPosition());
+        assertEquals(new Position(4,2),robs[2].getPosition());
     }
 
     @Test

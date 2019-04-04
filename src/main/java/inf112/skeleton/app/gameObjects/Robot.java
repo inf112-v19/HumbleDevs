@@ -140,6 +140,7 @@ public abstract class Robot implements IRobot {
     public void respawn() {
         this.destroyed = false;
         this.pos = new Position(backup.getX(),backup.getY());
+        this.damageTokens = 2;
     }
     @Override
     public int visitedFlags() {
