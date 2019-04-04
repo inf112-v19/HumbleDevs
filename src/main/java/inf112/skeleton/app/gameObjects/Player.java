@@ -24,9 +24,9 @@ public class Player extends Robot {
 
     public Player[] getSomePlayers() {
         Player[] arr = new Player[3];
-        Player player1 = new Player(null, 0, 0, "Joachim", null);
-        Player player2 = new Player(null, 0, 0, "Joach", null);
-        Player player3 = new Player(null, 0, 0, "Joa", null);
+        Player player1 = new Player(null, 0, 0, "Joa", null);
+        Player player2 = new Player(null, 0, 0, "Jo", null);
+        Player player3 = new Player(null, 0, 0, "J", null);
         arr[0] = player1;
         arr[1] = player2;
         arr[2] = player3;
