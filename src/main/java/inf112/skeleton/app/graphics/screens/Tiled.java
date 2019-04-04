@@ -13,13 +13,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * An object used to edit a TiledMap.
+ * Specifically for manipulating robots(players/nonplayers)
+ *
+ * Pre-condition:
+ *  - A TiledMap that contains enough docks for the chosen number of robots.
+ *  - Correct dock IDs to be set in the DOCK_ID list (according to the given tileId in the tile set).
+ *
+ */
 public class Tiled {
     TiledMap tiledMap;
     MapLayer objectLayer;
     private final int NUMBER_OF_ROBOTS;
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE;
-    //DOCK_ID = the eight tile IDs of the starting docks for each robot (see gameObjects\Items\ItemFactory)
+    //DOCK_ID = the eight tile IDs of the starting docks for the robots (see gameObjects\Items\ItemFactory for tileIDs)
     private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85, 86, 87, 88, 89, 90, 91, 92));
     private final HashMap<Integer, Position> DOCK_POSITIONS;
 
@@ -40,6 +49,7 @@ public class Tiled {
             }
         }
         // TODO: Cast error if the necessary dock-positions are not set?
+        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots");
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
             if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
                 throw new IllegalStateException("Can't find dock (starting position) for all robots");
