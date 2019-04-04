@@ -24,11 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class Tiled extends ApplicationAdapter implements Screen {
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
-    private SpriteBatch batch;
-    private final GUI game;
+public class Tiled {
     TiledMap tiledMap;
     MapLayer objectLayer;
     private final int NUMBER_OF_ROBOTS;
@@ -36,8 +32,8 @@ public class Tiled extends ApplicationAdapter implements Screen {
     private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85,86,87,88,89,90,91,92));
     private final HashMap<Integer, Position> DOCK_POSITIONS;
 
-    public Tiled(final GUI game, int robots) {
-        this.game = game;
+    public Tiled(TiledMap tiledMap, int robots) {
+        this.tiledMap = tiledMap;
         this.NUMBER_OF_ROBOTS = robots;
         //Initiate dock positions
         TiledMapTileLayer bg = (TiledMapTileLayer) tiledMap.getLayers().get("background");
@@ -56,24 +52,6 @@ public class Tiled extends ApplicationAdapter implements Screen {
                 throw new IllegalStateException("Can't find dock (starting position) for all robots");
             }
         }
-        camera = new OrthographicCamera();
-
-    }
-
-    public void create() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        batch = new SpriteBatch();
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, w, h);
-        camera.update();
-        tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-
-        initiateObjectLayer();
-
-        Gdx.input.setInputProcessor((InputProcessor) this);
     }
 
     private void initiateObjectLayer() {
@@ -134,81 +112,4 @@ public class Tiled extends ApplicationAdapter implements Screen {
 //        layer.setCell(x, y, cell);
 //    }
 
-    public void render() {
-        Gdx.gl.glClearColor(0, 1, 0, 1);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-
-        camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
-
-    }
-
-    public void draw() {
-
-    }
-
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.LEFT)
-            camera.translate(-32, 0);
-        if (keycode == Input.Keys.RIGHT)
-            camera.translate(32, 0);
-        if (keycode == Input.Keys.UP)
-            camera.translate(0, -32);
-        if (keycode == Input.Keys.DOWN)
-            camera.translate(0, 32);
-        if (keycode == Input.Keys.NUM_1)
-            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
-        if (keycode == Input.Keys.NUM_2)
-            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
-        return false;
-    }
-
-    public boolean keyTyped(char character) {
-
-        return false;
-    }
-
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
 }
