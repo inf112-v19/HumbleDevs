@@ -25,9 +25,7 @@ import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
  This class will represent the gamescreen (board and HUD)
@@ -138,7 +136,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - players[playerCounter].getLifeTokens()); // 9 cards here
+        final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
@@ -152,7 +151,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             img.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    addCardToSelected(cards[finalI]);
+                    if (!pickedCards.contains(cards[finalI])) {
+                        addCardToSelected(cards[finalI]);
+                        pickedCards.add(cards[finalI]);
+                    } else {
+                        System.out.println("ey");
+                    }
                     img.setColor(Color.GREEN);
                 }
             });
