@@ -1,35 +1,26 @@
 package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
-import inf112.skeleton.app.graphics.GUI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class Tiled {
     TiledMap tiledMap;
     MapLayer objectLayer;
     private final int NUMBER_OF_ROBOTS;
+    //TILE_SIZE = pixel size of one tile (width and height)
+    private final int TILE_SIZE = 64;
     //DOCK_ID needs to correspond to the eight tile IDs of the starting docks for each robot (see ItemFactory)
-    private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85,86,87,88,89,90,91,92));
+    private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85, 86, 87, 88, 89, 90, 91, 92));
     private final HashMap<Integer, Position> DOCK_POSITIONS;
 
     public Tiled(TiledMap tiledMap, int robots) {
@@ -40,7 +31,7 @@ public class Tiled {
         this.DOCK_POSITIONS = new HashMap<>();
         for (int x = 0; x < bg.getWidth(); x++) {
             for (int y = 0; y < bg.getHeight(); y++) {
-                int tileId = bg.getCell(x,y).getTile().getId();
+                int tileId = bg.getCell(x, y).getTile().getId();
                 if (DOCK_ID.contains(tileId)) {
                     DOCK_POSITIONS.put(tileId, new Position(x, y));
                 }
@@ -48,35 +39,38 @@ public class Tiled {
         }
         // TODO: Cast error if the dock-positions necessary are not set?
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            if(DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
+            if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
                 throw new IllegalStateException("Can't find dock (starting position) for all robots");
             }
         }
+
+        initiateObjectLayer();
     }
 
     private void initiateObjectLayer() {
         objectLayer = tiledMap.getLayers().get("objects");
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            Texture texture = new Texture(Gdx.files.internal("robot" + (i+1) + ".png"));
-            TextureRegion textureRegion = new TextureRegion(texture,64,64);
+            Texture texture = new Texture(Gdx.files.internal("texture/robot" + (i + 1) + ".png"));
+            TextureRegion textureRegion = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
             TextureMapObject tmo = new TextureMapObject(textureRegion);
             // TODO: Get DOCK positions
-            tmo.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX());
-            tmo.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY());
+            System.out.println("Dock#, x, y = (" + DOCK_ID.get(i) + ", " + DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() + ", " + DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() + ")");
+            tmo.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
+            tmo.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
             objectLayer.getObjects().add(tmo);
         }
     }
 
     /**
-     *
      * @param robotNumber must be 0-indexed
      * @param x
      * @param y
      */
     public void moveRobot(int robotNumber, int x, int y) {
         TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotNumber);
-        robot.setX(x);
-        robot.setY(y);
+        robot.setX(x * TILE_SIZE);
+        robot.setY(y * TILE_SIZE);
+//        robot.setRotation(180);
     }
 
 //    /**

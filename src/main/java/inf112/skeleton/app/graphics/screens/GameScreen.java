@@ -8,6 +8,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -37,7 +42,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     final GUI game;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRenderer renderer;
+    private OrthogonalTiledMapRendererWithSprites renderer;
     private Stage stage;
     public BitmapFont font;
     public Table table;
@@ -48,6 +53,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
     private AssetManager assetManager;
+
+    private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
+        public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
+            super(map);
+        }
+
+        @Override
+        public void renderObject(MapObject object) {
+            if(object instanceof TextureMapObject) {
+                TextureMapObject textureObj = (TextureMapObject) object;
+                batch.draw(textureObj.getTextureRegion(), textureObj.getX(), textureObj.getY());
+            }
+        }
+    }
 
     public GameScreen(final GUI game, Player[] players) {
         this.game = game;
@@ -61,9 +80,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
+
+
+
+
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
+        renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        Tiled tiled = new Tiled(tiledMap, players.length);
+//        tiled.moveRobot(0, 0, 0);
+
+
+
+
+
         camera = new OrthographicCamera();
-        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
