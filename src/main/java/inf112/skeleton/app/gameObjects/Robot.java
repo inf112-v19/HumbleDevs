@@ -163,11 +163,6 @@ public abstract class Robot implements IRobot {
     }
 
     @Override
-    public String toString() {
-        return this.name;
-    }
-
-    @Override
     public int getDamageTokens(){
         return this.damageTokens;
     }

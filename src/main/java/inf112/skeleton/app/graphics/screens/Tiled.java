@@ -1,148 +1,105 @@
 package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import inf112.skeleton.app.graphics.GUI;
+import inf112.skeleton.app.board.Position;
 
-public class Tiled extends ApplicationAdapter implements Screen {
-    Texture robotTexture;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+/**
+ * An object used to edit a TiledMap.
+ * Specifically for manipulating robots(players/nonplayers)
+ *
+ * Pre-condition:
+ *  - A TiledMap that contains enough docks for the chosen number of robots.
+ *  - Correct dock IDs to be set in the DOCK_ID list (according to the given tileId in the tile set).
+ *
+ */
+public class Tiled {
     TiledMap tiledMap;
-    OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
-    private SpriteBatch batch;
-    private final GUI game;
+    MapLayer objectLayer;
+    private final int NUMBER_OF_ROBOTS;
+    //TILE_SIZE = pixel size of one tile (width and height)
+    private final int TILE_SIZE;
+    //DOCK_ID = the eight tile IDs of the starting docks for the robots (see gameObjects\Items\ItemFactory for tileIDs)
+    private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85, 86, 87, 88, 89, 90, 91, 92));
+    private final HashMap<Integer, Position> DOCK_POSITIONS;
 
-    public Tiled(final GUI game) {
-        this.game = game;
-        camera = new OrthographicCamera();
+    public Tiled(TiledMap tiledMap, int tileSize, int numberOfRobots) {
+        this.TILE_SIZE = tileSize;
+        this.tiledMap = tiledMap;
+        this.NUMBER_OF_ROBOTS = numberOfRobots;
 
-    }
+        //Initiate dock positions
+        this.DOCK_POSITIONS = new HashMap<>();
+        TiledMapTileLayer bg = (TiledMapTileLayer) tiledMap.getLayers().get("background");
+        for (int x = 0; x < bg.getWidth(); x++) {
+            for (int y = 0; y < bg.getHeight(); y++) {
+                int tileId = bg.getCell(x, y).getTile().getId();
+                if (DOCK_ID.contains(tileId)) {
+                    DOCK_POSITIONS.put(tileId, new Position(x, y));
+                }
+            }
+        }
+        // TODO: Cast error if the necessary dock-positions are not set?
+        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots");
+        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
+            if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
+                throw new IllegalStateException("Can't find dock (starting position) for all robots");
+            }
+        }
 
-    public void create() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        batch = new SpriteBatch();
-
-        // 1100 - 768 = 332
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, w, h);
-        camera.update();
-        tiledMap = new TmxMapLoader().load("Assets/maps/layeredTestMap.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        Gdx.input.setInputProcessor((InputProcessor) this);
+        // Initiate robots in docks
+        objectLayer = tiledMap.getLayers().get("objects");
+        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
+            Texture texture = new Texture(Gdx.files.internal("texture/robot" + (i + 1) + ".png"));
+            TextureRegion textureRegion = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
+            TextureMapObject tmo = new TextureMapObject(textureRegion);
+            tmo.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
+            tmo.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
+            objectLayer.getObjects().add(tmo);
+        }
     }
 
     /**
-     * Insert a player/robot texture in a cell on the board.
-     * The (x,y) position (0,0) is bottom left
+     * Moves a robot to a final x,y position on the tiled board (0,0 = bottom left)
      *
-     * insertPlayer(0, 0, "texture/robot.png"); //should place the robot texture in bottom left corner
+     * @param robotId 0-indexed
      * @param x
      * @param y
-     * @param texturePath
+     * @param rotation clockwise rotation in number of 90 degree turns
+     *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
      */
-    public void insertPlayer(int x, int y, String texturePath) {
-        //Placing a player on the board
-        //Create a new texture with the robot picture
-        robotTexture = new Texture(Gdx.files.internal(texturePath));
-        //Create a TextureRegion that is the entire size of the texture
-        TextureRegion textureRegion = new TextureRegion(robotTexture, 64, 64);
-        //Create a cell(tile) to add to the layer
-        Cell cell = new Cell();
-        //Set the graphic for the new cell
-        cell.setTile(new StaticTiledMapTile(textureRegion));
-        //Get layer to put cell in
-        TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get("players");
-        //place cell on layer in (x,y) coordinate
-        layer.setCell(x, y, cell);
+    public void moveRobot(int robotId, int x, int y, int rotation) {
+        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+        robot.setX(x * TILE_SIZE);
+        robot.setY(y * TILE_SIZE);
+        // Note: The rotation should actually be stored in radians according to the TextureMapObject doc,
+        // but since we only use this in the drawing function (in GameScreen), which uses rotation representation as counter clockwise degrees,
+        // we store it this way for convenience and less complicated computations.
+        robot.setRotation(-rotation * 90);
     }
 
-    public void render() {
-        Gdx.gl.glClearColor(0, 1, 0, 1);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-
-        camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
-
+    public void moveRobot(int robotId, int x, int y) {
+        moveRobot(robotId, x, y);
     }
 
-    public void draw() {
-
+    /**
+     * Rotates a robot
+     * @param robotId 0-indexed
+     * @param rotation clockwise rotation in number of 90 degree turns
+     *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
+     */
+    public void rotateRobot(int robotId, int rotation) {
+        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+        robot.setRotation(-rotation * 90);
     }
 
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.LEFT)
-            camera.translate(-32, 0);
-        if (keycode == Input.Keys.RIGHT)
-            camera.translate(32, 0);
-        if (keycode == Input.Keys.UP)
-            camera.translate(0, -32);
-        if (keycode == Input.Keys.DOWN)
-            camera.translate(0, 32);
-        if (keycode == Input.Keys.NUM_1)
-            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
-        if (keycode == Input.Keys.NUM_2)
-            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
-        return false;
-    }
-
-    public boolean keyTyped(char character) {
-
-        return false;
-    }
-
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
 }
