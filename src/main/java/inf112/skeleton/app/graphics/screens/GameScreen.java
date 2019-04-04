@@ -82,13 +82,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addCardToSelected(ProgramCard card) {
+
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
-            addPlayerWithCardsToHashmap(selectedCards);
+            //Deep copy av listen
+            ArrayList<ProgramCard> newList = new ArrayList<>();
+            for (ProgramCard pc : selectedCards) {
+                newList.add(pc);
+            }
+            addPlayerWithCardsToHashmap(newList);
             selectedCards.clear();
+
             if (playerCounter == players.length) {
                 table.clear();
-                drawHUD();
+                drawHUD(map);
                 return;
             }
             presentCards();
@@ -96,17 +103,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        if (playerCounter == players.length) {
-            table.clear();
-            drawHUD();
-            return;
-        }
         map.put(players[playerCounter], list);
+
         playerCounter++;
     }
 
 
-    private void drawHUD() {
+    private void drawHUD(Map<Player, ArrayList> map) {
         table.top();
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < players.length; i++) {
@@ -115,20 +118,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             Label nameLabel = new Label(players[i].getName(), skin);
             table.add(nameLabel);
 
-            System.out.println(players[i].getLifeTokens());
-
-
             for (int j = 0; j < players[i].getLifeTokens(); j++) {
                 Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
                 table.add(lifetoken);
             }
 
+
             table.row();
-            for (int j = 0; j < 5; j++) {
-                //Igjen, hashmap for å hente ritig bilde fra .getMove()
+            ArrayList cardList = map.get(players[i]);
+            for (int j = 0; j < cardList.size(); j++) {
                 table.pad(10, 10, 10, 10);
-                Image card = new Image(new Texture("texture/movementCards/move1.png"));
-                table.add(card);
+
+                ProgramCard card = (ProgramCard) cardList.get(j);
+                Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
+                Image img = new Image(texture);
+                table.add(img);
+
             }
             table.row();
         }
@@ -136,7 +141,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - players[playerCounter].getLifeTokens()); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - players[playerCounter].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
@@ -144,8 +149,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         for (int i = 0; i < cards.length; i++) {
             // Her kan vi hente retning av kort og bruke assetmanager til å hente riktig bilde cards[i].getMove();
-            Texture texture = new Texture(Gdx.files.internal("texture/movementCards/move1.png"));
-            final Image img = new Image(texture);
+            Texture cardTexture = assetManager.getTexture(cards[i].getActionAndMovement(cards[i].getAction(), cards[i].getMove()));
+            final Image img = new Image(cardTexture);
 
             final int finalI = i;
             img.addListener(new ClickListener() {
@@ -154,9 +159,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     if (!pickedCards.contains(cards[finalI])) {
                         addCardToSelected(cards[finalI]);
                         pickedCards.add(cards[finalI]);
-                    } else {
-                        System.out.println("ey");
-                    }
+                    } // Kan gi beskjed til brukeren her at han/hun ikke kan velge det samme kortet
                     img.setColor(Color.GREEN);
                 }
             });

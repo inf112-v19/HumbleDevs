@@ -47,6 +47,10 @@ public class ProgramCard implements IProgramCard {
         return this.action;
     }
 
+    public String getActionAndMovement(Action action, int movement) {
+        return action+String.valueOf(movement);
+    }
+
 
 
 }
