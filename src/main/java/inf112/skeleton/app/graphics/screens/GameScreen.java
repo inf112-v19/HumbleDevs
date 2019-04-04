@@ -53,6 +53,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
     private AssetManager assetManager;
+    //TILE_SIZE = pixel size of one tile (width and height)
+    private final int TILE_SIZE = 64;
+    private Tiled tiledEditor;
 
     private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
         public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
@@ -62,8 +65,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         @Override
         public void renderObject(MapObject object) {
             if(object instanceof TextureMapObject) {
-                TextureMapObject textureObj = (TextureMapObject) object;
-                batch.draw(textureObj.getTextureRegion(), textureObj.getX(), textureObj.getY());
+                TextureMapObject textureObject = (TextureMapObject) object;
+                // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
+                batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
             }
         }
     }
@@ -82,16 +86,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.input.setInputProcessor(stage);
 
 
-
-
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        Tiled tiled = new Tiled(tiledMap, players.length);
-//        tiled.moveRobot(0, 0, 0);
-
-
-
-
+        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players.length);
 
         camera = new OrthographicCamera();
 
