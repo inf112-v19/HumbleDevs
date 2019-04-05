@@ -86,7 +86,7 @@ public class Game {
             Position pos = rob.getPosition();
             ArrayList<IItem> items = board.getItems(pos);
             for (int y = 0; y < items.size(); y++) {
-                IItem item = items.get(0);
+                IItem item = items.get(y);
                 if (item instanceof ConveyorBelt) {
                     IItem temp = item;
                     outerloop:
@@ -94,9 +94,14 @@ public class Game {
                         Position startPos = new Position(rob.getX(), rob.getY());
                         Position nextPos = new Position(rob.getX(), rob.getY());
                         nextPos.move(((ConveyorBelt) temp).getDirection());
-
                         // Kan man ikke bevege seg så bryt ut
                         if(!robotMove(rob,((ConveyorBelt) temp).getDirection(),true)){
+                            break;
+                        }
+                        if(nextPos.getY() > board.getHeight() || nextPos.getY() < 0 ||
+                                nextPos.getX() > board.getWidth() || nextPos.getX() < 0){
+                            board.removeRobot(rob.getPosition());
+                            rob.die();
                             break;
                         }
                         // Må sjekke hva som er i neste posisjon, er det en robot må den fjernes fra brettet (midlertidig)
@@ -106,25 +111,31 @@ public class Game {
                         robotMove(rob,((ConveyorBelt) temp).getDirection(),false);
                         ArrayList<IItem> items2 = board.getItems(nextPos);
                         Action rotate = null;
-
+                        boolean cb = false;
                         for (IItem is : items2) {
                             if (is instanceof Pit) {
                                 rob.die();
                                 board.removeRobot(rob.getPosition());
-                            } else if (is instanceof Wall) {
-                                if (((Wall) is).getDir() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-                                    break outerloop;
-                                }
-                                if (((Wall) is).getDir2() != null){
-                                    if (((Wall) is).getDir2() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-                                        break outerloop;
-                                    }
-                                }
-                            } else if (is instanceof ConveyorBelt) {
+                            }
+//                            else if (is instanceof Wall) {
+//                                if (((Wall) is).getDir() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
+//                                    break outerloop;
+//                                }
+//                                if (((Wall) is).getDir2() != null){
+//                                    if (((Wall) is).getDir2() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
+//                                        break outerloop;
+//                                    }
+//                                }
+//                            }
+                            if (is instanceof ConveyorBelt) {
                                 rotate = ((ConveyorBelt) is).getRotation();
                                 temp = is;
+                                cb = true;
 
                             }
+                        }
+                        if(!cb){
+                            turn++;
                         }
                         if (rotate != null) {
                             if (!rob.getDirection().equals(((ConveyorBelt) temp).getDirection())) {
@@ -193,6 +204,9 @@ public class Game {
                     return currIt;
                 }
             }
+            if (currIt instanceof Laser){
+                return currIt;
+            }
         }
         while (true) {
             shotPos.move(shootingDir);
@@ -209,25 +223,19 @@ public class Game {
                         return item;
                     }
                 }
-                if (item instanceof Laser) {
-                    Direction turretDir = ((Laser) item).getDirection();
-                    if (turretDir == shootingDir) {
-                        return item;
-                    }
-                }
+                // Hva er dette?
+//                if (item instanceof Laser) {
+//                    Direction turretDir = ((Laser) item).getDirection();
+//                    if (turretDir == shootingDir) {
+//                        return item;
+//                    }
+//                }
             }
             Robot target = board.getRobot(shotPos);
             if (target != null) {
                 return target;
             }
             for (IItem item : items) {
-                if (item instanceof Wall) {
-                    Direction dir1 = ((Wall) item).getDir();
-                    Direction dir2 = ((Wall) item).getDir2();
-                    if (dir1 == shootingDir || dir2 == shootingDir) {
-                        return item;
-                    }
-                }
                 if (item instanceof Laser) {
                     Direction turretDir = ((Laser) item).getDirection();
                     if (turretDir == shootingDir.getOppositeDirection()) {
@@ -321,7 +329,7 @@ public class Game {
      * @param rob The robot that are going to do its turn
      * @param nr  The phase number
      */
-    private void robotDoTurn(Robot rob, int nr) {
+    public void robotDoTurn(Robot rob, int nr) {
         if (rob.isDestroyed()) {
             return;
         }
@@ -348,7 +356,7 @@ public class Game {
         } else {
             int move = card.getMove();
             while (move > 0) {
-                if (!rob.isDestroyed()) {
+                if (rob.isDestroyed()) {
                     break;
                 }
                 if (!robotMove(rob, rob.getDirection().getOppositeDirection(),false)) {
@@ -422,7 +430,10 @@ public class Game {
             if (it instanceof Wall) {
                 Direction wallDir1 = ((Wall) it).getDir();
                 Direction wallDir2 = ((Wall) it).getDir2();
-                if (wallDir1.getOppositeDirection() == dir || wallDir2.getOppositeDirection() == dir) {
+                if (wallDir1.getOppositeDirection() == dir ) {
+                    return false;
+                }
+                if(wallDir2 != null && wallDir2.getOppositeDirection() == dir){
                     return false;
                 }
             }
