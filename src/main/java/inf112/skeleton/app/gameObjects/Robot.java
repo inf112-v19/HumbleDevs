@@ -174,7 +174,12 @@ public abstract class Robot implements IRobot {
     public int getLifeTokens(){
         return lifeTokens;
     }
+
     public String getName(){
         return name;
+    }
+
+    public void setCards(ProgramCard[] cards){
+        this.cards = cards;
     }
 }
