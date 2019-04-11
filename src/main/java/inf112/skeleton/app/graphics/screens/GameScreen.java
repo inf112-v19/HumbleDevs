@@ -123,6 +123,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
             if (playerCounter == players.length) {
                 table.clear();
+
                 drawHUD(map);
                 return;
             }
@@ -132,7 +133,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
         map.put(players[playerCounter], list);
-
         playerCounter++;
     }
 
