@@ -183,8 +183,4 @@ public abstract class Robot implements IRobot {
     public String getName(){
         return name;
     }
-
-    public void setCards(ProgramCard[] cards){
-        this.cards = cards;
-    }
 }
