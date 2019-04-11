@@ -432,4 +432,185 @@ public class GameTest {
         assertEquals(new Position(5,4), rob2.getPosition());
         assertEquals(new Position(6,4),rob3.getPosition());
     }
+
+    @Test
+    public void testWhenRobotIsDestroyed(){
+        Robot rob = robs[0];
+        rob.rotateRight();
+        rob.die();
+        game.robotShootLasers();
+        assertEquals(0,robs[1].getDamageTokens());
+    }
+
+    @Test
+    public void testConveyorBeltInWall(){
+        ConveyorBelt cb = new ConveyorBelt(Direction.NORTH,1);
+        board.insertItem(2,2,cb);
+        Wall wall = new Wall(Direction.NORTH);
+        board.insertItem(2,2,wall);
+        game.activateMovement();
+        assertEquals(new Position(2,2),robs[0].getPosition());
+    }
+    @Test
+    public void testConveyorBeltInPit(){
+        ConveyorBelt cb = new ConveyorBelt(Direction.WEST,1);
+        board.insertItem(2,2,cb);
+        game.activateMovement();
+        assertTrue(robs[0].isDestroyed());
+    }
+    @Test
+    public void leftTurningConveyorBelt(){
+        ConveyorBelt cb = new ConveyorBelt(Direction.NORTH, 2);
+        ConveyorBelt cb1 = new ConveyorBelt(Direction.WEST,1,false);
+        board.insertItem(2,2,cb);
+        board.insertItem(2,3,cb1);
+        game.activateMovement();
+        assertEquals(new Position(1,3),robs[0].getPosition());
+        assertEquals(Direction.WEST,robs[0].getDirection());
+    }
+    @Test
+    public void destroyRobotWithLaser(){
+        Robot rob = robs[0];
+        Robot rob1 = robs[1];
+        rob.rotateRight();
+        rob1.takeDamage(9);
+        game.robotShootLasers();
+        assertTrue(rob1.isDestroyed());
+        Laser laser = new Laser(Direction.SOUTH,1);
+        board.insertItem(2,2,laser);
+        LaserShoot ls = new LaserShoot(Direction.SOUTH,1);
+        board.insertItem(2,2,ls);
+        game.activatePassiveItems();
+        rob.takeDamage(9);
+        assertTrue(rob.isDestroyed());
+    }
+    @Test
+    public void testRepairTool(){
+        Robot rob = robs[0];
+        rob.takeDamage(5);
+        RepairTool rt = new RepairTool(false);
+        board.insertItem(2,3,rt);
+        game.robotMove(rob,Direction.NORTH,false);
+        game.repairAndCheckFlags();
+        assertEquals(4,rob.getDamageTokens());
+        rob.die();
+        game.respawnRobots();
+        assertEquals(new Position(2,3),rob.getPosition());
+    }
+    @Test
+    public void testProgramCards(){
+        Robot rob = robs[0];
+        ProgramCard back1 = new ProgramCard(1,100,Action.MOVEBACKWARD);
+        ProgramCard leftTurn = new ProgramCard(0,110,Action.LEFTTURN);
+        ProgramCard rightTurn = new ProgramCard(0,110,Action.RIGHTTURN);
+        ProgramCard uTurn = new ProgramCard(0,110,Action.UTURN);
+        ProgramCard move1 = new ProgramCard(1,120,Action.MOVEFORWARD);
+        ProgramCard move2 = new ProgramCard(2,120,Action.MOVEFORWARD);
+        ProgramCard move3 = new ProgramCard(3,120,Action.MOVEFORWARD);
+        ProgramCard[] cards = {back1, move1,move2,move3,leftTurn, rightTurn, uTurn};
+        rob.setCards(cards);
+
+        // Move backward 1
+        game.robotDoTurn(rob,0);
+        assertEquals(new Position(2,1),rob.getPosition());
+
+        // Move forward 1
+        game.robotDoTurn(rob,1);
+        assertEquals(new Position(2,2),rob.getPosition());
+
+        // Move forward 2
+        game.robotDoTurn(rob,2);
+        assertEquals(new Position(2,4),rob.getPosition());
+
+        // Move forward 3
+        game.robotDoTurn(rob,3);
+        assertEquals(new Position(2,7),rob.getPosition());
+
+        // Rotate left
+        game.robotDoTurn(rob,4);
+        assertEquals(Direction.WEST, rob.getDirection());
+
+        // Rotate right
+        game.robotDoTurn(rob,5);
+        assertEquals(Direction.NORTH, rob.getDirection());
+
+        // U - turn
+        game.robotDoTurn(rob,6);
+        assertEquals(Direction.SOUTH, rob.getDirection());
+    }
+    @Test
+    public void testProgramCardIntoObjects(){
+        Robot rob = robs[0];
+        ProgramCard move2 = new ProgramCard(2,100,Action.MOVEFORWARD);
+        ProgramCard back = new ProgramCard(1,100,Action.MOVEBACKWARD);
+        ProgramCard back3 = new ProgramCard(3,100,Action.MOVEBACKWARD);
+        ProgramCard[] cards = {move2,back,back3};
+        rob.setCards(cards);
+        rob.rotateLeft();
+        game.robotDoTurn(rob,0);
+        assertTrue(rob.isDestroyed());
+        game.robotDoTurn(rob,1);
+        assertEquals(new Position(2,2),rob.getPosition());
+
+        Robot rob1 = robs[1];
+        Wall wall = new Wall(Direction.NORTH);
+        board.insertItem(3,2,wall);
+        rob1.setCards(cards);
+        game.robotDoTurn(rob1,0);
+        assertEquals(new Position(3,2),rob1.getPosition());
+        rob1.rotateLeft();
+        rob1.rotateLeft();
+        game.robotDoTurn(rob1,2);
+        assertEquals(new Position(3,2),rob1.getPosition());
+
+        rob1.rotateLeft();
+        game.robotDoTurn(rob1,2);
+        assertTrue(rob.isDestroyed());
+    }
+
+    @Test
+    public void testQueueIntoWall(){
+        Robot rob = robs[0];
+        Wall wall = new Wall(Direction.EAST);
+        board.insertItem(3,2,wall);
+        game.robotMove(rob,Direction.EAST,false);
+        assertEquals(new Position(2,2), rob.getPosition());
+    }
+    @Test
+    public void testDoubleConveyorBeltButItEndsAtFirstStep(){
+        Robot rob = robs[0];
+        ConveyorBelt cb = new ConveyorBelt(Direction.SOUTH,2);
+        board.insertItem(2,2,cb);
+        game.activateMovement();
+        assertEquals(new Position(2,1),rob.getPosition());
+    }
+    @Test
+    public void conveyorBeltOutOfTheMap(){
+        Robot rob = robs[0];
+        ConveyorBelt cb = new ConveyorBelt(Direction.SOUTH,2);
+        board.insertItem(2,2,cb);
+        board.insertItem(2,1,cb);
+        board.insertItem(2,0,cb);
+        game.activateMovement();
+        game.activateMovement();
+        assertTrue(rob.isDestroyed());
+    }
+    @Test
+    public void testConveyorBeltIntoCornerWalls(){
+        Wall wall = new Wall(Direction.EAST,Direction.NORTH);
+        ConveyorBelt cb = new ConveyorBelt(Direction.WEST,1);
+        board.insertItem(2,3,wall);
+        board.insertItem(2,3,cb);
+        game.robotMove(robs[0],Direction.NORTH,false);
+        game.activateMovement();
+        assertEquals(new Position(1,3), robs[0].getPosition());
+    }
+    @Test
+    public void walkIntoCornerWalls(){
+        Wall wall = new Wall(Direction.NORTH,Direction.WEST);
+        Robot rob = robs[0];
+        board.insertItem(3,2,wall);
+        game.robotMove(rob,Direction.EAST,false);
+        assertEquals(new Position(2,2), rob.getPosition());
+    }
 }
