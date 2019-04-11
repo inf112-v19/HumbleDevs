@@ -124,6 +124,11 @@ public abstract class Robot implements IRobot {
     public ProgramCard[] getCards() {
         return cards;
     }
+
+    public void setCards(ProgramCard[] cardArray) {
+        this.cards = cardArray;
+    }
+
     @Override
     public void die() {
         this.destroyed = true;
