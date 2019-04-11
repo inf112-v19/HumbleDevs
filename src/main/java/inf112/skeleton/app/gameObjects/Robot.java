@@ -140,6 +140,7 @@ public abstract class Robot implements IRobot {
     public void respawn() {
         this.destroyed = false;
         this.pos = new Position(backup.getX(),backup.getY());
+        this.damageTokens = 2;
     }
     @Override
     public int visitedFlags() {
@@ -162,11 +163,6 @@ public abstract class Robot implements IRobot {
     }
 
     @Override
-    public String toString() {
-        return this.name;
-    }
-
-    @Override
     public int getDamageTokens(){
         return this.damageTokens;
     }
@@ -178,7 +174,12 @@ public abstract class Robot implements IRobot {
     public int getLifeTokens(){
         return lifeTokens;
     }
+
     public String getName(){
         return name;
+    }
+
+    public void setCards(ProgramCard[] cards){
+        this.cards = cards;
     }
 }

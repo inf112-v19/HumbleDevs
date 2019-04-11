@@ -8,6 +8,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -25,9 +30,7 @@ import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*
  This class will represent the gamescreen (board and HUD)
@@ -37,7 +40,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     final GUI game;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRenderer renderer;
+    private OrthogonalTiledMapRendererWithSprites renderer;
     private Stage stage;
     public BitmapFont font;
     public Table table;
@@ -48,6 +51,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
     private AssetManager assetManager;
+    //TILE_SIZE = pixel size of one tile (width and height)
+    private final int TILE_SIZE = 64;
+    private Tiled tiledEditor;
+
+    private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
+        public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
+            super(map);
+        }
+
+        @Override
+        public void renderObject(MapObject object) {
+            if(object instanceof TextureMapObject) {
+                TextureMapObject textureObject = (TextureMapObject) object;
+                // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
+                batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
+            }
+        }
+    }
 
     public GameScreen(final GUI game, Player[] players) {
         this.game = game;
@@ -61,9 +82,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
+
+
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
+        renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players.length);
+
         camera = new OrthographicCamera();
-        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
@@ -84,13 +110,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addCardToSelected(ProgramCard card) {
+
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
-            addPlayerWithCardsToHashmap(selectedCards);
+            //Deep copy av listen
+            ArrayList<ProgramCard> newList = new ArrayList<>();
+            for (ProgramCard pc : selectedCards) {
+                newList.add(pc);
+            }
+            addPlayerWithCardsToHashmap(newList);
             selectedCards.clear();
+
             if (playerCounter == players.length) {
                 table.clear();
-                drawHUD();
+                drawHUD(map);
                 return;
             }
             presentCards();
@@ -98,17 +131,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        if (playerCounter == players.length) {
-            table.clear();
-            drawHUD();
-            return;
-        }
         map.put(players[playerCounter], list);
+
         playerCounter++;
     }
 
 
-    private void drawHUD() {
+    private void drawHUD(Map<Player, ArrayList> map) {
         table.top();
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < players.length; i++) {
@@ -117,20 +146,22 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             Label nameLabel = new Label(players[i].getName(), skin);
             table.add(nameLabel);
 
-            System.out.println(players[i].getLifeTokens());
-
-
             for (int j = 0; j < players[i].getLifeTokens(); j++) {
                 Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
                 table.add(lifetoken);
             }
 
+
             table.row();
-            for (int j = 0; j < 5; j++) {
-                //Igjen, hashmap for å hente ritig bilde fra .getMove()
+            ArrayList cardList = map.get(players[i]);
+            for (int j = 0; j < cardList.size(); j++) {
                 table.pad(10, 10, 10, 10);
-                Image card = new Image(new Texture("texture/movementCards/move1.png"));
-                table.add(card);
+
+                ProgramCard card = (ProgramCard) cardList.get(j);
+                Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
+                Image img = new Image(texture);
+                table.add(img);
+
             }
             table.row();
         }
@@ -138,21 +169,25 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - players[playerCounter].getDamageTokens()); // 9 cards here
+        final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
 
         for (int i = 0; i < cards.length; i++) {
             // Her kan vi hente retning av kort og bruke assetmanager til å hente riktig bilde cards[i].getMove();
-            Texture texture = new Texture(Gdx.files.internal("texture/movementCards/move1.png"));
-            final Image img = new Image(texture);
+            Texture cardTexture = assetManager.getTexture(cards[i].getActionAndMovement(cards[i].getAction(), cards[i].getMove()));
+            final Image img = new Image(cardTexture);
 
             final int finalI = i;
             img.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    addCardToSelected(cards[finalI]);
+                    if (!pickedCards.contains(cards[finalI])) {
+                        addCardToSelected(cards[finalI]);
+                        pickedCards.add(cards[finalI]);
+                    } // Kan gi beskjed til brukeren her at han/hun ikke kan velge det samme kortet
                     img.setColor(Color.GREEN);
                 }
             });
