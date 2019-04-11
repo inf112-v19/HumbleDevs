@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Handles a server-side channel.
  */
-public class DiscardProtocol extends ChannelInboundHandlerAdapter { // (1)
+public class DiscardHandlerServer extends ChannelInboundHandlerAdapter { // (1)
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)

@@ -19,6 +19,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
+      <version>4.1.34.Final</version>
+      <scope>compile</scope>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
     <dependency>
       <groupId>com.badlogicgames.gdx</groupId>
