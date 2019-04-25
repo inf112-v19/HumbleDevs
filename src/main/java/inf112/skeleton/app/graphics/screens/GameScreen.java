@@ -169,6 +169,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
+
     }
 
     public void presentCards() {
@@ -201,7 +202,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public int directionToInteger(Direction dir) {
-        if (dir == Direction.NORTH ) {
+        if (dir == Direction.NORTH || dir == null ) {
             return 0;
         }
         if (dir == Direction.EAST) {
