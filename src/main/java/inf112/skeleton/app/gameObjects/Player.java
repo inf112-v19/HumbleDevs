@@ -1,24 +1,17 @@
 package inf112.skeleton.app.gameObjects;
 
 import inf112.skeleton.app.board.Direction;
-import inf112.skeleton.app.card.ProgramCard;
 
 
 public class Player extends Robot {
-    private String name;
-    private String path;
 
 
-    public Player(int id, Direction dir, int xPos, int yPos, String name, String path) {
-        super(id, dir, xPos, yPos, name, path);
-        this.name = name;
-        this.path = path;
+
+    public Player(int id, Direction dir, int xPos, int yPos, String name, String filePath) {
+        super(id, dir, xPos, yPos, name, filePath);
+
     }
 
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Player[] getSomePlayers() {
         Player[] arr = new Player[3];
