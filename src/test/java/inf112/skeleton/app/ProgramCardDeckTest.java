@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class ProgramCardDeckTest {
-    private  IDeck deck;
+    private IDeck deck;
 
     @Before
-    public void init(){
+    public void init() {
         deck = new ProgramCardDeck();
     }
 
@@ -31,7 +31,7 @@ public class ProgramCardDeckTest {
      * The deck should get smaller as cards are drawn from it
      */
     @Test
-    public void testDeckLength(){
+    public void testDeckLength() {
         deck.getRandomCards(9);
         assertEquals(75, deck.size());
     }
@@ -94,5 +94,17 @@ public class ProgramCardDeckTest {
             }
         }
         assertEquals(6, result);
+    }
+
+    @Test
+    public void testForward() {
+        int result = 0;
+        ArrayList<ProgramCard> cardDeck = deck.getCards();
+        for (int i = 0; i < cardDeck.size(); i++) {
+            if (cardDeck.get(i).getAction() == Action.MOVEFORWARD) {
+                result++;
+            }
+        }
+        assertEquals(36, result);
     }
 }
