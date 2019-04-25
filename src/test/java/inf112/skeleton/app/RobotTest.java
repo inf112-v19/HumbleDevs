@@ -9,8 +9,59 @@ import org.junit.Test;
 import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
+import inf112.skeleton.app.gameObjects.Robot;
 
 public class RobotTest {
+
+
+
+    @Test
+    public void testDamage() {
+        Player rob = new Player(0,Direction.NORTH, 0, 0, "Ingrid", "testing");
+        rob.takeDamage();
+        assertEquals(1,rob.getDamageTokens());
+    }
+
+    @Test
+    public void testDamage2() {
+        Player rob = new Player(0, Direction.NORTH, 0, 0, "Ole", "testing");
+        int exp = 1;
+        for (int i = 0; i <9; i ++){
+            rob.takeDamage();
+            assertEquals(exp++,rob.getDamageTokens());
+        }
+    }
+
+    @Test
+    public void testTenDamageOneLifeLost(){
+        Player rob = new Player(0, Direction.NORTH, 0, 0, "Solveig", "testing");
+        for (int i = 0; i <10; i ++){
+            rob.takeDamage();
+        }
+        //assertEquals(true,rob.respawn());
+        assertEquals(0,rob.getDamageTokens());
+        assertEquals(2,rob.getLifeTokens());
+
+    }
+
+    @Test
+    public void testDestroyed(){
+        Player rob = new Player(0, Direction.NORTH, 0, 0, "Ida", "testing");
+        rob.isDestroyed();
+        assertEquals(3,rob.getLifeTokens());
+    }
+
+    @Test
+    public void testStillAliveAfterGettingDestroyedTwice(){
+        Player rob = new Player(0, Direction.NORTH, 0, 0, "Kaja", "testing");
+        for(int i = 0; i<2; i++){
+            rob.isDestroyed();
+            rob.respawn();
+        }
+        assertTrue(rob.getLifeTokens() > 0);
+    }
+
+
 	
 	@Test
 	public void testMovement() {
