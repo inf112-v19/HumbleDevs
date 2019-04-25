@@ -126,6 +126,10 @@ public abstract class Robot implements IRobot {
         return cards;
     }
 
+    public void setCards(ProgramCard[] cardArray) {
+        this.cards = cardArray;
+    }
+
     @Override
     public void die() {
         this.destroyed = true;
@@ -179,9 +183,5 @@ public abstract class Robot implements IRobot {
 
     public String getName(){
         return name;
-    }
-
-    public void setCards(ProgramCard[] cards){
-        this.cards = cards;
     }
 }

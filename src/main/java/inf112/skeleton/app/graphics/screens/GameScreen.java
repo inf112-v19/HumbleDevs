@@ -121,8 +121,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             addPlayerWithCardsToHashmap(newList);
             selectedCards.clear();
 
+
             if (playerCounter == players.length) {
                 table.clear();
+                for (int i = 0; i < playerCounter; i++) {
+                    ProgramCard[] cards = (ProgramCard[]) map.get(players[i]).toArray(new ProgramCard[5]);
+                    players[i].setCards(cards);
+                }
                 drawHUD(map);
                 return;
             }

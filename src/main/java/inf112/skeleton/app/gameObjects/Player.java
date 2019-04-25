@@ -3,9 +3,6 @@ package inf112.skeleton.app.gameObjects;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Player extends Robot {
     private String name;
@@ -17,6 +14,7 @@ public class Player extends Robot {
         this.name = name;
         this.path = path;
     }
+
 
     public void setName(String name) {
         this.name = name;
