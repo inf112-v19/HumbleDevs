@@ -32,14 +32,13 @@ public class GameTest {
         Board board = new Board(12, 12,test);
         this.board = board;
         board.insertItem(new Position(1,2), new Pit());
-        Game game = new Game(board,3);
-        this.robs = game.getRobots();
+        this.robs = new Robot[3];
         for(int y = 0; y < 3; y++){
             Player player = new Player(0, Direction.NORTH, 2+y,2, "Robot" + y, "dd");
             robs[y] = player;
             board.insertRobot(new Position(2+y,2), player);
         }
-        this.game = game;
+        this.game = new Game(board, robs);
     }
 
     @Test
