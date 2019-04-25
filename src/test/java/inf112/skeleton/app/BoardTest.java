@@ -19,14 +19,14 @@ public class BoardTest {
 
     @Before
     public void setUp() {
-        board = new Board(4, 4);
+        board = new Board(4,4);
     }
 
 
     @Test
     public void boardHasCorrectDimensions() {
         for (int i = 0; i < 20; i++) {
-            board = new Board(i, i);
+            board = new Board(i,i);
             assertEquals(i, board.getHeight());
             assertEquals(i, board.getWidth());
         }
@@ -45,7 +45,7 @@ public class BoardTest {
     public void isFreeReturnsFalseWhenContainingRobot() {
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
-                board.getSquare(x, y).addRobot(new Player(Direction.NORTH, x, y, "testBot", "testing"));
+                board.getSquare(x,y).addRobot(new Player(0, Direction.NORTH, x, y,"testBot","testing"));
             }
         }
 
@@ -59,8 +59,8 @@ public class BoardTest {
     @Test
     public void insertedElementIsPlacedInCorrectPosition() {
         DefaultTile tile = new DefaultTile();
-        board.insertItem(2, 2, tile);
-        assertTrue(board.getItems(2, 2).contains(tile));
+        board.insertItem(2,2, tile);
+        assertTrue(board.getItems(2,2).contains(tile));
     }
 
     @Test
@@ -71,7 +71,6 @@ public class BoardTest {
             }
         }
     }
-
     /**
      * Needs to be updated if the tileSetLarge64 file is edited.
      * Follows top row-based 1-indexing from the tileSetLarge64.png
@@ -169,13 +168,11 @@ public class BoardTest {
         assertEquals(expectedItem.getName(), actualItem.getName());
 
         if (actualItem instanceof Flag) flagHasCorrectProperties((Flag) expectedItem, (Flag) actualItem);
-        if (actualItem instanceof ConveyorBelt)
-            conveyorBeltHasCorrectProperties((ConveyorBelt) expectedItem, (ConveyorBelt) actualItem);
+        if (actualItem instanceof ConveyorBelt) conveyorBeltHasCorrectProperties((ConveyorBelt) expectedItem, (ConveyorBelt) actualItem);
         if (actualItem instanceof Wall) wallHasCorrectProperties((Wall) expectedItem, (Wall) actualItem);
         if (actualItem instanceof Gear) gearHasCorrectProperties((Gear) expectedItem, (Gear) actualItem);
         if (actualItem instanceof Laser) laserHasCorrectProperties((Laser) expectedItem, (Laser) actualItem);
-        if (actualItem instanceof RepairTool)
-            repairToolHasCorrectProperties((RepairTool) expectedItem, (RepairTool) actualItem);
+        if (actualItem instanceof RepairTool) repairToolHasCorrectProperties((RepairTool) expectedItem, (RepairTool) actualItem);
         if (actualItem instanceof Dock) dockHasCorrectProperties((Dock) expectedItem, (Dock) actualItem);
     }
 
@@ -212,25 +209,25 @@ public class BoardTest {
     }
 
     @Test
-    public void testIndexCalculations() {
-        int index1 = board.toIndex(0, 0);
-        assertEquals(0, index1);
-        int index2 = board.toIndex(0, 1);
-        assertEquals(4, index2);
+    public void testIndexCalculations(){
+        int index1 = board.toIndex(0,0);
+        assertEquals(0,index1);
+        int index2 = board.toIndex(0,1);
+        assertEquals(4,index2);
         Position pos = board.getPositionFromIndex(index2);
-        assertEquals(new Position(0, 1), pos);
+        assertEquals(new Position(0,1),pos);
         Position pos1 = board.getPositionFromIndex(12);
-        assertEquals(new Position(0, 3), pos1);
+        assertEquals(new Position(0,3),pos1);
     }
 
     @Test
-    public void testDockPositions() {
-        for (int x = 0; x < 8; x++) {
-            Dock dock = new Dock(x + 1);
+    public void testDockPositions(){
+        for (int x = 0; x < 8; x++){
+            Dock dock = new Dock(x+1);
             board.insertItem(board.getPositionFromIndex(x), dock);
         }
         ArrayList<Position> startDocks = board.getDockPositions();
-        for (int y = 0; y < 8; y++) {
+        for(int y = 0; y < 8; y++){
             assertEquals(board.getPositionFromIndex(y), startDocks.get(y));
         }
     }

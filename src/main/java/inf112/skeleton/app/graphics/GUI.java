@@ -15,7 +15,7 @@ public class GUI extends Game {
     public void create() {
         batch = new SpriteBatch();
         //For testing purposes
-        Player player = new Player(null, 0, 0, "Joachim", null);
+        Player player = new Player(0, null, 0, 0, "Joachim", null);
         Player[] arr = player.getSomePlayers();
         //
         this.setScreen(new GameScreen(this, arr));

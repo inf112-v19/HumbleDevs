@@ -15,6 +15,11 @@ public interface IRobot {
     void move(Direction dir);
 
     /**
+     * @return the id of the robot
+     */
+    int getId();
+
+    /**
      * Set a new backup for the robot
      * @param newBackup is the position for the new backup
      */

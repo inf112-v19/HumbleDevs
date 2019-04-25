@@ -22,15 +22,10 @@ public class Game {
     private Board board;
     private Robot[] robots;
 
-    public Game(Board board, int players) {
+    public Game(Board board, Robot[] robots) {
         this.board = board;
-        robots = new Robot[players];
+        this.robots = robots;
     }
-
-    public void setUp() {
-        initializePlayers(robots.length);
-    }
-
     /**
      * Starts the a new round by dealing new cards to every player
      */
@@ -522,23 +517,6 @@ public class Game {
 			index++;
 		}
 		return prio;
-	}
-
-	private void initializePlayers(int numb) {
-		ArrayList<Position> startDocks = board.getDockPositions();
-		for(int x = 0; x < numb; x++) {
-			Position pos = startDocks.get(x);
-			String filePath = "texture/robot" + x+1 + ".png";
-			Player player = new Player(Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
-			board.insertRobot(pos,player);
-		}
-	}
-	/**
-	 * Method used to get the robots
-	 * @return array of robots
-	 */
-	public Robot[] getRobots() {
-		return this.robots;
 	}
 	/**
 	 * Method to updates the position of a robot on the board

@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -24,9 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 import inf112.skeleton.app.gameObjects.Player;
+import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
@@ -201,6 +200,27 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
+    public int directionToInteger(Direction dir) {
+        if (dir == Direction.NORTH ) {
+            return 0;
+        }
+        if (dir == Direction.EAST) {
+            return 1;
+        }
+        if (dir == Direction.WEST) {
+            return -1;
+        } else {
+            return 2;
+        }
+    }
+
+    // This method will update the position of a robot on the board
+    public void updateBoard(Robot robot) {
+        tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
+        render(1);
+    }
+
+
     public void update(float delta) {
         stage.act(delta);
     }
@@ -221,9 +241,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //stage
         update(delta);
-        Actor actor = new Actor();
-        stage.addActor(actor);
-        stage.draw();
+        stage.draw(); // important
 
         game.batch.begin();
         //game.font.draw(game.batch, "PLEASE", 800, 300);
