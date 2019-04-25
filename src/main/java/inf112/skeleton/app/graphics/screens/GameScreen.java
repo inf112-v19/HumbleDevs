@@ -169,7 +169,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
-
+        //Test updateBoard here
+//        updateBoard(players[0]);
+//        updateBoard(players[1]);
+//        updateBoard(players[2]);
     }
 
     public void presentCards() {
@@ -204,11 +207,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public int directionToInteger(Direction dir) {
         if (dir == Direction.NORTH || dir == null ) {
             return 0;
-        }
-        if (dir == Direction.EAST) {
+        } else if (dir == Direction.EAST) {
             return 1;
-        }
-        if (dir == Direction.WEST) {
+        } else if (dir == Direction.WEST) {
             return -1;
         } else {
             return 2;
@@ -218,7 +219,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     // This method will update the position of a robot on the board
     public void updateBoard(Robot robot) {
         tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
-        render(1);
+        render();
     }
 
 

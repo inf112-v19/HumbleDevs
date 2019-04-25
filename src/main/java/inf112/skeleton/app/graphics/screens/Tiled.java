@@ -54,7 +54,7 @@ public class Tiled {
         if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots in the tiledMap");
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
             if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
-                throw new IllegalStateException("Can't find dock (starting position) for all robots");
+                throw new IllegalStateException("Can't find dock number (zero indexed) " + i);
             }
         }
 
@@ -76,7 +76,7 @@ public class Tiled {
      * @param robotId 0-indexed
      * @param x
      * @param y
-     * @param rotation clockwise rotation in number of 90 degree turns
+     * @param rotation final clockwise rotation in number of 90 degree turns
      *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
      */
     public void moveRobot(int robotId, int x, int y, int rotation) {
@@ -96,7 +96,7 @@ public class Tiled {
     /**
      * Rotates a robot
      * @param robotId 0-indexed
-     * @param rotation clockwise rotation in number of 90 degree turns
+     * @param rotation final clockwise rotation in number of 90 degree turns
      *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
      */
     public void rotateRobot(int robotId, int rotation) {
