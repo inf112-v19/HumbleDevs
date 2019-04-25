@@ -35,7 +35,7 @@ public class GameTest {
         Game game = new Game(board,3);
         this.robs = game.getRobots();
         for(int y = 0; y < 3; y++){
-            Player player = new Player(Direction.NORTH, 2+y,2, "Robot" + y, "dd");
+            Player player = new Player(0, Direction.NORTH, 2+y,2, "Robot" + y, "dd");
             robs[y] = player;
             board.insertRobot(new Position(2+y,2), player);
         }

@@ -20,7 +20,7 @@ public class SquareTest {
 	
 	@Test
 	public void insertRobot() {
-		Robot rob = new Player(Direction.EAST, 1,2, "hei","testing");
+		Robot rob = new Player(0, Direction.EAST, 1,2, "hei","testing");
 		sq.addRobot(rob);
 		assertEquals(rob, sq.getRobot());
 	}

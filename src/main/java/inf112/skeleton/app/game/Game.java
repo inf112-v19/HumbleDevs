@@ -529,7 +529,7 @@ public class Game {
 		for(int x = 0; x < numb; x++) {
 			Position pos = startDocks.get(x);
 			String filePath = "texture/robot" + x+1 + ".png";
-			Player player = new Player(Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
+			Player player = new Player(0, Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
 			board.insertRobot(pos,player);
 		}
 	}

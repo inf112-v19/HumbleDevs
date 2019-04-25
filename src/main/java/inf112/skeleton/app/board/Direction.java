@@ -46,4 +46,5 @@ public enum Direction {
 	public Direction right() {
 		return right;
 	}
+
 }

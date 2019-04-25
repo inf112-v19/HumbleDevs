@@ -12,7 +12,7 @@ import inf112.skeleton.app.card.ProgramCard;
  * that is controlled by the computer.
  */
 public abstract class Robot implements IRobot {
-
+    private int id;
     private Direction dir;
     private Position pos;
     private int lifeTokens = 3;
@@ -25,7 +25,8 @@ public abstract class Robot implements IRobot {
     private String name;
     private String filePath;
 
-    public Robot (Direction dir, int xPos, int yPos, String name, String filePath){
+    public Robot (int id, Direction dir, int xPos, int yPos, String name, String filePath){
+        this.id = id;
         this.dir = dir;
         this.pos = new Position(xPos, yPos);
         this.backup = new Position(xPos, yPos);
@@ -56,6 +57,10 @@ public abstract class Robot implements IRobot {
                 break;
             case WEST: this.pos.moveWest();
         }
+    }
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override
