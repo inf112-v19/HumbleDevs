@@ -145,7 +145,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         table.top();
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < players.length; i++) {
-            Image robot = new Image(assetManager.getTextureByIndex(i));
+            Image robot = new Image(new Texture(players[i].getPath()));
             table.add(robot);
             Label nameLabel = new Label(players[i].getName(), skin);
             table.add(nameLabel);
