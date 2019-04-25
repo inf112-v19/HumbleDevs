@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.board.Position;
+import inf112.skeleton.app.gameObjects.Robot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +34,10 @@ public class Tiled {
     private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85, 86, 87, 88, 89, 90, 91, 92));
     private final HashMap<Integer, Position> DOCK_POSITIONS;
 
-    public Tiled(TiledMap tiledMap, int tileSize, int numberOfRobots) {
+    public Tiled(TiledMap tiledMap, int tileSize, Robot[] robots) {
         this.TILE_SIZE = tileSize;
         this.tiledMap = tiledMap;
-        this.NUMBER_OF_ROBOTS = numberOfRobots;
+        this.NUMBER_OF_ROBOTS = robots.length;
 
         //Initiate dock positions
         this.DOCK_POSITIONS = new HashMap<>();
@@ -49,8 +50,8 @@ public class Tiled {
                 }
             }
         }
-        // TODO: Cast error if the necessary dock-positions are not set?
-        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots");
+
+        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots in the tiledMap");
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
             if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
                 throw new IllegalStateException("Can't find dock (starting position) for all robots");
@@ -60,7 +61,7 @@ public class Tiled {
         // Initiate robots in docks
         objectLayer = tiledMap.getLayers().get("objects");
         for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            Texture texture = new Texture(Gdx.files.internal("texture/robot" + (i + 1) + ".png"));
+            Texture texture = new Texture(Gdx.files.internal(robots[i].getPath()));
             TextureRegion textureRegion = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
             TextureMapObject tmo = new TextureMapObject(textureRegion);
             tmo.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);

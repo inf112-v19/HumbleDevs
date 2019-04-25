@@ -15,9 +15,9 @@ public class Player extends Robot {
 
     public Player[] getSomePlayers() {
         Player[] arr = new Player[3];
-        Player player1 = new Player(0, Direction.EAST, 0, 0, "Joa", null);
-        Player player2 = new Player(1, Direction.EAST, 1, 0, "Jo", null);
-        Player player3 = new Player(2, Direction.EAST, 2, 0, "J", null);
+        Player player1 = new Player(0, Direction.EAST, 0, 0, "Joa", "texture/robot1.png");
+        Player player2 = new Player(1, Direction.EAST, 1, 0, "Jo", "texture/robot2.png");
+        Player player3 = new Player(2, Direction.EAST, 2, 0, "J", "texture/robot3.png");
         arr[0] = player1;
         arr[1] = player2;
         arr[2] = player3;

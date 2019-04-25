@@ -85,7 +85,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players.length);
+        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
 
