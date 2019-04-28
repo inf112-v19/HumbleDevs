@@ -13,15 +13,17 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Timer;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
@@ -31,6 +33,9 @@ import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /*
  This class will represent the gamescreen (board and HUD)
@@ -40,7 +45,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     final GUI game;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRendererWithSprites renderer;
+    private OrthogonalTiledMapRendererWithSprites mapRenderer;
     private Stage stage;
     public BitmapFont font;
     public Table table;
@@ -54,9 +59,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
-    private Timer timer = new Timer();
     private final int STEP_DELAY = 1; // in seconds
-    private int stepCounter = 1;
+    private SequenceAction sequenceActions;
 
     private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
         public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
@@ -67,6 +71,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         public void renderObject(MapObject object) {
             if(object instanceof TextureMapObject) {
                 TextureMapObject textureObject = (TextureMapObject) object;
+
                 if(object.isVisible()) {
                     // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
                     batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
@@ -84,13 +89,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.players = players;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
+        this.sequenceActions = new SequenceAction();
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        mapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
@@ -176,17 +182,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
-        updateBoard(players[0]);
+//        updateBoard(players[0]);
         players[0].move(Direction.NORTH);
         updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
+//        players[0].move(Direction.NORTH);
+//        updateBoard(players[0]);
+//        players[0].move(Direction.NORTH);
+//        updateBoard(players[0]);
+//        players[0].move(Direction.NORTH);
+//        updateBoard(players[0]);
 //        players[0].move(Direction.EAST);
-//        players[0].rotateRight();
+//        players[0].move(Direction.EAST);
+//        players[0].move(Direction.EAST);
+
 //        updateBoard(players[0]);
 //        players[0].move(Direction.EAST);
 //        updateBoard(players[0]);
@@ -224,32 +232,59 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    public int directionToInteger(Direction dir) {
-        if (dir == Direction.NORTH || dir == null ) {
-            return 0;
-        } else if (dir == Direction.EAST) {
-            return 1;
-        } else if (dir == Direction.WEST) {
-            return -1;
-        } else {
-            return 2;
-        }
-    }
 
-    // This method will update the position of a robot on the board
+
+    /**
+     * This method will update the position and direction of a robot on the board
+     *
+     * */
     public void updateBoard(final Robot robot) {
-        SequenceAction action = new SequenceAction();
 
-        timer.scheduleTask(new Timer.Task() {
+        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if(robot.isDestroyed())
-                    tiledEditor.setRobotVisible(robot.getId(), false);
-                else
-                    tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
+                moveRobot(robot);
             }
-        }, STEP_DELAY*stepCounter);
-        stepCounter = stepCounter + 1;
+        }, 1, 1, TimeUnit.SECONDS);
+
+        //SequenceAction: Using Action.delay
+
+//        Action action = new Action() {
+//            @Override
+//            public boolean act(float v) {
+//                if(robot.isDestroyed())
+//                    tiledEditor.setRobotVisible(robot.getId(), false);
+//                else
+//                    tiledEditor.setRobotVisible(robot.getId(), true);
+//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToRotation(robot.getDirection()));
+//                return true;
+//            }
+//        };
+//        sequenceActions.addAction(Actions.delay(1, action));
+
+        //SequenceAction: Using seperate action and delay
+
+//        sequenceActions.addAction(new Action() {
+//            @Override
+//            public boolean act(float v) {
+//                if(robot.isDestroyed())
+//                    tiledEditor.setRobotVisible(robot.getId(), false);
+//                else
+//                    tiledEditor.setRobotVisible(robot.getId(), true);
+//                    tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToRotation(robot.getDirection()));
+//                return true;
+//            }
+//        });
+//        sequenceActions.addAction(Actions.delay(1));
+    }
+
+    private void moveRobot(Robot robot) {
+        if(robot.isDestroyed())
+            tiledEditor.setRobotVisible(robot.getId(), false);
+        else
+            tiledEditor.setRobotVisible(robot.getId(), true);
+        tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
     }
 
 
@@ -268,8 +303,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-        renderer.setView(camera);
-        renderer.render();
+
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+
+        if(sequenceActions.act(delta));
+
+
+
 
         //stage
         update(delta);
