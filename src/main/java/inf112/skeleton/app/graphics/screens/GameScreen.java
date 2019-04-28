@@ -13,14 +13,15 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
@@ -53,6 +54,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
+    private Timer timer = new Timer();
+    private final int STEP_DELAY = 1; // in seconds
+    private int stepCounter = 1;
 
     private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
         public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
@@ -63,8 +67,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         public void renderObject(MapObject object) {
             if(object instanceof TextureMapObject) {
                 TextureMapObject textureObject = (TextureMapObject) object;
-                // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
-                batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
+                if(object.isVisible()) {
+                    // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
+                    batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
+                }
             }
         }
     }
@@ -170,9 +176,23 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+//        players[0].move(Direction.EAST);
+//        players[0].rotateRight();
 //        updateBoard(players[0]);
-//        updateBoard(players[1]);
-//        updateBoard(players[2]);
+//        players[0].move(Direction.EAST);
+//        updateBoard(players[0]);
+//        players[0].move(Direction.EAST);
+//        updateBoard(players[0]);
+//        players[0].move(Direction.EAST);
     }
 
     public void presentCards() {
@@ -217,9 +237,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     // This method will update the position of a robot on the board
-    public void updateBoard(Robot robot) {
-        tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
-        render();
+    public void updateBoard(final Robot robot) {
+        SequenceAction action = new SequenceAction();
+
+        timer.scheduleTask(new Timer.Task() {
+            @Override
+            public void run() {
+                if(robot.isDestroyed())
+                    tiledEditor.setRobotVisible(robot.getId(), false);
+                else
+                    tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
+            }
+        }, STEP_DELAY*stepCounter);
+        stepCounter = stepCounter + 1;
     }
 
 

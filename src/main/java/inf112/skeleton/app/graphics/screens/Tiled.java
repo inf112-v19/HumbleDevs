@@ -89,10 +89,6 @@ public class Tiled {
         robot.setRotation(-rotation * 90);
     }
 
-    public void moveRobot(int robotId, int x, Direction y) {
-
-    }
-
     /**
      * Rotates a robot
      * @param robotId 0-indexed
@@ -102,6 +98,18 @@ public class Tiled {
     public void rotateRobot(int robotId, int rotation) {
         TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
         robot.setRotation(-rotation * 90);
+    }
+
+
+    /**
+     * Set the visibility for a robot
+     *
+     * @param robotId
+     * @param visible
+     */
+    public void setRobotVisible(int robotId, boolean visible) {
+        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+        robot.setVisible(visible);
     }
 
 }
