@@ -2,7 +2,6 @@ package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -92,22 +91,48 @@ public class MainScreen implements Screen {
         stage.addActor(mainTable);
     }
 
-    public void setNames(int players, int robots) {
+
+    String name;
+    int counter = 0;
+
+    public String helper(final String[] n) {
+        int idx = 1;
         mainTable.clear();
-        //Set table to fill stage
-        mainTable.setFillParent(true);
-        //Set alignment of contents in the table.
-        mainTable.top();
+        // OVERSKRIFT: VELG NAVN TIL SPILLER i
+        Label label = new Label("Skriv inn navnet til spiller " + idx, skin);
+        final TextField tf = new TextField("", skin);
+        final TextButton submitButton = new TextButton("Submit", skin);
+        mainTable.add(label);
+        mainTable.row();
+        mainTable.add(tf);
+        mainTable.row();
+        mainTable.add(submitButton);
 
-        mainTable.setColor(Color.GREEN);
+        submitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                n[counter] = tf.getMessageText();
+                counter++;
+            }
+        });
+
+        if (submitButton.getClickListener().isPressed()) {
+            return null;
+        }
+
+        return null;
+    }
+
+    public void setNames(int players, int robots) {
+        name = "";
+
+        String[] names = new String[players];
+
+        if (counter < players) {
+            helper(names);
+        }
+
         //TODO get random names for the robots
-//
-//        for (int i = 0; i < players; i++) {
-//            TextField tf = new TextField("", skin);
-//            mainTable.addActor(tf);
-//
-//        }
-
 
     }
 
