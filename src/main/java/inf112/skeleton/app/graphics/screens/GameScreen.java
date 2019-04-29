@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -183,8 +184,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
         //Test updateBoard here
 //        updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
+//        players[0].move(Direction.NORTH);
+//        updateBoard(players[0]);
 //        players[0].move(Direction.NORTH);
 //        updateBoard(players[0]);
 //        players[0].move(Direction.NORTH);
@@ -240,30 +241,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * */
     public void updateBoard(final Robot robot) {
 
-        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                moveRobot(robot);
-            }
-        }, 1, 1, TimeUnit.SECONDS);
+        // Using threads
 
-        //SequenceAction: Using Action.delay
-
-//        Action action = new Action() {
+//        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+//        executorService.scheduleAtFixedRate(new Runnable() {
 //            @Override
-//            public boolean act(float v) {
-//                if(robot.isDestroyed())
-//                    tiledEditor.setRobotVisible(robot.getId(), false);
-//                else
-//                    tiledEditor.setRobotVisible(robot.getId(), true);
-//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToRotation(robot.getDirection()));
-//                return true;
+//            public void run() {
+//                moveRobot(robot);
 //            }
-//        };
-//        sequenceActions.addAction(Actions.delay(1, action));
+//        }, 1, 1, TimeUnit.SECONDS);
 
-        //SequenceAction: Using seperate action and delay
+
+        //Using regular action
 
 //        sequenceActions.addAction(new Action() {
 //            @Override
@@ -272,20 +261,52 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 //                    tiledEditor.setRobotVisible(robot.getId(), false);
 //                else
 //                    tiledEditor.setRobotVisible(robot.getId(), true);
-//                    tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToRotation(robot.getDirection()));
+//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
+//                System.out.println(counter);
 //                return true;
 //            }
 //        });
-//        sequenceActions.addAction(Actions.delay(1));
+
+        //SequenceAction: Using Action.delay
+
+//        RunnableAction action = new RunnableAction() {
+//            @Override
+//            public boolean act(float v) {
+//                if(robot.isDestroyed())
+//                    tiledEditor.setRobotVisible(robot.getId(), false);
+//                else
+//                    tiledEditor.setRobotVisible(robot.getId(), true);
+//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
+//                System.out.println(counter);
+//                counter ++;
+//                return true;
+//            }
+//        };
+//        sequenceActions.addAction(Actions.delay(1, action));
+
+        // Create the action that will be executed
+        RunnableAction action = new RunnableAction() {
+            public void run() {
+                if(robot.isDestroyed())
+                    tiledEditor.setRobotVisible(robot.getId(), false);
+                else
+                    tiledEditor.setRobotVisible(robot.getId(), true);
+                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
+            }
+        };
+        // Add the action to the sequence
+        sequenceActions.addAction(action);
+        // Add a delay to the sequence
+        sequenceActions.addAction(Actions.delay(1));
+
+
+        for (int i = 0; i < sequenceActions.getActions().size; i++) {
+            System.out.print(sequenceActions.getActions().get(i).toString() + " ");
+
+        }
+        System.out.println();
     }
 
-    private void moveRobot(Robot robot) {
-        if(robot.isDestroyed())
-            tiledEditor.setRobotVisible(robot.getId(), false);
-        else
-            tiledEditor.setRobotVisible(robot.getId(), true);
-        tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
-    }
 
 
     public void update(float delta) {
@@ -307,9 +328,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
+//        sequenceActions.reset();
         if(sequenceActions.act(delta));
-
-
 
 
         //stage

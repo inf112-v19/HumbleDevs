@@ -73,10 +73,10 @@ public class Tiled {
     }
 
     /**
-     * Function that converts a direction to a counter clockwise degree representation
+     * Utility function that converts a direction to a counter clockwise degree representation
      * (which is the representation used by the drawing function in GameScreen)
      *
-     * NORTH is default (zero rotation)
+     * NORTH is default zero rotation (assuming texture faces north by default)
      *
      * @param dir
      * @return counter clockwise degree representation
