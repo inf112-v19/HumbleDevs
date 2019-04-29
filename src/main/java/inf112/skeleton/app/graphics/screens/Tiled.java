@@ -59,39 +59,22 @@ public class Tiled {
         }
 
         // Initiate robots in docks
-        objectLayer = tiledMap.getLayers().get("objects");
-        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            int rotation = directionToRotation(robots[i].getDirection());
-            Texture robotTexture = new Texture(Gdx.files.internal(robots[i].getPath()));
-            TextureRegion robotTR = new TextureRegion(robotTexture, TILE_SIZE, TILE_SIZE);
-            TextureMapObject robotObject = new TextureMapObject(robotTR);
-            robotObject.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
-            robotObject.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
-            robotObject.setRotation(rotation);
-            objectLayer.getObjects().add(robotObject);
-        }
+//        objectLayer = tiledMap.getLayers().get("objects");
+//        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
+//            int rotation = directionToRotation(robots[i].getDirection());
+//            Texture robotTexture = new Texture(Gdx.files.internal(robots[i].getPath()));
+//            TextureRegion robotTR = new TextureRegion(robotTexture, TILE_SIZE, TILE_SIZE);
+//            TextureMapObject robotObject = new TextureMapObject(robotTR);
+//            robotObject.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
+//            robotObject.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
+//            robotObject.setRotation(rotation);
+//            objectLayer.getObjects().add(robotObject);
+//        }
     }
 
-    /**
-     * Utility function that converts a direction to a counter clockwise degree representation
-     * (which is the representation used by the drawing function in GameScreen)
-     *
-     * NORTH is default zero rotation (assuming texture faces north by default)
-     *
-     * @param dir
-     * @return counter clockwise degree representation
-     */
-    public static int directionToRotation(Direction dir) {
-        int rotation = 0;
-        if (dir == Direction.EAST) {
-            rotation =  -90;
-        } else if (dir == Direction.WEST) {
-            rotation = 90;
-        } else if (dir == Direction.SOUTH) {
-            rotation =  180;
-        }
-        return rotation;
-    }
+    public HashMap<Integer, Position> getDockPositions(){return null;}
+
+
 
     /**
      * Moves a robot to a final x,y position on the tiled board (0,0 = bottom left)
@@ -101,26 +84,26 @@ public class Tiled {
      * @param y
      * @param dir direction the robot should face (assuming the robot texture by default faces north)
      */
-    public void moveRobot(int robotId, int x, int y, Direction dir) {
-        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
-        robot.setX(x * TILE_SIZE);
-        robot.setY(y * TILE_SIZE);
-        // Note: The rotation should actually be stored in radians according to the TextureMapObject doc,
-        // but since we only use this in the drawing function (in GameScreen), which represents rotation as counter clockwise degrees,
-        // we store it this way for convenience and less complicated computations.
-        robot.setRotation(directionToRotation(dir));
-    }
-
-    /**
-     * Rotates a robot
-     * @param robotId 0-indexed
-     * @param dir direction
-     *
-     */
-    public void rotateRobot(int robotId, Direction dir) {
-        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
-        robot.setRotation(directionToRotation(dir));
-    }
+//    public void moveRobot(int robotId, int x, int y, Direction dir) {
+//        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+//        robot.setX(x * TILE_SIZE);
+//        robot.setY(y * TILE_SIZE);
+//        // Note: The rotation should actually be stored in radians according to the TextureMapObject doc,
+//        // but since we only use this in the drawing function (in GameScreen), which represents rotation as counter clockwise degrees,
+//        // we store it this way for convenience and less complicated computations.
+//        robot.setRotation(directionToRotation(dir));
+//    }
+//
+//    /**
+//     * Rotates a robot
+//     * @param robotId 0-indexed
+//     * @param dir direction
+//     *
+//     */
+//    public void rotateRobot(int robotId, Direction dir) {
+//        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+//        robot.setRotation(directionToRotation(dir));
+//    }
 
 
     /**

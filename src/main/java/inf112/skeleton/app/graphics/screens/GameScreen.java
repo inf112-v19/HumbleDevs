@@ -8,24 +8,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
@@ -35,9 +31,6 @@ import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
 
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /*
  This class will represent the gamescreen (board and HUD)
@@ -61,8 +54,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
-    private final int STEP_DELAY = 1; // in seconds
-    private SequenceAction sequenceActions;
+    private final int GAMESPEED = 1; // in seconds
+    // An actions sequence for each robot
+    private SequenceAction sequenceAction = new SequenceAction();
+    private SequenceAction[] sequenceActions;
 
     private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
         public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
@@ -91,7 +86,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.players = players;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
-        this.sequenceActions = new SequenceAction();
+        this.sequenceActions = new SequenceAction[players.length];
+
+        // Initiate robot actors
+        for (int i = 0; i < players.length; i++) {
+            // Create the robot actors,
+            Texture texture = new Texture(Gdx.files.internal(players[i].getPath()));
+            TextureRegion region = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
+            Image robotActor = new Image(region);
+            robotActor.setOriginX(TILE_SIZE/2);
+            robotActor.setOriginY(TILE_SIZE/2);
+            robotActor.setPosition(players[i].getX()*TILE_SIZE,players[i].getY()*TILE_SIZE);
+            //add it to the stage,
+            stage.addActor(robotActor);
+            //connect them to their actionsequence
+            sequenceActions[i] = new SequenceAction();
+            sequenceActions[i].setActor(robotActor);
+        }
+
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
@@ -105,7 +117,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
-
 
         map = new HashMap<>();
 
@@ -184,15 +195,24 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
+//        players[0].rotateRight();
 //        updateBoard(players[0]);
 //        players[0].move(Direction.NORTH);
 //        updateBoard(players[0]);
 //        players[0].move(Direction.NORTH);
 //        updateBoard(players[0]);
-//        players[0].move(Direction.NORTH);
-//        updateBoard(players[0]);
-//        players[0].move(Direction.NORTH);
-//        updateBoard(players[0]);
+//
+//        players[1].move(Direction.NORTH);
+//        updateBoard(players[1]);
+//        players[1].move(Direction.NORTH);
+//        updateBoard(players[1]);
+//
+//        players[2].rotateRight();
+//        updateBoard(players[2]);
+//        players[2].move(Direction.EAST);
+//        updateBoard(players[2]);
+//        players[2].move(Direction.EAST);
+//        updateBoard(players[2]);
 //        players[0].move(Direction.EAST);
 //        players[0].move(Direction.EAST);
 //        players[0].move(Direction.EAST);
@@ -203,6 +223,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 //        players[0].move(Direction.EAST);
 //        updateBoard(players[0]);
 //        players[0].move(Direction.EAST);
+
+//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,2*TILE_SIZE));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,4*TILE_SIZE));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.rotateTo(-90));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.rotateTo(-180));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
+//        sequenceActions.addAction(Actions.delay(1));
+//        sequenceActions.addAction(Actions.hide());
+//        sequenceActions.setActor(stage.getActors().get(0));
     }
 
     public void presentCards() {
@@ -242,32 +277,56 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * */
     public void updateBoard(final Robot robot) {
 
-        // Delay using threads?
+        Image curActor = (Image) stage.getActors().get(robot.getId());
 
-//        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//        executorService.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                moveRobot(robot);
-//            }
-//        }, 1, 1, TimeUnit.SECONDS);
+        // Toggle robot visibility
+        if(robot.isDestroyed() && stage.getActors().get(robot.getId()).isVisible()) {
+            VisibleAction a0 = Actions.hide();
+            a0.setActor(curActor);
+            sequenceAction.addAction(a0);
+        } else if (!robot.isDestroyed() && !stage.getActors().get(robot.getId()).isVisible()) {
+            VisibleAction a0 = Actions.show();
+            a0.setActor(curActor);
+            sequenceAction.addAction(a0);
+        }
 
-        // Delay using sequence of actions
-        // Create the action that will be executed
-        RunnableAction action = new RunnableAction() {
-            public void run() {
-                if(robot.isDestroyed())
-                    tiledEditor.setRobotVisible(robot.getId(), false);
-                else
-                    tiledEditor.setRobotVisible(robot.getId(), true);
-                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
-                System.out.println("MOVING");
-            }
-        };
-        // Add the action to the sequence
-        sequenceActions.addAction(action);
-        // Add a delay to the sequence
-        sequenceActions.addAction(Actions.delay(STEP_DELAY));
+        // Move action
+        MoveToAction a1 = Actions.moveTo(robot.getX()*TILE_SIZE, robot.getY()*TILE_SIZE);
+        a1.setActor(curActor);
+        sequenceAction.addAction(a1);
+
+        // Add rotation action
+        RotateToAction a3 = Actions.rotateTo(directionToRotation(robot.getDirection()));
+        a3.setActor(curActor);
+        sequenceAction.addAction(a3);
+
+        // Lastly add gamespeed delay (in seconds)
+        DelayAction a2 = Actions.delay(GAMESPEED);
+        a2.setActor(curActor);
+        sequenceAction.addAction(a2);
+        // Set the actor for the sequence
+        sequenceAction.setActor(curActor);
+    }
+
+    /**
+     * Utility function that converts a direction to a counter clockwise degree representation
+     * (which is the representation used by the drawing function in GameScreen)
+     *
+     * NORTH is default zero rotation (assuming texture faces north by default)
+     *
+     * @param dir
+     * @return counter clockwise degree representation
+     */
+    public static int directionToRotation(Direction dir) {
+        int rotation = 0;
+        if (dir == Direction.EAST) {
+            rotation =  -90;
+        } else if (dir == Direction.WEST) {
+            rotation = 90;
+        } else if (dir == Direction.SOUTH) {
+            rotation =  180;
+        }
+        return rotation;
     }
 
 
@@ -291,8 +350,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        //Act out the sequenced actions of robots
-        if(sequenceActions.act(delta));
+        //Act out the sequenced actions for robots
+        sequenceAction.act(delta);
+//        for (int i = 0; i < sequenceActions.length; i++) {
+//            if(sequenceActions[i].act(delta));
+//            System.out.println(sequenceActions[i].getActions().toString());
+//        }
 
         //stage
         update(delta);
