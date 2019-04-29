@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
@@ -52,7 +53,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
-    private final int GAMESPEED = 1; // in seconds
+    private final float GAMESPEED = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -179,50 +180,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
-        players[0].rotateRight();
-        updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
-        players[0].move(Direction.NORTH);
-        updateBoard(players[0]);
+//        Player p1 = players[0];
+//
+//
+//        p1.rotateRight();
+//        updateBoard(p1);
+//        p1.move(Direction.EAST);
+//        updateBoard(p1);
+//        p1.move(Direction.EAST);
+//        updateBoard(p1);
+//        p1.rotateLeft();
+//        updateBoard(p1);
+//        p1.move(Direction.NORTH);
+//        updateBoard(p1);
+//        p1.move(Direction.NORTH);
+//        updateBoard(p1);
+//        p1.die();
+//        updateBoard(p1);
+//        p1.respawn();
+//        updateBoard(p1);
 
-        players[1].move(Direction.NORTH);
-        updateBoard(players[1]);
-        players[1].move(Direction.NORTH);
-        updateBoard(players[1]);
-
-        players[2].rotateRight();
-        updateBoard(players[2]);
-        players[2].move(Direction.EAST);
-        updateBoard(players[2]);
-        players[2].move(Direction.EAST);
-        updateBoard(players[2]);
-
-//        players[0].move(Direction.EAST);
-//        players[0].move(Direction.EAST);
-//        players[0].move(Direction.EAST);
-
-//        updateBoard(players[0]);
-//        players[0].move(Direction.EAST);
-//        updateBoard(players[0]);
-//        players[0].move(Direction.EAST);
-//        updateBoard(players[0]);
-//        players[0].move(Direction.EAST);
-
-//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,2*TILE_SIZE));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,4*TILE_SIZE));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.rotateTo(-90));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.rotateTo(-180));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
-//        parallellAction.addAction(Actions.delay(1));
-//        parallellAction.addAction(Actions.hide());
-//        parallellAction.setActor(stage.getActors().get(0));
     }
 
     public void presentCards() {
@@ -261,34 +238,40 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      *
      * */
     public void updateBoard(final Robot robot) {
-
         Image curActor = (Image) stage.getActors().get(robot.getId());
 
         // Toggle robot visibility
-        if(robot.isDestroyed() && stage.getActors().get(robot.getId()).isVisible()) {
-            VisibleAction a0 = Actions.hide();
-            a0.setActor(curActor);
-            sequenceAction.addAction(a0);
-        } else if (!robot.isDestroyed() && !stage.getActors().get(robot.getId()).isVisible()) {
-            VisibleAction a0 = Actions.show();
+        if(robot.isDestroyed()) {
+            AlphaAction a0 = Actions.fadeOut(GAMESPEED/3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
         }
 
-        // Move action
+        // Add move action
         MoveToAction a1 = Actions.moveTo(robot.getX()*TILE_SIZE, robot.getY()*TILE_SIZE);
         a1.setActor(curActor);
+        a1.setDuration(GAMESPEED);
+        a1.setInterpolation(Interpolation.smooth);
         sequenceAction.addAction(a1);
 
         // Add rotation action
-        RotateToAction a3 = Actions.rotateTo(directionToRotation(robot.getDirection()));
-        a3.setActor(curActor);
-        sequenceAction.addAction(a3);
-
-        // Lastly add gamespeed delay (in seconds)
-        DelayAction a2 = Actions.delay(GAMESPEED);
+        RotateToAction a2 = Actions.rotateTo(directionToRotation(robot.getDirection()));
         a2.setActor(curActor);
+        a2.setDuration(GAMESPEED);
+        a2.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(a2);
+
+        // Toggle robot visibility
+        if (!robot.isDestroyed()) {
+            AlphaAction a0 = Actions.fadeIn(GAMESPEED*2);
+            a0.setActor(curActor);
+            sequenceAction.addAction(a0);
+        }
+
+        // Lastly add delay for each step (in seconds)
+        DelayAction da = Actions.delay(GAMESPEED);
+        da.setActor(curActor);
+        sequenceAction.addAction(da);
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
     }
@@ -336,11 +319,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         mapRenderer.render();
 
         //Act out the sequenced actions for robots
-        sequenceAction.act(delta);
-//        for (int i = 0; i < parallellAction.length; i++) {
-//            if(parallellAction[i].act(delta));
-//            System.out.println(parallellAction[i].getActions().toString());
-//        }
+        if(sequenceAction.act(delta)); // action was completed
+        //Act out parallell actions for robots
+        for (int i = 0; i < parallellAction.length; i++) {
+            if(parallellAction[i].act(delta)); //action was completed
+        }
 
         //stage
         update(delta);
