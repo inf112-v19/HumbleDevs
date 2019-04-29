@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -55,9 +53,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
     private final int GAMESPEED = 1; // in seconds
-    // An actions sequence for each robot
-    private SequenceAction sequenceAction = new SequenceAction();
-    private SequenceAction[] sequenceActions;
+    // An actions sequence for turnbased movement
+    private SequenceAction sequenceAction;
+    // An action sequence for parallell movement (conveyorbelt)
+    private SequenceAction[] parallellAction;
 
 
 
@@ -70,7 +69,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.players = players;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
-        this.sequenceActions = new SequenceAction[players.length];
+        this.sequenceAction = new SequenceAction();
+        this.parallellAction = new SequenceAction[players.length];
 
         // Initiate robot actors
         for (int i = 0; i < players.length; i++) {
@@ -84,8 +84,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             //add it to the stage,
             stage.addActor(robotActor);
             //connect them to their actionsequence
-            sequenceActions[i] = new SequenceAction();
-            sequenceActions[i].setActor(robotActor);
+            parallellAction[i] = new SequenceAction();
+            parallellAction[i].setActor(robotActor);
         }
 
         font = new BitmapFont();
@@ -209,20 +209,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 //        updateBoard(players[0]);
 //        players[0].move(Direction.EAST);
 
-//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,2*TILE_SIZE));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,4*TILE_SIZE));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.rotateTo(-90));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.rotateTo(-180));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
-//        sequenceActions.addAction(Actions.delay(1));
-//        sequenceActions.addAction(Actions.hide());
-//        sequenceActions.setActor(stage.getActors().get(0));
+//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,2*TILE_SIZE));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,4*TILE_SIZE));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.rotateTo(-90));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.rotateTo(-180));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.moveTo(1*TILE_SIZE,3*TILE_SIZE));
+//        parallellAction.addAction(Actions.delay(1));
+//        parallellAction.addAction(Actions.hide());
+//        parallellAction.setActor(stage.getActors().get(0));
     }
 
     public void presentCards() {
@@ -337,9 +337,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //Act out the sequenced actions for robots
         sequenceAction.act(delta);
-//        for (int i = 0; i < sequenceActions.length; i++) {
-//            if(sequenceActions[i].act(delta));
-//            System.out.println(sequenceActions[i].getActions().toString());
+//        for (int i = 0; i < parallellAction.length; i++) {
+//            if(parallellAction[i].act(delta));
+//            System.out.println(parallellAction[i].getActions().toString());
 //        }
 
         //stage
