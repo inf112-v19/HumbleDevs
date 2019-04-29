@@ -3,7 +3,11 @@ package inf112.skeleton.app.game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import inf112.skeleton.app.board.Board;
+import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.GUI;
+import inf112.skeleton.app.graphics.screens.GameScreen;
 
 
 public class Main {
@@ -14,5 +18,25 @@ public class Main {
         cfg.width = 1100;
         cfg.height = 768;
         new LwjglApplication(new GUI(), cfg);
+
+        TiledMap map = new TiledMap();
+        Board board = new Board(map);
+
+        // Få antall spillere fra mainscreen
+        Game game = new Game(board);
+        game.initializePlayers(5);
+        Robot[] robots = game.getRobots();
+
+        // mainscreen -> antall ro
+        // Gamescreen gs = new Gamescreen();
+
+        boolean done = false;
+        while (!done){
+            Robot rob = game.round();
+            if (rob != null) {
+                done = true;
+                // Annonser rob som vinner
+            }
+        }
     }
 }

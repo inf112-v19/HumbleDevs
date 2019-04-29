@@ -13,6 +13,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import inf112.skeleton.app.graphics.screens.GameScreen;
 
 /**
  * The class that controls most of the game. The game class is the class that
@@ -21,11 +22,21 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 public class Game {
     private Board board;
     private Robot[] robots;
+    private GameScreen gameScreen;
+
+    public Game(Board board) {
+        this.board = board;
+    }
 
     public Game(Board board, Robot[] robots) {
         this.board = board;
         this.robots = robots;
     }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
     /**
      * Starts the a new round by dealing new cards to every player
      */
@@ -43,7 +54,7 @@ public class Game {
      * Calls the methods to that makes up a round. Not every method this method uses is
      * implemented, but it gives a nice illustration on how the game should work.
      */
-    public void round() {
+    public Robot round() {
         startRound();
         for (int x = 0; x < 5; x++) {
             phase(x);
@@ -51,8 +62,13 @@ public class Game {
             activatePassiveItems();
             robotShootLasers();
             repairAndCheckFlags();
+            Robot rob = finished();
+            if(rob != null){
+                return rob;
+            }
         }
         respawnRobots();
+        return null;
     }
 
     /**
@@ -112,16 +128,6 @@ public class Game {
                                 rob.die();
                                 board.removeRobot(rob.getPosition());
                             }
-//                            else if (is instanceof Wall) {
-//                                if (((Wall) is).getDir() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-//                                    break outerloop;
-//                                }
-//                                if (((Wall) is).getDir2() != null){
-//                                    if (((Wall) is).getDir2() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-//                                        break outerloop;
-//                                    }
-//                                }
-//                            }
                             if (is instanceof ConveyorBelt) {
                                 rotate = ((ConveyorBelt) is).getRotation();
                                 temp = is;
@@ -180,7 +186,6 @@ public class Game {
             }
         }
     }
-
     /**
      * Method that returns the first obstacle you hit in a given direction from a position
      *
@@ -218,13 +223,6 @@ public class Game {
                         return item;
                     }
                 }
-                // Hva er dette?
-//                if (item instanceof Laser) {
-//                    Direction turretDir = ((Laser) item).getDirection();
-//                    if (turretDir == shootingDir) {
-//                        return item;
-//                    }
-//                }
             }
             Robot target = board.getRobot(shotPos);
             if (target != null) {
@@ -255,6 +253,7 @@ public class Game {
                 ((Robot) obstruction).takeDamage();
                 if (((Robot) obstruction).isDestroyed()) {
                     board.removeRobot(rob.getPosition());
+                    // Må fjerne roboten fra grafikken
                 }
             }
         }
@@ -304,7 +303,6 @@ public class Game {
 
     /**
      * Checks if any robots have visited all flags.
-     *
      * @return the robot that have visited all flags, returns null if nobody has done it yet.
      */
     public Robot finished() {
@@ -530,5 +528,26 @@ public class Game {
 		}
 		board.removeRobot(start);
 		board.insertRobot(end, rob);
+
+		//gameScreen.updateBoard(rob);
 	}
+
+    public void initializePlayers(int numb) {
+        ArrayList<Position> startDocks = board.getDockPositions();
+        robots = new Robot[numb];
+        for(int x = 0; x < numb; x++) {
+            Position pos = startDocks.get(x);
+            String filePath = "texture/robot" + x+1 + ".png";
+            Robot player = new Player(0, Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
+            robots[x] = player;
+            board.insertRobot(pos,player);
+        }
+    }
+    /**
+     * Method used to get the robots
+     * @return array of robots
+     */
+    public Robot[] getRobots() {
+        return this.robots;
+    }
 }

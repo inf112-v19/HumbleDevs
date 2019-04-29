@@ -170,9 +170,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
-//        updateBoard(players[0]);
-//        updateBoard(players[1]);
-//        updateBoard(players[2]);
+        updateBoard(players[0]);
+        updateBoard(players[1]);
+        updateBoard(players[2]);
     }
 
     public void presentCards() {
