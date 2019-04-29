@@ -40,7 +40,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     final GUI game;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRendererWithSprites mapRenderer;
+    private OrthogonalTiledMapRenderer mapRenderer;
     private Stage stage;
     public BitmapFont font;
     public Table table;
@@ -59,23 +59,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private SequenceAction sequenceAction = new SequenceAction();
     private SequenceAction[] sequenceActions;
 
-    private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
-        public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
-            super(map);
-        }
 
-        @Override
-        public void renderObject(MapObject object) {
-            if(object instanceof TextureMapObject) {
-                TextureMapObject textureObject = (TextureMapObject) object;
-
-                if(object.isVisible()) {
-                    // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
-                    batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
-                }
-            }
-        }
-    }
 
     public GameScreen(final GUI game, Player[] players) {
         this.game = game;
@@ -110,7 +94,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        mapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
@@ -195,24 +179,25 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
         //Test updateBoard here
-//        players[0].rotateRight();
-//        updateBoard(players[0]);
-//        players[0].move(Direction.NORTH);
-//        updateBoard(players[0]);
-//        players[0].move(Direction.NORTH);
-//        updateBoard(players[0]);
-//
-//        players[1].move(Direction.NORTH);
-//        updateBoard(players[1]);
-//        players[1].move(Direction.NORTH);
-//        updateBoard(players[1]);
-//
-//        players[2].rotateRight();
-//        updateBoard(players[2]);
-//        players[2].move(Direction.EAST);
-//        updateBoard(players[2]);
-//        players[2].move(Direction.EAST);
-//        updateBoard(players[2]);
+        players[0].rotateRight();
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+        players[0].move(Direction.NORTH);
+        updateBoard(players[0]);
+
+        players[1].move(Direction.NORTH);
+        updateBoard(players[1]);
+        players[1].move(Direction.NORTH);
+        updateBoard(players[1]);
+
+        players[2].rotateRight();
+        updateBoard(players[2]);
+        players[2].move(Direction.EAST);
+        updateBoard(players[2]);
+        players[2].move(Direction.EAST);
+        updateBoard(players[2]);
+
 //        players[0].move(Direction.EAST);
 //        players[0].move(Direction.EAST);
 //        players[0].move(Direction.EAST);
