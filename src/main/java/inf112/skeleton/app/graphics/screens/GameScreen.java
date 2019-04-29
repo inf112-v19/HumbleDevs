@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
@@ -241,7 +242,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * */
     public void updateBoard(final Robot robot) {
 
-        // Using threads
+        // Delay using threads?
 
 //        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 //        executorService.scheduleAtFixedRate(new Runnable() {
@@ -251,39 +252,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 //            }
 //        }, 1, 1, TimeUnit.SECONDS);
 
-
-        //Using regular action
-
-//        sequenceActions.addAction(new Action() {
-//            @Override
-//            public boolean act(float v) {
-//                if(robot.isDestroyed())
-//                    tiledEditor.setRobotVisible(robot.getId(), false);
-//                else
-//                    tiledEditor.setRobotVisible(robot.getId(), true);
-//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
-//                System.out.println(counter);
-//                return true;
-//            }
-//        });
-
-        //SequenceAction: Using Action.delay
-
-//        RunnableAction action = new RunnableAction() {
-//            @Override
-//            public boolean act(float v) {
-//                if(robot.isDestroyed())
-//                    tiledEditor.setRobotVisible(robot.getId(), false);
-//                else
-//                    tiledEditor.setRobotVisible(robot.getId(), true);
-//                tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
-//                System.out.println(counter);
-//                counter ++;
-//                return true;
-//            }
-//        };
-//        sequenceActions.addAction(Actions.delay(1, action));
-
+        // Delay using sequence of actions
         // Create the action that will be executed
         RunnableAction action = new RunnableAction() {
             public void run() {
@@ -292,19 +261,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 else
                     tiledEditor.setRobotVisible(robot.getId(), true);
                 tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), robot.getDirection());
+                System.out.println("MOVING");
             }
         };
         // Add the action to the sequence
         sequenceActions.addAction(action);
         // Add a delay to the sequence
-        sequenceActions.addAction(Actions.delay(1));
-
-
-        for (int i = 0; i < sequenceActions.getActions().size; i++) {
-            System.out.print(sequenceActions.getActions().get(i).toString() + " ");
-
-        }
-        System.out.println();
+        sequenceActions.addAction(Actions.delay(STEP_DELAY));
     }
 
 
@@ -328,9 +291,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-//        sequenceActions.reset();
+        //Act out the sequenced actions of robots
         if(sequenceActions.act(delta));
-
 
         //stage
         update(delta);
