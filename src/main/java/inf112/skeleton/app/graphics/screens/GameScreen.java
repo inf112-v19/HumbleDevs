@@ -216,15 +216,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //stage
         update(delta);
-        Actor actor = new Actor();
-        stage.addActor(actor);
         stage.draw();
 
-        game.batch.begin();
-        //game.font.draw(game.batch, "PLEASE", 800, 300);
-
-        // Her kan vi tegne :D
-        game.batch.end();
     }
 
     @Override
