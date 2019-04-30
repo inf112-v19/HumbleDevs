@@ -52,7 +52,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private AssetManager assetManager;
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
-    private Tiled tiledEditor;
     private final float GAMESPEED = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private SequenceAction sequenceAction;
@@ -96,7 +95,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-//        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
 
