@@ -29,8 +29,19 @@ public class GameTest {
         for(int x = 0; x < 144; x++) {
             test.add(new Square<IItem>());
         }
+
         Board board = new Board(12, 12,test);
         this.board = board;
+        Dock d1 = new Dock(1);
+        Dock d2 = new Dock(2);
+        Dock d3 = new Dock(3);
+        Dock d4 = new Dock(4);
+        Dock d5 = new Dock(5);
+        board.insertItem(7,7,d1);
+        board.insertItem(8,7,d1);
+        board.insertItem(9,7,d1);
+        board.insertItem(10,7,d1);
+        board.insertItem(6,7,d1);
         board.insertItem(new Position(1,2), new Pit());
         this.robs = new Robot[3];
         for(int y = 0; y < 3; y++){
@@ -611,5 +622,28 @@ public class GameTest {
         board.insertItem(3,2,wall);
         game.robotMove(rob,Direction.EAST,false);
         assertEquals(new Position(2,2), rob.getPosition());
+    }
+    @Test
+    public void testInitializePlayers(){
+        ArrayList<String> names = new ArrayList<String>();
+        names.add("Kåre");
+        names.add("Alf");
+        names.add("Per");
+        game.initializePlayers(5,names);
+        Robot[] robs = game.getRobots();
+        int players = 0;
+        int ais = 0;
+        for(int x = 0; x < 5; x++){
+            Robot rob = robs[x];
+            if(rob instanceof Player){
+                players++;
+            } else {
+                ais++;
+            }
+        }
+        assertEquals(5,robs.length);
+        assertEquals(3,players);
+        assertEquals(2,ais);
+
     }
 }

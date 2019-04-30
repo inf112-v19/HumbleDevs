@@ -1,5 +1,6 @@
 package inf112.skeleton.app.game;
 
+import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Items.*;
 import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
 
@@ -532,15 +533,26 @@ public class Game {
 		//gameScreen.updateBoard(rob);
 	}
 
-    public void initializePlayers(int numb) {
+    public void initializePlayers(int numb, ArrayList<String> nameOfPlayers) {
+	    if(nameOfPlayers.size() == 0 && numb > 0){
+	        return;
+        }
         ArrayList<Position> startDocks = board.getDockPositions();
-        robots = new Robot[numb];
-        for(int x = 0; x < numb; x++) {
+        this.robots = new Robot[numb];
+        for(int x = 0; x < nameOfPlayers.size(); x++) {
             Position pos = startDocks.get(x);
             String filePath = "texture/robot" + x+1 + ".png";
-            Robot player = new Player(0, Direction.NORTH, pos.getX(),pos.getY(), "jd", filePath);
+            Robot player = new Player(x, Direction.NORTH, pos.getX(),pos.getY(), nameOfPlayers.get(x), filePath);
             robots[x] = player;
             board.insertRobot(pos,player);
+        }
+        for(int y = 0; y < numb - nameOfPlayers.size(); y++){
+            int index = y + nameOfPlayers.size();
+            Position pos = startDocks.get(index);
+            String filePath = "texture/robot" + (index)+1 + ".png";
+            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "Destroyer" + (y+1), filePath);
+            robots[index] = ai;
+            board.insertRobot(pos,ai);
         }
     }
     /**

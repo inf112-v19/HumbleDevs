@@ -22,21 +22,16 @@ public class Main {
         TiledMap map = new TiledMap();
         Board board = new Board(map);
 
-        // Få antall spillere fra mainscreen
         Game game = new Game(board);
-        game.initializePlayers(5);
         Robot[] robots = game.getRobots();
 
-        // mainscreen -> antall ro
-        // Gamescreen gs = new Gamescreen();
-
-        boolean done = false;
-        while (!done){
-            Robot rob = game.round();
-            if (rob != null) {
-                done = true;
-                // Annonser rob som vinner
-            }
-        }
+//        boolean done = false;
+//        while (!done){
+//            Robot rob = game.round();
+//            if (rob != null) {
+//                done = true;
+//                // Annonser rob som vinner
+//            }
+//        }
     }
 }

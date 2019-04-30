@@ -13,7 +13,6 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -43,9 +42,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private Stage stage;
     public BitmapFont font;
     public Table table;
-    private Player[] players;
+    private Robot[] robots;
     private ProgramCardDeck programCardDeck;
-    private Map<Player, ArrayList> map;
+    private Map<Robot, ArrayList> map;
     private int playerCounter;
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
@@ -69,13 +68,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    public GameScreen(final GUI game, Player[] players) {
+    public GameScreen(final GUI game, Robot[] robots) {
         this.game = game;
         this.assetManager = new AssetManager();
         this.stage = new Stage();
         this.table = new Table();
         this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
-        this.players = players;
+        this.robots = robots;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
         font = new BitmapFont();
@@ -85,7 +84,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
+        tiledEditor = new Tiled(tiledMap, TILE_SIZE, robots);
 
         camera = new OrthographicCamera();
 
@@ -109,7 +108,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addCardToSelected(ProgramCard card) {
-
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
             //Deep copy av listen
@@ -121,11 +119,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             selectedCards.clear();
 
 
-            if (playerCounter == players.length) {
+            if (playerCounter == robots.length) {
                 table.clear();
                 for (int i = 0; i < playerCounter; i++) {
-                    ProgramCard[] cards = (ProgramCard[]) map.get(players[i]).toArray(new ProgramCard[5]);
-                    players[i].setCards(cards);
+                    ProgramCard[] cards = (ProgramCard[]) map.get(robots[i]).toArray(new ProgramCard[5]);
+                    robots[i].setCards(cards);
                 }
                 drawHUD(map);
                 return;
@@ -135,29 +133,29 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        map.put(players[playerCounter], list);
+        map.put(robots[playerCounter], list);
 
         playerCounter++;
     }
 
 
-    private void drawHUD(Map<Player, ArrayList> map) {
+    private void drawHUD(Map<Robot, ArrayList> map) {
         table.top();
         table.pad(0, 0, 0, 0);
-        for (int i = 0; i < players.length; i++) {
-            Image robot = new Image(new Texture(players[i].getPath()));
+        for (int i = 0; i < robots.length; i++) {
+            Image robot = new Image(new Texture(robots[i].getPath()));
             table.add(robot);
-            Label nameLabel = new Label(players[i].getName(), skin);
+            Label nameLabel = new Label(robots[i].getName(), skin);
             table.add(nameLabel);
 
-            for (int j = 0; j < players[i].getLifeTokens(); j++) {
+            for (int j = 0; j < robots[i].getLifeTokens(); j++) {
                 Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
                 table.add(lifetoken);
             }
 
 
             table.row();
-            ArrayList cardList = map.get(players[i]);
+            ArrayList cardList = map.get(robots[i]);
             for (int j = 0; j < cardList.size(); j++) {
                 table.pad(10, 10, 10, 10);
 
@@ -165,22 +163,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
                 Image img = new Image(texture);
                 table.add(img);
-
             }
             table.row();
         }
         //Test updateBoard here
-        updateBoard(players[0]);
-        updateBoard(players[1]);
-        updateBoard(players[2]);
+        updateBoard(robots[0]);
+        updateBoard(robots[1]);
+        updateBoard(robots[2]);
     }
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - players[playerCounter].getDamageTokens()); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - robots[playerCounter].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
-        Label playerLabel = new Label("Det er " + players[playerCounter].getName() + " sin tur", skin);
+        Label playerLabel = new Label("Det er " + robots[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
 
         for (int i = 0; i < cards.length; i++) {
