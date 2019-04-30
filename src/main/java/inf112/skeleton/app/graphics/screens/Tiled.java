@@ -59,16 +59,22 @@ public class Tiled {
         }
 
         // Initiate robots in docks
-        objectLayer = tiledMap.getLayers().get("objects");
-        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            Texture texture = new Texture(Gdx.files.internal(robots[i].getPath()));
-            TextureRegion textureRegion = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
-            TextureMapObject tmo = new TextureMapObject(textureRegion);
-            tmo.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
-            tmo.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
-            objectLayer.getObjects().add(tmo);
-        }
+//        objectLayer = tiledMap.getLayers().get("objects");
+//        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
+//            int rotation = directionToRotation(robots[i].getDirection());
+//            Texture robotTexture = new Texture(Gdx.files.internal(robots[i].getPath()));
+//            TextureRegion robotTR = new TextureRegion(robotTexture, TILE_SIZE, TILE_SIZE);
+//            TextureMapObject robotObject = new TextureMapObject(robotTR);
+//            robotObject.setX(DOCK_POSITIONS.get(DOCK_ID.get(i)).getX() * TILE_SIZE);
+//            robotObject.setY(DOCK_POSITIONS.get(DOCK_ID.get(i)).getY() * TILE_SIZE);
+//            robotObject.setRotation(rotation);
+//            objectLayer.getObjects().add(robotObject);
+//        }
     }
+
+    public HashMap<Integer, Position> getDockPositions(){return null;}
+
+
 
     /**
      * Moves a robot to a final x,y position on the tiled board (0,0 = bottom left)
@@ -76,32 +82,39 @@ public class Tiled {
      * @param robotId 0-indexed
      * @param x
      * @param y
-     * @param rotation final clockwise rotation in number of 90 degree turns
-     *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
+     * @param dir direction the robot should face (assuming the robot texture by default faces north)
      */
-    public void moveRobot(int robotId, int x, int y, int rotation) {
-        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
-        robot.setX(x * TILE_SIZE);
-        robot.setY(y * TILE_SIZE);
-        // Note: The rotation should actually be stored in radians according to the TextureMapObject doc,
-        // but since we only use this in the drawing function (in GameScreen), which uses rotation representation as counter clockwise degrees,
-        // we store it this way for convenience and less complicated computations.
-        robot.setRotation(-rotation * 90);
-    }
+//    public void moveRobot(int robotId, int x, int y, Direction dir) {
+//        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+//        robot.setX(x * TILE_SIZE);
+//        robot.setY(y * TILE_SIZE);
+//        // Note: The rotation should actually be stored in radians according to the TextureMapObject doc,
+//        // but since we only use this in the drawing function (in GameScreen), which represents rotation as counter clockwise degrees,
+//        // we store it this way for convenience and less complicated computations.
+//        robot.setRotation(directionToRotation(dir));
+//    }
+//
+//    /**
+//     * Rotates a robot
+//     * @param robotId 0-indexed
+//     * @param dir direction
+//     *
+//     */
+//    public void rotateRobot(int robotId, Direction dir) {
+//        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+//        robot.setRotation(directionToRotation(dir));
+//    }
 
-    public void moveRobot(int robotId, int x, Direction y) {
-
-    }
 
     /**
-     * Rotates a robot
-     * @param robotId 0-indexed
-     * @param rotation final clockwise rotation in number of 90 degree turns
-     *                 (0 = no rotation, 1 = 90 deg clockwise, 2 = 180 deg clockwise, -1 = 90 deg counter clockwise, etc.)
+     * Set the visibility for a robot
+     *
+     * @param robotId
+     * @param visible
      */
-    public void rotateRobot(int robotId, int rotation) {
+    public void setRobotVisible(int robotId, boolean visible) {
         TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
-        robot.setRotation(-rotation * 90);
+        robot.setVisible(visible);
     }
 
 }

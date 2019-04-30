@@ -8,13 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -38,7 +39,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     final GUI game;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
-    private OrthogonalTiledMapRendererWithSprites renderer;
+    private OrthogonalTiledMapRenderer mapRenderer;
     private Stage stage;
     public BitmapFont font;
     public Table table;
@@ -52,21 +53,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     //TILE_SIZE = pixel size of one tile (width and height)
     private final int TILE_SIZE = 64;
     private Tiled tiledEditor;
+    private final float GAMESPEED = 0.2f; // in seconds
+    // An actions sequence for turnbased movement
+    private SequenceAction sequenceAction;
+    // An action sequence for parallell movement (conveyorbelt)
+    private SequenceAction[] parallellAction;
 
-    private class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRenderer {
-        public OrthogonalTiledMapRendererWithSprites(TiledMap map) {
-            super(map);
-        }
 
-        @Override
-        public void renderObject(MapObject object) {
-            if(object instanceof TextureMapObject) {
-                TextureMapObject textureObject = (TextureMapObject) object;
-                // arguments: (texture region, x, y, originX, originY, width, height, scaleX, scaleY, the angle of counter clockwise rotation of the rectangle around originX/originY)
-                batch.draw(textureObject.getTextureRegion(), textureObject.getX(), textureObject.getY(), TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, 1, 1, textureObject.getRotation());
-            }
-        }
-    }
 
     public GameScreen(final GUI game, Robot[] robots) {
         this.game = game;
@@ -77,20 +70,38 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.robots = robots;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
+        this.sequenceAction = new SequenceAction();
+        this.parallellAction = new SequenceAction[robots.length];
+
+        // Initiate robot actors
+        for (int i = 0; i < robots.length; i++) {
+            // Create the robot actors,
+            Texture texture = new Texture(Gdx.files.internal(robots[i].getPath()));
+            TextureRegion region = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
+            Image robotActor = new Image(region);
+            robotActor.setOriginX(TILE_SIZE/2);
+            robotActor.setOriginY(TILE_SIZE/2);
+            robotActor.setPosition(robots[i].getX()*TILE_SIZE,robots[i].getY()*TILE_SIZE);
+            //add it to the stage,
+            stage.addActor(robotActor);
+            //connect them to their actionsequence
+            parallellAction[i] = new SequenceAction();
+            parallellAction[i].setActor(robotActor);
+        }
+
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        renderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         tiledEditor = new Tiled(tiledMap, TILE_SIZE, robots);
 
         camera = new OrthographicCamera();
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
-
 
         map = new HashMap<>();
 
@@ -166,10 +177,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
-        //Test updateBoard here
-        updateBoard(robots[0]);
-        updateBoard(robots[1]);
-        updateBoard(robots[2]);
+        Robot p1 = robots[0];
+
+
+        p1.rotateRight();
+        updateBoard(p1);
+        p1.move(Direction.EAST);
+        updateBoard(p1);
+        p1.move(Direction.EAST);
+        updateBoard(p1);
+        p1.rotateLeft();
+        updateBoard(p1);
+        p1.move(Direction.NORTH);
+        updateBoard(p1);
+        p1.move(Direction.NORTH);
+        updateBoard(p1);
+        p1.die();
+        updateBoard(p1);
+        p1.respawn();
+        updateBoard(p1);
+
     }
 
     public void presentCards() {
@@ -201,23 +228,72 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-    public int directionToInteger(Direction dir) {
-        if (dir == Direction.NORTH || dir == null ) {
-            return 0;
-        } else if (dir == Direction.EAST) {
-            return 1;
-        } else if (dir == Direction.WEST) {
-            return -1;
-        } else {
-            return 2;
+
+
+    /**
+     * This method will update the position and direction of a robot on the board
+     *
+     * */
+    public void updateBoard(final Robot robot) {
+        Image curActor = (Image) stage.getActors().get(robot.getId());
+
+        // Toggle robot visibility
+        if(robot.isDestroyed()) {
+            AlphaAction a0 = Actions.fadeOut(GAMESPEED/3);
+            a0.setActor(curActor);
+            sequenceAction.addAction(a0);
         }
+
+        // Add move action
+        MoveToAction a1 = Actions.moveTo(robot.getX()*TILE_SIZE, robot.getY()*TILE_SIZE);
+        a1.setActor(curActor);
+        a1.setDuration(GAMESPEED);
+        a1.setInterpolation(Interpolation.smooth);
+        sequenceAction.addAction(a1);
+
+        // Add rotation action
+        RotateToAction a2 = Actions.rotateTo(directionToRotation(robot.getDirection()));
+        a2.setActor(curActor);
+        a2.setDuration(GAMESPEED);
+        a2.setInterpolation(Interpolation.linear);
+        sequenceAction.addAction(a2);
+
+        // Toggle robot visibility
+        if (!robot.isDestroyed()) {
+            AlphaAction a0 = Actions.fadeIn(GAMESPEED*2);
+            a0.setActor(curActor);
+            sequenceAction.addAction(a0);
+        }
+
+        // Lastly add delay for each step (in seconds)
+        DelayAction da = Actions.delay(GAMESPEED);
+        da.setActor(curActor);
+        sequenceAction.addAction(da);
+        // Set the actor for the sequence
+        sequenceAction.setActor(curActor);
     }
 
-    // This method will update the position of a robot on the board
-    public void updateBoard(Robot robot) {
-        tiledEditor.moveRobot(robot.getId(), robot.getX(), robot.getY(), directionToInteger(robot.getDirection()));
-        render();
+    /**
+     * Utility function that converts a direction to a counter clockwise degree representation
+     * (which is the representation used by the drawing function in GameScreen)
+     *
+     * NORTH is default zero rotation (assuming texture faces north by default)
+     *
+     * @param dir
+     * @return counter clockwise degree representation
+     */
+    public static int directionToRotation(Direction dir) {
+        int rotation = 0;
+        if (dir == Direction.EAST) {
+            rotation =  -90;
+        } else if (dir == Direction.WEST) {
+            rotation = 90;
+        } else if (dir == Direction.SOUTH) {
+            rotation =  180;
+        }
+        return rotation;
     }
+
 
 
     public void update(float delta) {
@@ -235,8 +311,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-        renderer.setView(camera);
-        renderer.render();
+
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+
+        //Act out the sequenced actions for robots
+        if(sequenceAction.act(delta)); // action was completed
+        //Act out parallell actions for robots
+        for (int i = 0; i < parallellAction.length; i++) {
+            if(parallellAction[i].act(delta)); //action was completed
+        }
 
         //stage
         update(delta);
