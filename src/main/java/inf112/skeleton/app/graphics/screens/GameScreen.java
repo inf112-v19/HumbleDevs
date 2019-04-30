@@ -96,7 +96,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
+//        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
 
@@ -240,7 +240,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void updateBoard(final Robot robot) {
         Image curActor = (Image) stage.getActors().get(robot.getId());
 
-        // Toggle robot visibility
+        // Toggle robot visibility: Die, fade out
         if(robot.isDestroyed()) {
             AlphaAction a0 = Actions.fadeOut(GAMESPEED/3);
             a0.setActor(curActor);
@@ -261,7 +261,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         a2.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(a2);
 
-        // Toggle robot visibility
+        // Toggle robot visibility: Respawn, fade in
         if (!robot.isDestroyed()) {
             AlphaAction a0 = Actions.fadeIn(GAMESPEED*2);
             a0.setActor(curActor);
