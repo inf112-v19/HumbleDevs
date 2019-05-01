@@ -17,11 +17,7 @@ import java.util.HashMap;
 
 /**
  * An object used to edit a TiledMap.
- * Specifically for manipulating robots(players/nonplayers)
  *
- * Pre-condition:
- *  - A TiledMap that contains enough docks for the chosen number of robots.
- *  - Correct dock IDs to be set in the DOCK_ID list (according to the given tileId in the tile set).
  *
  */
 public class Tiled {
@@ -32,7 +28,7 @@ public class Tiled {
     private final int TILE_SIZE;
     //DOCK_ID = the eight tile IDs of the starting docks for the robots (see gameObjects\Items\ItemFactory for tileIDs)
     private final ArrayList<Integer> DOCK_ID = new ArrayList<>(Arrays.asList(85, 86, 87, 88, 89, 90, 91, 92));
-    private final HashMap<Integer, Position> DOCK_POSITIONS;
+//    private final HashMap<Integer, Position> DOCK_POSITIONS;
 
     public Tiled(TiledMap tiledMap, int tileSize, Robot[] robots) {
         this.TILE_SIZE = tileSize;
@@ -40,23 +36,23 @@ public class Tiled {
         this.NUMBER_OF_ROBOTS = robots.length;
 
         //Initiate dock positions
-        this.DOCK_POSITIONS = new HashMap<>();
-        TiledMapTileLayer bg = (TiledMapTileLayer) tiledMap.getLayers().get("background");
-        for (int x = 0; x < bg.getWidth(); x++) {
-            for (int y = 0; y < bg.getHeight(); y++) {
-                int tileId = bg.getCell(x, y).getTile().getId();
-                if (DOCK_ID.contains(tileId)) {
-                    DOCK_POSITIONS.put(tileId, new Position(x, y));
-                }
-            }
-        }
-
-        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots in the tiledMap");
-        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
-            if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
-                throw new IllegalStateException("Can't find dock number (zero indexed) " + i);
-            }
-        }
+//        this.DOCK_POSITIONS = new HashMap<>();
+//        TiledMapTileLayer bg = (TiledMapTileLayer) tiledMap.getLayers().get("background");
+//        for (int x = 0; x < bg.getWidth(); x++) {
+//            for (int y = 0; y < bg.getHeight(); y++) {
+//                int tileId = bg.getCell(x, y).getTile().getId();
+//                if (DOCK_ID.contains(tileId)) {
+//                    DOCK_POSITIONS.put(tileId, new Position(x, y));
+//                }
+//            }
+//        }
+//
+//        if(DOCK_ID.size() < NUMBER_OF_ROBOTS) throw new IllegalStateException("Can't find dock (starting position) for all robots in the tiledMap");
+//        for (int i = 0; i < NUMBER_OF_ROBOTS; i++) {
+//            if (DOCK_POSITIONS.get(DOCK_ID.get(i)) == null) {
+//                throw new IllegalStateException("Can't find dock number (zero indexed) " + i);
+//            }
+//        }
 
         // Initiate robots in docks
 //        objectLayer = tiledMap.getLayers().get("objects");
@@ -71,8 +67,6 @@ public class Tiled {
 //            objectLayer.getObjects().add(robotObject);
 //        }
     }
-
-    public HashMap<Integer, Position> getDockPositions(){return null;}
 
 
 
@@ -112,9 +106,9 @@ public class Tiled {
      * @param robotId
      * @param visible
      */
-    public void setRobotVisible(int robotId, boolean visible) {
-        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
-        robot.setVisible(visible);
-    }
+//    public void setRobotVisible(int robotId, boolean visible) {
+//        TextureMapObject robot = (TextureMapObject) tiledMap.getLayers().get("objects").getObjects().get(robotId);
+//        robot.setVisible(visible);
+//    }
 
 }
