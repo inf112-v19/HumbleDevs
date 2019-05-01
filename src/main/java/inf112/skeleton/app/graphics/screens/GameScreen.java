@@ -52,7 +52,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private Skin skin;
     private AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private Tiled tiledEditor;
     private final static float GAMESPEED = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
