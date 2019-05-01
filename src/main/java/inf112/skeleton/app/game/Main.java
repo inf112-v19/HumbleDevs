@@ -20,10 +20,10 @@ public class Main {
         new LwjglApplication(new GUI(), cfg);
 
         TiledMap map = new TiledMap();
-        Board board = new Board(map);
-
-        Game game = new Game(board);
-        Robot[] robots = game.getRobots();
+//        Board board = new Board(map);
+//
+//        Game game = new Game(board);
+//        Robot[] robots = game.getRobots();
 
 //        boolean done = false;
 //        while (!done){

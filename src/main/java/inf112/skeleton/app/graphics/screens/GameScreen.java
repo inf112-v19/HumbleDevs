@@ -227,9 +227,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.row();
         }
     }
-
-
-
     /**
      * This method will update the position and direction of a robot on the board
      *

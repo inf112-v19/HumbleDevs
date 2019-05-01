@@ -71,7 +71,6 @@ public class Game {
         respawnRobots();
         return null;
     }
-
     /**
      * Starts one phase. The robots are first sorted with respect to the priority of the card that
      * is going to be used this round. For every robot the robotDoTurn - method is called.
@@ -85,7 +84,6 @@ public class Game {
             robotDoTurn(robots[robot], nr);
         }
     }
-
     /**
      * Method that does the movement actions on the board e.g. gear
      */
@@ -101,7 +99,6 @@ public class Game {
                 IItem item = items.get(y);
                 if (item instanceof ConveyorBelt) {
                     IItem temp = item;
-                    outerloop:
                     for (int turn = 0; turn < 2; turn++) {
                         Position startPos = new Position(rob.getX(), rob.getY());
                         Position nextPos = new Position(rob.getX(), rob.getY());
@@ -112,8 +109,8 @@ public class Game {
                         }
                         if(nextPos.getY() > board.getHeight() || nextPos.getY() < 0 ||
                                 nextPos.getX() > board.getWidth() || nextPos.getX() < 0){
-                            board.removeRobot(rob.getPosition());
                             rob.die();
+                            updateBoard(rob.getPosition(),null);
                             break;
                         }
                         // Må sjekke hva som er i neste posisjon, er det en robot må den fjernes fra brettet (midlertidig)
@@ -127,13 +124,12 @@ public class Game {
                         for (IItem is : items2) {
                             if (is instanceof Pit) {
                                 rob.die();
-                                board.removeRobot(rob.getPosition());
+                                updateBoard(rob.getPosition(),null);
                             }
                             if (is instanceof ConveyorBelt) {
                                 rotate = ((ConveyorBelt) is).getRotation();
                                 temp = is;
                                 cb = true;
-
                             }
                         }
                         if(!cb){
@@ -180,7 +176,7 @@ public class Game {
                     if (obstruction instanceof Laser) {
                         rob.takeDamage(((LaserShoot) item).getRays());
                         if (rob.isDestroyed()) {
-                            board.removeRobot(rob.getPosition());
+                            updateBoard(rob.getPosition(),null);
                         }
                     }
                 }
@@ -239,7 +235,6 @@ public class Game {
             }
         }
     }
-
     /**
      * Every robot shoots their laser
      */
@@ -253,8 +248,7 @@ public class Game {
             if (obstruction instanceof Robot) {
                 ((Robot) obstruction).takeDamage();
                 if (((Robot) obstruction).isDestroyed()) {
-                    board.removeRobot(rob.getPosition());
-                    // Må fjerne roboten fra grafikken
+                    updateBoard(((Robot) obstruction).getPosition(),null);
                 }
             }
         }
@@ -269,8 +263,9 @@ public class Game {
                 if (!rob.gameOver()) {
                     rob.respawn();
                     if (board.isFree(rob.getPosition())) {
-                        board.insertRobot(rob.getPosition(), rob);
+                        board.insertRobot(rob.getPosition(),rob);
                     } else {
+                        // Tilfeldig posisjon?
                         // Må la spilleren velge en posisjon ved siden av backup
                         // Roboten må oppdatere plasseringen sin
                     }
@@ -394,7 +389,7 @@ public class Game {
                 return true;
             } else {
                 rob.die();
-                board.removeRobot(rob.getPosition());
+                updateBoard(rob.getPosition(),null);
                 return true;
             }
         }
@@ -417,7 +412,7 @@ public class Game {
                     return true;
                 } else {
                     rob.die();
-                    board.removeRobot(rob.getPosition());
+                    updateBoard(rob.getPosition(), null);
                     return true;
                 }
             }
@@ -470,7 +465,7 @@ public class Game {
      * @param pos position to be checked
      * @return the conveyor belt if it exists, otherwise null
      */
-    public ConveyorBelt containsConveyorBelt(Position pos){
+    private ConveyorBelt containsConveyorBelt(Position pos){
         ArrayList<IItem> items = board.getItems(pos);
         for(IItem item : items){
             if (item instanceof ConveyorBelt){
@@ -524,12 +519,15 @@ public class Game {
 	 */
 	private void updateBoard(Position start, Position end) {
 		Robot rob = board.getRobot(start);
-		if(rob == null) {
-			return;
-		}
-		board.removeRobot(start);
-		board.insertRobot(end, rob);
-
+        if(rob == null) {
+            return;
+        }
+		if(rob.isDestroyed()){
+		    board.removeRobot(start);
+        } else {
+            board.removeRobot(start);
+            board.insertRobot(end, rob);
+        }
 		//gameScreen.updateBoard(rob);
 	}
 
