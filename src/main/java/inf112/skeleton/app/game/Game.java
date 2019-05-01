@@ -1,5 +1,7 @@
 package inf112.skeleton.app.game;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Items.*;
 import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
@@ -14,6 +16,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.screens.GameScreen;
 
 /**
@@ -23,7 +26,6 @@ import inf112.skeleton.app.graphics.screens.GameScreen;
 public class Game {
     private Board board;
     private Robot[] robots;
-    private GameScreen gameScreen;
 
     public Game(Board board) {
         this.board = board;
@@ -34,29 +36,25 @@ public class Game {
         this.robots = robots;
     }
 
-    public void setGameScreen(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public Game () {
+        this.board = null;
+        this.robots = null;
     }
+
+    public void setBoard (Board board) {
+        this.board = board;
+    }
+
 
     /**
      * Starts the a new round by dealing new cards to every player
      */
-    public void startRound() {
-        ProgramCardDeck cardPack = new ProgramCardDeck();
-        for (Robot robot : robots) {
-            // Må først avgjøre om man ønsker å "power down"
-            int numbCards = 9 - robot.getDamageTokens();
-            ProgramCard[] newCards = cardPack.getRandomCards(numbCards);
-            robot.chooseCards(newCards);
-        }
-    }
 
     /**
      * Calls the methods to that makes up a round. Not every method this method uses is
      * implemented, but it gives a nice illustration on how the game should work.
      */
     public Robot round() {
-        startRound();
         for (int x = 0; x < 5; x++) {
             phase(x);
             activateMovement();
@@ -139,9 +137,11 @@ public class Game {
                             if (!rob.getDirection().equals(((ConveyorBelt) temp).getDirection())) {
                                 if (rotate.equals(Action.LEFTTURN)) {
                                     rob.rotateLeft();
+                                    GameScreen.updateBoard(rob);
                                 }
                                 if (rotate.equals(Action.RIGHTTURN)) {
                                     rob.rotateRight();
+                                    GameScreen.updateBoard(rob);
                                 }
                             }
                         }
@@ -326,11 +326,14 @@ public class Game {
         Action action = card.getAction();
         if (action == Action.LEFTTURN) {
             rob.rotateLeft();
+            GameScreen.updateBoard(rob);
         } else if (action == Action.RIGHTTURN) {
             rob.rotateRight();
+            GameScreen.updateBoard(rob);
         } else if (action == Action.UTURN) {
             rob.rotateRight();
             rob.rotateRight();
+            GameScreen.updateBoard(rob);
         } else if (action == Action.MOVEFORWARD) {
             int move = card.getMove();
             while (move > 0) {
@@ -528,26 +531,36 @@ public class Game {
             board.removeRobot(start);
             board.insertRobot(end, rob);
         }
-		//gameScreen.updateBoard(rob);
+		GameScreen.updateBoard(rob);
 	}
+
+	public void addR(Robot robot) {
+	    robots = new Robot[1];
+        robots[0] = robot;
+    }
 
     public void initializePlayers(int numb, ArrayList<String> nameOfPlayers) {
 	    if(nameOfPlayers.size() == 0 && numb > 0){
 	        return;
         }
-        ArrayList<Position> startDocks = board.getDockPositions();
+
+
+        Position[] startDocks = board.getDockPositions();
         this.robots = new Robot[numb];
         for(int x = 0; x < nameOfPlayers.size(); x++) {
-            Position pos = startDocks.get(x);
-            String filePath = "texture/robot" + x+1 + ".png";
+            Position pos = startDocks[x];
+
+
+            String filePath = AssetManager.getTextureByIndex(x);
+
             Robot player = new Player(x, Direction.NORTH, pos.getX(),pos.getY(), nameOfPlayers.get(x), filePath);
             robots[x] = player;
             board.insertRobot(pos,player);
         }
         for(int y = 0; y < numb - nameOfPlayers.size(); y++){
             int index = y + nameOfPlayers.size();
-            Position pos = startDocks.get(index);
-            String filePath = "texture/robot" + (index)+1 + ".png";
+            Position pos = startDocks[index];
+            String filePath = AssetManager.getTextureByIndex(index);
             Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "Destroyer" + (y+1), filePath);
             robots[index] = ai;
             board.insertRobot(pos,ai);

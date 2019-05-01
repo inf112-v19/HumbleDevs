@@ -220,15 +220,15 @@ public class BoardTest {
         assertEquals(new Position(0,3),pos1);
     }
 
-    @Test
-    public void testDockPositions(){
-        for (int x = 0; x < 8; x++){
-            Dock dock = new Dock(x+1);
-            board.insertItem(board.getPositionFromIndex(x), dock);
-        }
-        ArrayList<Position> startDocks = board.getDockPositions();
-        for(int y = 0; y < 8; y++){
-            assertEquals(board.getPositionFromIndex(y), startDocks.get(y));
-        }
-    }
+//    @Test
+//    public void testDockPositions(){
+//        for (int x = 0; x < 8; x++){
+//            Dock dock = new Dock(x+1);
+//            board.insertItem(board.getPositionFromIndex(x), dock);
+//        }
+//        ArrayList<Position> startDocks = board.getDockPositions();
+//        for(int y = 0; y < 8; y++){
+//            assertEquals(board.getPositionFromIndex(y), startDocks.get(y));
+//        }
+//    }
 }

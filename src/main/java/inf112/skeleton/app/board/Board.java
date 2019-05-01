@@ -158,14 +158,15 @@ public class Board implements IBoard {
         return false;
     }
 
-    public ArrayList<Position> getDockPositions(){
-        ArrayList<Position> docks = new ArrayList<>(8);
+    public Position[] getDockPositions(){
+        Position[] docks = new Position[8];
         for(int x = 0; x < size; x++){
             Position pos = getPositionFromIndex(x);
             ArrayList<IItem> items = getItems(pos);
             for(IItem item : items){
                 if(item instanceof Dock){
-                    docks.add(((Dock) item).getNumber()-1, getPositionFromIndex(x));
+                    System.out.println(item);
+                    docks[((Dock) item).getNumber() - 1] = getPositionFromIndex(x);
                 }
             }
         }

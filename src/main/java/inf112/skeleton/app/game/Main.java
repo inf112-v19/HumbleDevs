@@ -17,9 +17,16 @@ public class Main {
         cfg.title = "RoboRally";
         cfg.width = 1100;
         cfg.height = 768;
-        new LwjglApplication(new GUI(), cfg);
+        Game game = new Game();
 
-        TiledMap map = new TiledMap();
+        LwjglApplication lw = new LwjglApplication(new GUI(game), cfg);
+
+
+
+
+
+
+
 //        Board board = new Board(map);
 //
 //        Game game = new Game(board);

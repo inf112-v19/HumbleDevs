@@ -21,9 +21,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import inf112.skeleton.app.game.Game;
+import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.AssetManager;
@@ -36,14 +39,13 @@ import java.util.*;
  */
 
 public class GameScreen extends ApplicationAdapter implements Screen {
-    final GUI game;
+    final GUI gui;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Stage stage;
+    private static Stage stage;
     public BitmapFont font;
     public Table table;
-    private Robot[] robots;
     private ProgramCardDeck programCardDeck;
     private Map<Robot, ArrayList> map;
     private int playerCounter;
@@ -51,42 +53,59 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private Skin skin;
     private AssetManager assetManager;
     //TILE_SIZE = pixel size of one tile (width and height)
-    private final int TILE_SIZE = 64;
+    private final static int TILE_SIZE = 64;
     private Tiled tiledEditor;
-    private final float GAMESPEED = 0.2f; // in seconds
+    private final static float GAMESPEED = 0.2f; // in seconds
     // An actions sequence for turnbased movement
-    private SequenceAction sequenceAction;
+    private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
     private SequenceAction[] parallellAction;
+    private Game game;
 
 
 
-    public GameScreen(final GUI game, Robot[] robots) {
+    public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
+        this.gui = gui;
         this.game = game;
         this.assetManager = new AssetManager();
         this.stage = new Stage();
         this.table = new Table();
         this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
-        this.robots = robots;
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
-        this.parallellAction = new SequenceAction[robots.length];
 
+
+        tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        game.setBoard(new Board(tiledMap));
+
+
+        System.out.println("TEST 2");
+        game.initializePlayers(robots+playerNames.size(), playerNames);
+
+       //this.parallellAction = new SequenceAction[game.getRobots().length];
+
+
+        //Robot robot = new Player(0, Direction.NORTH, 10, 10, "had", "texture/robot1.png");
+        //game.addR(robot);
         // Initiate robot actors
-        for (int i = 0; i < robots.length; i++) {
+        for (int i = 0; i < game.getRobots().length; i++) {
             // Create the robot actors,
-            Texture texture = new Texture(Gdx.files.internal(robots[i].getPath()));
+
+            System.out.println(Gdx.files.internal(game.getRobots()[i].getPath()));
+
+            Texture texture = new Texture(Gdx.files.internal(game.getRobots()[i].getPath()));
             TextureRegion region = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
             Image robotActor = new Image(region);
             robotActor.setOriginX(TILE_SIZE/2);
             robotActor.setOriginY(TILE_SIZE/2);
-            robotActor.setPosition(robots[i].getX()*TILE_SIZE,robots[i].getY()*TILE_SIZE);
+            robotActor.setPosition(game.getRobots()[i].getX()*TILE_SIZE,game.getRobots()[i].getY()*TILE_SIZE);
             //add it to the stage,
             stage.addActor(robotActor);
             //connect them to their actionsequence
-            parallellAction[i] = new SequenceAction();
-            parallellAction[i].setActor(robotActor);
+            //parallellAction[i] = new SequenceAction();
+            //parallellAction[i].setActor(robotActor);
         }
 
         font = new BitmapFont();
@@ -94,8 +113,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.input.setInputProcessor(stage);
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 //        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
@@ -118,6 +135,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stage.addActor(table);
     }
 
+    public void addAllCardsFromAI(ArrayList<ProgramCard> pcList) {
+        for (ProgramCard pc : pcList) {
+            addCardToSelected(pc);
+        }
+    }
+
+
     public void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
@@ -130,11 +154,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             selectedCards.clear();
 
 
-            if (playerCounter == robots.length) {
+            if (playerCounter == game.getRobots().length) {
                 table.clear();
                 for (int i = 0; i < playerCounter; i++) {
-                    ProgramCard[] cards = (ProgramCard[]) map.get(robots[i]).toArray(new ProgramCard[5]);
-                    robots[i].setCards(cards);
+                    ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[5]);
+                    game.getRobots()[i].setCards(cards);
+                }
+                for (int i = 0; i < game.getRobots()[0].getCards().length; i++) {
+                    System.out.println(game.getRobots()[0].getCards()[i].getAction());
+                }
+                System.out.println();
+                for (int i = 0; i < game.getRobots()[1].getCards().length; i++) {
+                    System.out.println(game.getRobots()[1].getCards()[i].getAction());
                 }
                 drawHUD(map);
                 return;
@@ -144,8 +175,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        map.put(robots[playerCounter], list);
-
+        map.put(game.getRobots()[playerCounter], list);
         playerCounter++;
     }
 
@@ -153,20 +183,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private void drawHUD(Map<Robot, ArrayList> map) {
         table.top();
         table.pad(0, 0, 0, 0);
-        for (int i = 0; i < robots.length; i++) {
-            Image robot = new Image(new Texture(robots[i].getPath()));
+        for (int i = 0; i < game.getRobots().length; i++) {
+            Image robot = new Image(new Texture(game.getRobots()[i].getPath()));
             table.add(robot);
-            Label nameLabel = new Label(robots[i].getName(), skin);
+            Label nameLabel = new Label(game.getRobots()[i].getName(), skin);
             table.add(nameLabel);
 
-            for (int j = 0; j < robots[i].getLifeTokens(); j++) {
+            for (int j = 0; j < game.getRobots()[i].getLifeTokens(); j++) {
                 Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
                 table.add(lifetoken);
             }
 
 
             table.row();
-            ArrayList cardList = map.get(robots[i]);
+            ArrayList cardList = map.get(game.getRobots()[i]);
             for (int j = 0; j < cardList.size(); j++) {
                 table.pad(10, 10, 10, 10);
 
@@ -177,34 +207,50 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
-        Robot p1 = robots[0];
-
-
-        p1.rotateRight();
-        updateBoard(p1);
-        p1.move(Direction.EAST);
-        updateBoard(p1);
-        p1.move(Direction.EAST);
-        updateBoard(p1);
-        p1.rotateLeft();
-        updateBoard(p1);
-        p1.move(Direction.NORTH);
-        updateBoard(p1);
-        p1.move(Direction.NORTH);
-        updateBoard(p1);
-        p1.die();
-        updateBoard(p1);
-        p1.respawn();
-        updateBoard(p1);
+        game.round();
+//        game.phase(0);
+//        sequenceAction.addAction(Actions.delay(1));
+//        game.phase(1);
+//        sequenceAction.addAction(Actions.delay(1));
+//        game.phase(2);
+//        Robot p1 = game.getRobots()[0];
+//
+//
+//        p1.rotateRight();
+//        updateBoard(p1);
+//        p1.move(Direction.EAST);
+//        updateBoard(p1);
+//        p1.move(Direction.EAST);
+//        updateBoard(p1);
+//        p1.rotateLeft();
+//        updateBoard(p1);
+//        p1.move(Direction.NORTH);
+//        updateBoard(p1);
+//        p1.move(Direction.NORTH);
+//        updateBoard(p1);
+//        p1.die();
+//        updateBoard(p1);
+//        p1.respawn();
+//        updateBoard(p1);
 
     }
 
     public void presentCards() {
         table.clear();
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - robots[playerCounter].getDamageTokens()); // 9 cards here
+
+        if (game.getRobots()[playerCounter] instanceof AI) {
+
+            game.getRobots()[playerCounter].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[playerCounter].getDamageTokens()));
+            ProgramCard[] pc = game.getRobots()[playerCounter].getCards();
+            ArrayList<ProgramCard> pcList = new ArrayList<>(Arrays.asList(pc));
+            addAllCardsFromAI(pcList);
+            return;
+        }
+
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[playerCounter].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
-        Label playerLabel = new Label("Det er " + robots[playerCounter].getName() + " sin tur", skin);
+        Label playerLabel = new Label("Det er " + game.getRobots()[playerCounter].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
 
         for (int i = 0; i < cards.length; i++) {
@@ -231,7 +277,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * This method will update the position and direction of a robot on the board
      *
      * */
-    public void updateBoard(final Robot robot) {
+    public static void updateBoard(final Robot robot) {
         Image curActor = (Image) stage.getActors().get(robot.getId());
 
         // Toggle robot visibility: Die, fade out
@@ -268,6 +314,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         sequenceAction.addAction(da);
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
+
+
+
     }
 
     /**
@@ -307,7 +356,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        gui.batch.setProjectionMatrix(camera.combined);
 
         mapRenderer.setView(camera);
         mapRenderer.render();
@@ -315,19 +364,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
         //Act out parallell actions for robots
-        for (int i = 0; i < parallellAction.length; i++) {
-            if(parallellAction[i].act(delta)); //action was completed
-        }
+//        for (int i = 0; i < parallellAction.length; i++) {
+//            if(parallellAction[i].act(delta)); //action was completed
+//        }
 
         //stage
         update(delta);
         stage.draw(); // important
 
-        game.batch.begin();
-        //game.font.draw(game.batch, "PLEASE", 800, 300);
+        gui.batch.begin();
+        //gui.font.draw(gui.batch, "PLEASE", 800, 300);
 
         // Her kan vi tegne :D
-        game.batch.end();
+        gui.batch.end();
     }
 
     @Override

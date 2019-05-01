@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class AssetManager {
     private Map<String, Texture> stringMap;
-    private Map<Integer, Texture> intMap;
+    private static Map<Integer, String> intMap;
 
     public AssetManager () {
         this.stringMap = new HashMap<>();
@@ -36,20 +36,20 @@ public class AssetManager {
         this.stringMap.put("lifeIcon", new Texture("texture/lifeicon.png"));
 
         this.intMap = new HashMap<>();
-        this.intMap.put(0, new Texture("texture/robot1.png"));
-        this.intMap.put(1, new Texture("texture/robot2.png"));
-        this.intMap.put(2, new Texture("texture/robot3.png"));
-        this.intMap.put(3, new Texture("texture/robot4.png"));
-        this.intMap.put(4, new Texture("texture/robot5.png"));
-        this.intMap.put(5, new Texture("texture/robot6.png"));
-        this.intMap.put(6, new Texture("texture/robot7.png"));
-        this.intMap.put(7, new Texture("texture/robot8.png"));
+        this.intMap.put(0, "texture/robot1.png");
+        this.intMap.put(1, "texture/robot2.png");
+        this.intMap.put(2, "texture/robot3.png");
+        this.intMap.put(3, "texture/robot4.png");
+        this.intMap.put(4, "texture/robot5.png");
+        this.intMap.put(5, "texture/robot6.png");
+        this.intMap.put(6, "texture/robot7.png");
+        this.intMap.put(7, "texture/robot8.png");
 
 
 
     }
 
-    public Texture getTextureByIndex (int index) {
+    public static String getTextureByIndex (int index) {
         return intMap.get(index);
     }
 

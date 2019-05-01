@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import inf112.skeleton.app.game.Game;
 import inf112.skeleton.app.graphics.GUI;
 
 import java.util.ArrayList;
@@ -24,12 +25,14 @@ public class MainScreen implements Screen {
     private OrthographicCamera camera;
     private TextureAtlas atlas;
     protected Skin skin;
-    final GUI game;
+    final GUI gui;
     Table mainTable;
     ArrayList<String> playerNames;
+    Game game;
 
-    public MainScreen(final GUI game) {
+    public MainScreen(final GUI gui, Game game) {
         this.game = game;
+        this.gui = gui;
         this.playerNames = new ArrayList<>();
 
         skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
@@ -113,7 +116,7 @@ public class MainScreen implements Screen {
         submitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                playerNames.add(tf.getMessageText());
+                playerNames.add(tf.getText());
                 setNames(players, robots);
             }
         });
@@ -124,14 +127,20 @@ public class MainScreen implements Screen {
 
         if (index - 1 == players) {
             // Her kan vi starte spillet evt
-            System.out.println("Test");
-            return;
+
+            customCreate(robots);
         } else {
             helper(index, players, robots);
             index++;
         }
         //TODO get random names for the robots
     }
+
+    public void customCreate(int robots) {
+        gui.setScreen(new GameScreen(gui, game, playerNames, robots));
+    }
+
+
 
     @Override
     public void render(float delta) {
