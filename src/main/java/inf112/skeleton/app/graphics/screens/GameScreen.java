@@ -59,6 +59,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     // An action sequence for parallell movement (conveyorbelt)
     private SequenceAction[] parallellAction;
     private static Game game;
+    private static boolean aRobotIsDead = false;
 
 
     public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
@@ -156,6 +157,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     System.out.println(game.getRobots()[1].getCards()[i].getAction());
                 }
                 drawHUD(map);
+                Main.readyToLaunch = true;
                 return;
             }
             presentCards();
@@ -172,6 +174,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
+    private static void drawLifeTokens() {
+
+    }
+
     private static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
         table.top();
@@ -179,7 +185,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < game.getRobots().length; i++) {
-            Image robot = new Image(new Texture(game.getRobots()[i].getPath()));
+            Image robot = new Image(new Texture(Gdx.files.internal(game.getRobots()[i].getPath())));
             table.add(robot);
             Label nameLabel = new Label(game.getRobots()[i].getName(), skin);
             table.add(nameLabel);
@@ -203,7 +209,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
-        Main.readyToLaunch = true;
+
+        //if(!aRobotIsDead)
 
     }
 
@@ -261,6 +268,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             AlphaAction a0 = Actions.fadeOut(GAMESPEED/3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
+
+            sequenceAction.addAction(Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    aRobotIsDead = true;
+                }
+            }));
         }
 
         // Add move action
@@ -291,7 +305,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
 
-        //drawHUD(map);
     }
 
 
@@ -346,6 +359,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         mapRenderer.setView(camera);
         mapRenderer.render();
+
+
+        if (aRobotIsDead) {
+            drawHUD(map);
+            aRobotIsDead = false;
+        }
 
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
