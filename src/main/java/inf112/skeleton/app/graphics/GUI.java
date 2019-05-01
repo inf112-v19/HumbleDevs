@@ -4,10 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.gameObjects.Player;
-import inf112.skeleton.app.graphics.screens.GameScreen;
+import inf112.skeleton.app.graphics.screens.MainScreen;
 
 public class GUI extends Game {
-    GameScreen gameScreen;
     public SpriteBatch batch;
     public BitmapFont font;
 
@@ -18,10 +17,12 @@ public class GUI extends Game {
         Player player = new Player(0, null, 0, 0, "Joachim", null);
         Player[] arr = player.getSomePlayers();
         //
-        this.setScreen(new GameScreen(this, arr));
-        font = new BitmapFont();
-        //this.setScreen(new GameScreen(this));
-        //this.setScreen(new MenuScreen(this));
+
+        this.setScreen(new MainScreen(this));
+        //this.setScreen(new MainScreen(this));
+
+
+        //this.setScreen(new GameScreen(this, arr)); //Original screen, working
     }
 
 
