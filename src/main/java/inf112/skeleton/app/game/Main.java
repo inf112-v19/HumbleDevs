@@ -3,14 +3,13 @@ package inf112.skeleton.app.game;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.GUI;
 import inf112.skeleton.app.graphics.screens.GameScreen;
 
 
 public class Main {
+    public static boolean readyToLaunch = false;
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
@@ -20,8 +19,26 @@ public class Main {
         Game game = new Game();
 
         LwjglApplication lw = new LwjglApplication(new GUI(game), cfg);
+        while(true) {
+            while (true) {
+                System.out.print("");
+                if (readyToLaunch) break;
+            }
+            game.round();
+            readyToLaunch = false;
 
+            if (!readyToLaunch) {
+                GameScreen.startNewRound();
+            }
 
+            Robot gameFinished = game.finished();
+            if(gameFinished != null) {
+                System.out.println("WInner is " + gameFinished.getName());
+                break;
+            }
+        }
+        //System.out.println("YIHA");
+        //game.round(); //LOL
 
 
 

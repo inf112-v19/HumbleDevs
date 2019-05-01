@@ -26,6 +26,7 @@ import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 import inf112.skeleton.app.game.Game;
+import inf112.skeleton.app.game.Main;
 import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.AssetManager;
@@ -44,21 +45,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private OrthogonalTiledMapRenderer mapRenderer;
     private static Stage stage;
     public BitmapFont font;
-    public Table table;
-    private ProgramCardDeck programCardDeck;
-    private Map<Robot, ArrayList> map;
-    private int playerCounter;
-    private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
-    private Skin skin;
-    private AssetManager assetManager;
+    public static Table table;
+    private static ProgramCardDeck programCardDeck;
+    private static Map<Robot, ArrayList> map;
+    private static int playerCounter;
+    private static ArrayList<ProgramCard> selectedCards = new ArrayList<>();
+    private static Skin skin;
+    private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
     private final static float GAMESPEED = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
     private SequenceAction[] parallellAction;
-    private Game game;
-
+    private static Game game;
 
 
     public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
@@ -110,7 +110,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-    public void createCardTable(Table table) {
+    public static void createCardTable(Table table) {
         table.setWidth(332);
         table.setHeight(600); //temp
         table.setPosition(768, 100);
@@ -119,7 +119,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stage.addActor(table);
     }
 
-    public void addAllCardsFromAI(ArrayList<ProgramCard> pcList) {
+    public static void addAllCardsFromAI(ArrayList<ProgramCard> pcList) {
         for (ProgramCard pc : pcList) {
             addCardToSelected(pc);
         }
@@ -130,7 +130,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * Helper method to add a card to a players deck of cards
      */
 
-    public void addCardToSelected(ProgramCard card) {
+    public static void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
             //Deep copy of the list
@@ -166,14 +166,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     /**
      * Adds a players card to a hashmap, where the player itself is the key
      */
-    public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
+    public static void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
         map.put(game.getRobots()[playerCounter], list);
         playerCounter++;
     }
 
 
-    private void drawHUD(Map<Robot, ArrayList> map) {
+    private static void drawHUD(Map<Robot, ArrayList> map) {
+        table.clear();
         table.top();
+
+
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < game.getRobots().length; i++) {
             Image robot = new Image(new Texture(game.getRobots()[i].getPath()));
@@ -182,8 +185,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.add(nameLabel);
 
             for (int j = 0; j < game.getRobots()[i].getLifeTokens(); j++) {
-                Image lifetoken = new Image(assetManager.getTexture("lifeIcon"));
-                table.add(lifetoken);
+                Image lifeToken = new Image(assetManager.getTexture("lifeIcon"));
+                table.add(lifeToken);
             }
 
             table.row();
@@ -198,7 +201,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
-        game.round(); //LOL
+        // Getting a fresh deck for next round
+        programCardDeck = new ProgramCardDeck();
+        Main.readyToLaunch = true;
+
     }
 
     /**
@@ -206,11 +212,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * If this "player" is a robot, random cards are chosen.
      */
 
-    public void presentCards() {
+    public static void presentCards() {
         table.clear();
 
         if (game.getRobots()[playerCounter] instanceof AI) {
-
             game.getRobots()[playerCounter].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[playerCounter].getDamageTokens()));
             ProgramCard[] pc = game.getRobots()[playerCounter].getCards();
             ArrayList<ProgramCard> pcList = new ArrayList<>(Arrays.asList(pc));
@@ -286,6 +291,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
 
+        //drawHUD(map);
+    }
+
+
+    public static void startNewRound() {
+        sequenceAction.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                playerCounter = 0;
+                GameScreen.presentCards();
+            }
+        }));
     }
 
     /**
@@ -336,12 +353,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //stage
         update(delta);
         stage.draw(); // important
-
-        gui.batch.begin();
-        //gui.font.draw(gui.batch, "PLEASE", 800, 300);
-
-        // Her kan vi tegne :D
-        gui.batch.end();
     }
 
     @Override

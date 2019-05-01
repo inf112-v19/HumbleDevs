@@ -54,20 +54,16 @@ public class Game {
      * Calls the methods to that makes up a round. Not every method this method uses is
      * implemented, but it gives a nice illustration on how the game should work.
      */
-    public Robot round() {
+    public void round() {
         for (int x = 0; x < 5; x++) {
             phase(x);
             activateMovement();
             activatePassiveItems();
             robotShootLasers();
             repairAndCheckFlags();
-            Robot rob = finished();
-            if(rob != null){
-                return rob;
-            }
         }
         respawnRobots();
-        return null;
+        return;
     }
     /**
      * Starts one phase. The robots are first sorted with respect to the priority of the card that
