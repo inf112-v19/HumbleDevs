@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import inf112.skeleton.app.graphics.GUI;
 
+import java.util.ArrayList;
+
 public class MainScreen implements Screen {
 
     private SpriteBatch batch;
@@ -24,9 +26,12 @@ public class MainScreen implements Screen {
     protected Skin skin;
     final GUI game;
     Table mainTable;
+    ArrayList<String> playerNames;
 
     public MainScreen(final GUI game) {
         this.game = game;
+        this.playerNames = new ArrayList<>();
+
         skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
@@ -92,11 +97,8 @@ public class MainScreen implements Screen {
     }
 
 
-    String name;
-    int counter = 0;
 
-    public String helper(final String[] n) {
-        int idx = 1;
+    public void helper(int idx, final int players, final int robots) {
         mainTable.clear();
         // OVERSKRIFT: VELG NAVN TIL SPILLER i
         Label label = new Label("Skriv inn navnet til spiller " + idx, skin);
@@ -111,29 +113,24 @@ public class MainScreen implements Screen {
         submitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                n[counter] = tf.getMessageText();
-                counter++;
+                playerNames.add(tf.getMessageText());
+                setNames(players, robots);
             }
         });
-
-        if (submitButton.getClickListener().isPressed()) {
-            return null;
-        }
-
-        return null;
     }
 
+    private int index = 1;
     public void setNames(int players, int robots) {
-        name = "";
 
-        String[] names = new String[players];
-
-        if (counter < players) {
-            helper(names);
+        if (index - 1 == players) {
+            // Her kan vi starte spillet evt
+            System.out.println("Test");
+            return;
+        } else {
+            helper(index, players, robots);
+            index++;
         }
-
         //TODO get random names for the robots
-
     }
 
     @Override
