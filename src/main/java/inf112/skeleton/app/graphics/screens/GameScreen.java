@@ -27,7 +27,6 @@ import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
 import inf112.skeleton.app.game.Game;
 import inf112.skeleton.app.gameObjects.AI;
-import inf112.skeleton.app.gameObjects.Player;
 import inf112.skeleton.app.gameObjects.Robot;
 import inf112.skeleton.app.graphics.AssetManager;
 import inf112.skeleton.app.graphics.GUI;
@@ -52,7 +51,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private Skin skin;
     private AssetManager assetManager;
-    //TILE_SIZE = pixel size of one tile (width and height)
     private final static int TILE_SIZE = 64;
     private Tiled tiledEditor;
     private final static float GAMESPEED = 0.2f; // in seconds
@@ -76,19 +74,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.sequenceAction = new SequenceAction();
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/layeredTestMap.tmx");
+        tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         game.setBoard(new Board(tiledMap));
 
-
-        System.out.println("TEST 2");
         game.initializePlayers(robots+playerNames.size(), playerNames);
 
-       //this.parallellAction = new SequenceAction[game.getRobots().length];
-
-
-        //Robot robot = new Player(0, Direction.NORTH, 10, 10, "had", "texture/robot1.png");
-        //game.addR(robot);
         // Initiate robot actors
         for (int i = 0; i < game.getRobots().length; i++) {
             // Create the robot actors,
@@ -103,17 +94,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             robotActor.setPosition(game.getRobots()[i].getX()*TILE_SIZE,game.getRobots()[i].getY()*TILE_SIZE);
             //add it to the stage,
             stage.addActor(robotActor);
-            //connect them to their actionsequence
-            //parallellAction[i] = new SequenceAction();
-            //parallellAction[i].setActor(robotActor);
         }
 
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
-
-
-//        tiledEditor = new Tiled(tiledMap, TILE_SIZE, players);
 
         camera = new OrthographicCamera();
 
@@ -142,10 +127,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
+    /**
+     * Helper method to add a card to a players deck of cards
+     */
+
     public void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
         if (selectedCards.size() == 5) {
-            //Deep copy av listen
+            //Deep copy of the list
             ArrayList<ProgramCard> newList = new ArrayList<>();
             for (ProgramCard pc : selectedCards) {
                 newList.add(pc);
@@ -174,6 +163,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
+
+    /**
+     * Adds a players card to a hashmap, where the player itself is the key
+     */
     public void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
         map.put(game.getRobots()[playerCounter], list);
         playerCounter++;
@@ -194,7 +187,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 table.add(lifetoken);
             }
 
-
             table.row();
             ArrayList cardList = map.get(game.getRobots()[i]);
             for (int j = 0; j < cardList.size(); j++) {
@@ -207,33 +199,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
             table.row();
         }
-        game.round();
-//        game.phase(0);
-//        sequenceAction.addAction(Actions.delay(1));
-//        game.phase(1);
-//        sequenceAction.addAction(Actions.delay(1));
-//        game.phase(2);
-//        Robot p1 = game.getRobots()[0];
-//
-//
-//        p1.rotateRight();
-//        updateBoard(p1);
-//        p1.move(Direction.EAST);
-//        updateBoard(p1);
-//        p1.move(Direction.EAST);
-//        updateBoard(p1);
-//        p1.rotateLeft();
-//        updateBoard(p1);
-//        p1.move(Direction.NORTH);
-//        updateBoard(p1);
-//        p1.move(Direction.NORTH);
-//        updateBoard(p1);
-//        p1.die();
-//        updateBoard(p1);
-//        p1.respawn();
-//        updateBoard(p1);
-
+        game.round(); //LOL
     }
+
+    /**
+     * This method will present cards to pick from to a player
+     * If this "player" is a robot, random cards are chosen.
+     */
 
     public void presentCards() {
         table.clear();
@@ -315,8 +287,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
 
-
-
     }
 
     /**
@@ -363,10 +333,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
-        //Act out parallell actions for robots
-//        for (int i = 0; i < parallellAction.length; i++) {
-//            if(parallellAction[i].act(delta)); //action was completed
-//        }
 
         //stage
         update(delta);

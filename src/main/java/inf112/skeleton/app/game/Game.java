@@ -155,8 +155,10 @@ public class Game {
                     Action rotation = ((Gear) item).getAction();
                     if (rotation == Action.LEFTTURN) {
                         rob.rotateLeft();
+                        GameScreen.updateBoard(rob);
                     } else {
                         rob.rotateRight();
+                        GameScreen.updateBoard(rob);
                     }
                 }
             }
@@ -264,6 +266,7 @@ public class Game {
                     rob.respawn();
                     if (board.isFree(rob.getPosition())) {
                         board.insertRobot(rob.getPosition(),rob);
+                        GameScreen.updateBoard(rob);
                     } else {
                         // Tilfeldig posisjon?
                         // Må la spilleren velge en posisjon ved siden av backup
