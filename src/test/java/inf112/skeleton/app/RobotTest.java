@@ -13,8 +13,6 @@ import inf112.skeleton.app.gameObjects.Robot;
 
 public class RobotTest {
 
-
-
     @Test
     public void testDamage() {
         Player rob = new Player(0,Direction.NORTH, 0, 0, "Ingrid", "testing");
@@ -38,19 +36,16 @@ public class RobotTest {
         for (int i = 0; i <10; i ++){
             rob.takeDamage();
         }
-        //assertEquals(true,rob.respawn());
         assertEquals(0,rob.getDamageTokens());
         assertEquals(2,rob.getLifeTokens());
 
     }
-
     @Test
     public void testDestroyed(){
         Player rob = new Player(0, Direction.NORTH, 0, 0, "Ida", "testing");
         rob.isDestroyed();
         assertEquals(3,rob.getLifeTokens());
     }
-
     @Test
     public void testStillAliveAfterGettingDestroyedTwice(){
         Player rob = new Player(0, Direction.NORTH, 0, 0, "Kaja", "testing");
@@ -60,9 +55,6 @@ public class RobotTest {
         }
         assertTrue(rob.getLifeTokens() > 0);
     }
-
-
-	
 	@Test
 	public void testMovement() {
 		Player rob = new Player(0, Direction.NORTH, 0,0,"Kåre Kålrabi", "testing");

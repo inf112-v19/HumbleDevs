@@ -1,5 +1,6 @@
 package inf112.skeleton.app.game;
 
+import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Items.*;
 import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
 
@@ -13,6 +14,7 @@ import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.Action;
 import inf112.skeleton.app.card.ProgramCard;
 import inf112.skeleton.app.card.ProgramCardDeck;
+import inf112.skeleton.app.graphics.screens.GameScreen;
 
 /**
  * The class that controls most of the game. The game class is the class that
@@ -21,11 +23,21 @@ import inf112.skeleton.app.card.ProgramCardDeck;
 public class Game {
     private Board board;
     private Robot[] robots;
+    private GameScreen gameScreen;
+
+    public Game(Board board) {
+        this.board = board;
+    }
 
     public Game(Board board, Robot[] robots) {
         this.board = board;
         this.robots = robots;
     }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
     /**
      * Starts the a new round by dealing new cards to every player
      */
@@ -43,7 +55,7 @@ public class Game {
      * Calls the methods to that makes up a round. Not every method this method uses is
      * implemented, but it gives a nice illustration on how the game should work.
      */
-    public void round() {
+    public Robot round() {
         startRound();
         for (int x = 0; x < 5; x++) {
             phase(x);
@@ -51,10 +63,14 @@ public class Game {
             activatePassiveItems();
             robotShootLasers();
             repairAndCheckFlags();
+            Robot rob = finished();
+            if(rob != null){
+                return rob;
+            }
         }
         respawnRobots();
+        return null;
     }
-
     /**
      * Starts one phase. The robots are first sorted with respect to the priority of the card that
      * is going to be used this round. For every robot the robotDoTurn - method is called.
@@ -68,7 +84,6 @@ public class Game {
             robotDoTurn(robots[robot], nr);
         }
     }
-
     /**
      * Method that does the movement actions on the board e.g. gear
      */
@@ -84,7 +99,6 @@ public class Game {
                 IItem item = items.get(y);
                 if (item instanceof ConveyorBelt) {
                     IItem temp = item;
-                    outerloop:
                     for (int turn = 0; turn < 2; turn++) {
                         Position startPos = new Position(rob.getX(), rob.getY());
                         Position nextPos = new Position(rob.getX(), rob.getY());
@@ -95,8 +109,8 @@ public class Game {
                         }
                         if(nextPos.getY() > board.getHeight() || nextPos.getY() < 0 ||
                                 nextPos.getX() > board.getWidth() || nextPos.getX() < 0){
-                            board.removeRobot(rob.getPosition());
                             rob.die();
+                            updateBoard(rob.getPosition(),null);
                             break;
                         }
                         // Må sjekke hva som er i neste posisjon, er det en robot må den fjernes fra brettet (midlertidig)
@@ -110,23 +124,12 @@ public class Game {
                         for (IItem is : items2) {
                             if (is instanceof Pit) {
                                 rob.die();
-                                board.removeRobot(rob.getPosition());
+                                updateBoard(rob.getPosition(),null);
                             }
-//                            else if (is instanceof Wall) {
-//                                if (((Wall) is).getDir() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-//                                    break outerloop;
-//                                }
-//                                if (((Wall) is).getDir2() != null){
-//                                    if (((Wall) is).getDir2() == ((ConveyorBelt) item).getDirection().getOppositeDirection()){
-//                                        break outerloop;
-//                                    }
-//                                }
-//                            }
                             if (is instanceof ConveyorBelt) {
                                 rotate = ((ConveyorBelt) is).getRotation();
                                 temp = is;
                                 cb = true;
-
                             }
                         }
                         if(!cb){
@@ -173,14 +176,13 @@ public class Game {
                     if (obstruction instanceof Laser) {
                         rob.takeDamage(((LaserShoot) item).getRays());
                         if (rob.isDestroyed()) {
-                            board.removeRobot(rob.getPosition());
+                            updateBoard(rob.getPosition(),null);
                         }
                     }
                 }
             }
         }
     }
-
     /**
      * Method that returns the first obstacle you hit in a given direction from a position
      *
@@ -218,13 +220,6 @@ public class Game {
                         return item;
                     }
                 }
-                // Hva er dette?
-//                if (item instanceof Laser) {
-//                    Direction turretDir = ((Laser) item).getDirection();
-//                    if (turretDir == shootingDir) {
-//                        return item;
-//                    }
-//                }
             }
             Robot target = board.getRobot(shotPos);
             if (target != null) {
@@ -240,7 +235,6 @@ public class Game {
             }
         }
     }
-
     /**
      * Every robot shoots their laser
      */
@@ -254,7 +248,7 @@ public class Game {
             if (obstruction instanceof Robot) {
                 ((Robot) obstruction).takeDamage();
                 if (((Robot) obstruction).isDestroyed()) {
-                    board.removeRobot(rob.getPosition());
+                    updateBoard(((Robot) obstruction).getPosition(),null);
                 }
             }
         }
@@ -269,8 +263,9 @@ public class Game {
                 if (!rob.gameOver()) {
                     rob.respawn();
                     if (board.isFree(rob.getPosition())) {
-                        board.insertRobot(rob.getPosition(), rob);
+                        board.insertRobot(rob.getPosition(),rob);
                     } else {
+                        // Tilfeldig posisjon?
                         // Må la spilleren velge en posisjon ved siden av backup
                         // Roboten må oppdatere plasseringen sin
                     }
@@ -304,7 +299,6 @@ public class Game {
 
     /**
      * Checks if any robots have visited all flags.
-     *
      * @return the robot that have visited all flags, returns null if nobody has done it yet.
      */
     public Robot finished() {
@@ -395,7 +389,7 @@ public class Game {
                 return true;
             } else {
                 rob.die();
-                board.removeRobot(rob.getPosition());
+                updateBoard(rob.getPosition(),null);
                 return true;
             }
         }
@@ -418,7 +412,7 @@ public class Game {
                     return true;
                 } else {
                     rob.die();
-                    board.removeRobot(rob.getPosition());
+                    updateBoard(rob.getPosition(), null);
                     return true;
                 }
             }
@@ -471,7 +465,7 @@ public class Game {
      * @param pos position to be checked
      * @return the conveyor belt if it exists, otherwise null
      */
-    public ConveyorBelt containsConveyorBelt(Position pos){
+    private ConveyorBelt containsConveyorBelt(Position pos){
         ArrayList<IItem> items = board.getItems(pos);
         for(IItem item : items){
             if (item instanceof ConveyorBelt){
@@ -525,10 +519,45 @@ public class Game {
 	 */
 	private void updateBoard(Position start, Position end) {
 		Robot rob = board.getRobot(start);
-		if(rob == null) {
-			return;
-		}
-		board.removeRobot(start);
-		board.insertRobot(end, rob);
+        if(rob == null) {
+            return;
+        }
+		if(rob.isDestroyed()){
+		    board.removeRobot(start);
+        } else {
+            board.removeRobot(start);
+            board.insertRobot(end, rob);
+        }
+		//gameScreen.updateBoard(rob);
 	}
+
+    public void initializePlayers(int numb, ArrayList<String> nameOfPlayers) {
+	    if(nameOfPlayers.size() == 0 && numb > 0){
+	        return;
+        }
+        ArrayList<Position> startDocks = board.getDockPositions();
+        this.robots = new Robot[numb];
+        for(int x = 0; x < nameOfPlayers.size(); x++) {
+            Position pos = startDocks.get(x);
+            String filePath = "texture/robot" + x+1 + ".png";
+            Robot player = new Player(x, Direction.NORTH, pos.getX(),pos.getY(), nameOfPlayers.get(x), filePath);
+            robots[x] = player;
+            board.insertRobot(pos,player);
+        }
+        for(int y = 0; y < numb - nameOfPlayers.size(); y++){
+            int index = y + nameOfPlayers.size();
+            Position pos = startDocks.get(index);
+            String filePath = "texture/robot" + (index)+1 + ".png";
+            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "Destroyer" + (y+1), filePath);
+            robots[index] = ai;
+            board.insertRobot(pos,ai);
+        }
+    }
+    /**
+     * Method used to get the robots
+     * @return array of robots
+     */
+    public Robot[] getRobots() {
+        return this.robots;
+    }
 }

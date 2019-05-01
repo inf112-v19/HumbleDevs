@@ -23,7 +23,6 @@ public class ProgramCard implements IProgramCard {
         this.priority=priority;
         this.action=action;
     }
-
     /**
      *
      * @return the move value
