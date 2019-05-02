@@ -285,7 +285,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
                     Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
                     Image img = new Image(texture);
-                    table.add(img);
+                    table.left();
+                    table.add(img).padBottom(3).height(img.getPrefHeight()).width(img.getPrefWidth()).size(60);
                 }
             }
             table.row();
@@ -311,6 +312,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      */
     public static void presentCards() {
         table.clear();
+        table.center();
 
         if (game.getRobots()[currentRobot] instanceof AI) {
             game.getRobots()[currentRobot].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()));
@@ -319,6 +321,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             addAllCardsFromAI(pcList);
             return;
         }
+        Texture robotTexture = new Texture(game.getRobots()[currentRobot].getPath());
+        Image robotImage = new Image(robotTexture);
+        table.add(robotImage).height(robotImage.getPrefHeight()).width(robotImage.getPrefWidth());
+        table.row();
+
         final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
@@ -341,7 +348,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     img.setColor(Color.GREEN);
                 }
             });
-            table.add(img).padBottom(20);
+
+            table.add(img).padBottom(3).height(img.getPrefHeight()).width(img.getPrefWidth()).size(50);
             table.row();
         }
         table.row();
@@ -484,6 +492,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }));
     }
 
+
     /**
      * Utility function that converts a direction to a counter clockwise degree representation
      * (which is the representation used by the drawing function in GameScreen)
@@ -525,12 +534,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         mapRenderer.setView(camera);
         mapRenderer.render();
-
-
-        if (aRobotIsDead) {
-            //drawHUD(map);
-            aRobotIsDead = false;
-        }
 
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed

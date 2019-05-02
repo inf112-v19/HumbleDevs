@@ -648,11 +648,6 @@ public class Game {
 		GameScreen.updateBoard(rob);
 	}
 
-	public void addR(Robot robot) {
-	    robots = new Robot[1];
-        robots[0] = robot;
-    }
-
     public void initializePlayers(int numb, ArrayList<String> nameOfPlayers) {
 	    if(nameOfPlayers.size() == 0 && numb > 0){
 	        return;
