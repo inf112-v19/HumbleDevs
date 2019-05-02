@@ -31,7 +31,6 @@ public class MainScreen implements Screen {
     Table mainTable;
     ArrayList<String> playerNames;
     Game game;
-    private SpriteBatch bat;
 
 
     public MainScreen(final GUI gui, Game game) {
@@ -72,34 +71,43 @@ public class MainScreen implements Screen {
         mainTable.top();
         Label hey = new Label("Welcome to the RoboRally Game!", skin);
         final Dialog di = new Dialog("Max 6 players", defaultSkin);
+        final Dialog dplayer = new Dialog("Number of Players", defaultSkin);
+        final Dialog dcomputer = new Dialog("Number of computerPlayers", defaultSkin);
+
         di.setPosition(60, 195);
         di.setHeight(20);
         di.setWidth(110);
         di.setColor(Color.GREEN);
+
         hey.setPosition(10, 300);
         hey.setHeight(200);
         hey.setWidth(310);
         hey.setFontScale(1,1);
 
+        dplayer.setPosition(0, 280);
+        dplayer.setHeight(20);
+        dplayer.setWidth(150);
+        dplayer.setColor(Color.BLUE);
+
+        dcomputer.setPosition(150, 280);
+        dcomputer.setHeight(20);
+        dcomputer.setWidth(225);
+        dcomputer.setColor(Color.PINK);
+
+
         stage.addActor(hey);
         stage.addActor(di);
-
-        batch.begin();
-        batch.draw(texture, 1000, 1000);
-        batch.end();
-
+        stage.addActor(dplayer);
+        stage.addActor(dcomputer);
 
         //Create buttons
         TextButton exitButton = new TextButton("Exit", skin);
         TextButton playButton = new TextButton("Play", skin);
 
         //Add buttons to table
-        //mainTable.add(playButton);
         mainTable.row();
         // Set row in center for better GUI
         mainTable.center();
-        Label player = new Label("Number of Players", skin);
-        Label computer = new Label("Number of ComputerPlayers", skin);
 ;       final SelectBox<Integer> selectBoxPlayers = new SelectBox<Integer>(skin);
         final SelectBox<Integer> selectBoxRobots = new SelectBox<Integer>(skin);
 
@@ -122,6 +130,8 @@ public class MainScreen implements Screen {
                     System.out.println("Max 6 players");
                 } else {
                     di.remove();
+                    dcomputer.remove();
+                    dplayer.remove();
                     setNames(selectBoxPlayers.getSelected(), selectBoxRobots.getSelected());
                 }
             }
