@@ -1,10 +1,10 @@
-Deloppgave 1: Prosjekt og prosjektstruktur
+### Deloppgave 1: Prosjekt og prosjektstruktur
 
 I den siste innleveringen forteller vi litt om testene i prosjektet, hvordan gruppedynamikken har vært, litt om
 kommunikasjonen innad og om hvilke justeringer vi har gjort underveis. Til slutt forteller vi om hva som har fungert i gruppen
 og om hvilket læringsutbytte vi har hatt.
  
-Tester
+**Tester**
 Vi har en høy dekningsgrad av testene og er fornøyde med dette. Målet har vært å ha en dekningsgrad på 100% i de mest sentrale
 klassene. En så høy dekningsgrad har vist seg å være svært viktig, fordi mange bugs har blitt funnet etter at vi bestemte oss
 for det. Testene har vært viktige for oss gjennom hele perioden. Vi kom sent i gang med grafikken og kunne dermed ikke prøve
@@ -12,7 +12,7 @@ spillmekanismene underveis. Vi har derfor vært avhengige av gode tester for å 
 tillegg mange spesialtilfeller som kan oppstå, her har testene vært avgjørende for korrekt funksjonalitet. Vi har ikke
 prioritert å teste LibGDX, da dette er mer krevende og er noe vi kunne ha gjort om vi skulle jobbet videre med prosjektet.
  
-Gruppedynamikk
+**Gruppedynamikk**
 Dynamikken i gruppen fungerer bra. Vi er et sammensatt team med flere gode egenskaper. Noen er flinke til å kode, andre på
 design og enkelte er flinke til å skrive. Selv om vi har våre preferanser når det kommer til arbeidsoppgavene, har likevel
 alle jobbet på de ulike delene av prosjektet i løpet av perioden. Dette har gjort at alle har hatt en god oversikt over
@@ -22,18 +22,18 @@ Vi har jobbet best når vi har vært sammen og har derfor hatt en fokus på dett
 behov, men utbyttet har vært størst når vi har vært samlet. Etter gruppetimene har vi ofte blitt igjen, siden vi jobber godt
 sammen og har fått gjort mest i disse timene.
  
-Kommunikasjon
+**Kommunikasjon**
 Kommunikasjonen i gruppen er veldig god. Ting gikk litt sakte i begynnelsen, men det ble bedre og bedre utover prosjektet. Vi
 har benyttet oss av Slack, som er en chattetjeneste som brukes av alle som tar faget. Dermed får vi varsler av alt som blir
 skrevet, og dette har fungert bra. Her har vi avtalt gruppemøter, og diskutert prosjektet underveis. Kommunikasjonen på møtene
 har vært bra, og vi har et godt samarbeid innad i gruppen. Spørsmål blir besvart, og alle er flinke til å hjelpe til der det
 trengs.
  
-Møtereferat
+**Møtereferat**
 Referat fra hvert møte ligger under documents og i mappen meetingReports. Etter hvert møte har vi skrevet et kort møtereferat
 om hva som har blitt bestemt eller diskutert i møtene og  hva hvert medlem i gruppen har arbeidet med.
  
-Justeringer underveis
+**Justeringer underveis**
 Underveis justerte vi på bruken av project board. Vi lagde mindre deloppgaver, etter at vi fant ut at oppgavene som lå der var
 for store. Dette førte til at det ble lettere å se fremgang, og også mer motiverende å krysse av for “done”.
 Etterhvert som prosjektet gikk har vi valgt å benytte oss mer av parprogrammering, siden samarbeid øker effektiviteten av
@@ -44,7 +44,7 @@ for å øke forståelsen for koden er at vi har gått igjennom alle klassene på
 koden den selv har skrevet og forklart det. Etter hvert har vi også naturligvis justert opp antall tester til koden. Disse
 hjelper oss å holde styr på hva som fungerer og hva som må forbedres underveis.
  
-Dette har fungert
+**Dette har fungert**
 Det som har fungert best er fordelingen av arbeidet. Vi har fordelt arbeidsoppgaver til hverandre slik at alle er komfortable
 med det de skal jobbe med. Dette er vi fornøyde med da vi har fått en god flyt gjennom hele prosjektet. En annen ting vi også
 er godt fornøyde med er systemet vi har hatt gjennom hele prosjektet. I Google Docs er det en mappe for hver innlevering der
@@ -56,7 +56,7 @@ GitHub Project Board har blitt oppdatert nokså kontinuerlig med oppgaver vi ska
 Om vi skulle ha fortsatt med prosjektet hadde vi fortsatt med mer gjennomgang av kode på tavlen, noe som vi har gjort mer og
 mer i løpet av prosjektet.
  
-Læringsutbytte
+**Læringsutbytte**
 Det vi har lært fra prosjektet er viktigheten av samarbeid og samhold innad i gruppen. Da vi startet prosjektet var det ingen
 som kjente hverandre fra før. Vi startet med blanke ark og måtte bli kjent med hverandre. Fra starten av skjønte vi
 viktigheten av å være ærlig om styrker og svakheter slik at vi lettere kunne komme i gang. 
