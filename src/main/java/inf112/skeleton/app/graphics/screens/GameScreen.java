@@ -370,8 +370,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static void shootRobotLaser(int fromX, int fromY, int toX, int toY, Direction dir) {
         // Add correct rotation to the shot
         RotateToAction rotateAction = Actions.rotateTo(directionToRotation(dir));
-//        rotateAction.setActor(laserShotActor);
-//        rotateAction.setDuration(STEP_DELAY);
         rotateAction.setActor(laserShotActor);
         rotateAction.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(rotateAction);
@@ -388,7 +386,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         visible.setActor(laserShotActor);
         sequenceAction.addAction(visible);
 
-        // Do firemove
+        // FIRE!
         MoveToAction a1 = Actions.moveTo(toX*TILE_SIZE, toY*TILE_SIZE);
         a1.setActor(laserShotActor);
         a1.setDuration(STEP_DELAY * 4);
@@ -400,10 +398,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         invisible.setActor(laserShotActor);
         sequenceAction.addAction(invisible);
 
+        // Add delay for next action
         DelayAction da = Actions.delay(STEP_DELAY);
         da.setActor(laserShotActor);
         sequenceAction.addAction(da);
-//        sequenceAction.setActor(laserShotActor);
     }
 
 
