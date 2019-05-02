@@ -10,7 +10,7 @@ import java.util.Map;
 public class AssetManager {
     private Map<String, Texture> stringMap;
     private static Map<Integer, String> intMap;
-    private ArrayList<String> randomNames;
+    private static ArrayList<String> randomNames;
 
     public AssetManager () {
         this.stringMap = new HashMap<>();
@@ -52,7 +52,7 @@ public class AssetManager {
         this.intMap.put(5, "texture/robot6.png");
         this.intMap.put(6, "texture/robot7.png");
         this.intMap.put(7, "texture/robot8.png");
-
+        this.randomNames = new ArrayList<>();
         this.randomNames.add("Feisty");
         this.randomNames.add("Dorky");
         this.randomNames.add("Triana");
@@ -107,7 +107,7 @@ public class AssetManager {
         return stringMap.get(name);
     }
 
-    public String getNewRandomName() {
+    public static String getNewRandomName() {
         if (randomNames.isEmpty()) return "NoMoreNames:(";
         int idx = (int) (Math.random() * randomNames.size());
         String name = randomNames.get(idx);

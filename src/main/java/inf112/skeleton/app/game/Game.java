@@ -673,7 +673,7 @@ public class Game {
             int index = y + nameOfPlayers.size();
             Position pos = startDocks[index];
             String filePath = AssetManager.getTextureByIndex(index);
-            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "fdsf" + (y+1), filePath);
+            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), AssetManager.getNewRandomName(), filePath);
             robots[index] = ai;
             board.insertRobot(pos,ai);
         }
