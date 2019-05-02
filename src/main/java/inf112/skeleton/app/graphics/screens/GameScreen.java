@@ -46,8 +46,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static Table table;
     private static ProgramCardDeck programCardDeck;
 
-    private static Map<Robot, ArrayList> map;
-    private static Map<Robot, ArrayList<Image>> cardMap;
+    public static Map<Robot, ArrayList> map;
 
 
     private static int currentRobot;
@@ -101,8 +100,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-
-
     public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
         this.gui = gui;
         this.game = game;
@@ -116,7 +113,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         cardMap = new HashMap<>();
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/Level3.tmx");
+        tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         game.setBoard(new Board(tiledMap));
 
@@ -205,10 +202,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             if (currentRobot == game.getRobots().length) {
                 table.clear();
                 for (int i = 0; i < currentRobot; i++) {
-                    int nrCards = 5;
-                    int corNr = 9 - game.getRobots()[i].getDamageTokens();
-                    if (corNr < 5) nrCards = corNr;
-                    ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[corNr]);
+                    ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[i]);
                     game.getRobots()[i].setCards(cards);
                 }
 
@@ -246,7 +240,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
 
-    private static void drawHUD(Map<Robot, ArrayList> map) {
+    public static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
         table.top();
 
@@ -296,6 +290,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
 
+    }
+
+
+    public static void sequenceDrawHUD() {
+        sequenceAction.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                drawHUD(map);
+            }
+        }));
     }
 
     /**
@@ -521,7 +525,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
         if (aRobotIsDead) {
-            drawHUD(map);
+            //drawHUD(map);
             aRobotIsDead = false;
         }
 
