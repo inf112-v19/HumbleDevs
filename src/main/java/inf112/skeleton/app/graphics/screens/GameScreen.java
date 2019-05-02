@@ -264,7 +264,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             addAllCardsFromAI(pcList);
             return;
         }
-
         final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
