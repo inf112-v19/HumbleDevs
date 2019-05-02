@@ -228,7 +228,7 @@
 //    public void testLaser(){
 //        Robot rob = robs[0];
 //        Laser laser = new Laser(Direction.SOUTH,2);
-//        LaserShoot shoot = new LaserShoot(Direction.SOUTH,2);
+//        LaserStart shoot = new LaserStart(Direction.SOUTH,2);
 //        board.insertItem(2,5,laser);
 //        board.insertItem(2,4,shoot);
 //        board.insertItem(2,3,shoot);
@@ -488,7 +488,7 @@
 //        assertTrue(rob1.isDestroyed());
 //        Laser laser = new Laser(Direction.SOUTH,1);
 //        board.insertItem(2,2,laser);
-//        LaserShoot ls = new LaserShoot(Direction.SOUTH,1);
+//        LaserStart ls = new LaserStart(Direction.SOUTH,1);
 //        board.insertItem(2,2,ls);
 //        game.activatePassiveItems();
 //        rob.takeDamage(9);

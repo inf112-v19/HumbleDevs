@@ -182,11 +182,11 @@ public class Game {
         for (Robot rob : robots) {
             ArrayList<IItem> items = board.getItems(rob.getPosition());
             for (IItem item : items) {
-                if (item instanceof LaserShoot) {
-                    Direction dir = ((LaserShoot) item).getDirection().getOppositeDirection();
+                if (item instanceof Laser) {
+                    Direction dir = ((Laser) item).getDirection().getOppositeDirection();
                     Object obstruction = trackLaser(dir, rob.getPosition());
-                    if (obstruction instanceof Laser) {
-                        rob.takeDamage(((LaserShoot) item).getRays());
+                    if (obstruction instanceof Wall) {
+                        rob.takeDamage(((Laser) item).getDamageMultiplier());
                         if (rob.isDestroyed()) {
                             updateBoard(rob.getPosition(),null);
                         }
@@ -257,11 +257,21 @@ public class Game {
             }
             Direction shootingDir = rob.getDirection();
             Object obstruction = trackLaser(shootingDir, rob.getPosition());
+
             if (obstruction instanceof Robot) {
-                ((Robot) obstruction).takeDamage();
-                if (((Robot) obstruction).isDestroyed()) {
-                    updateBoard(((Robot) obstruction).getPosition(),null);
+                // shot into robot
+                Robot targetRobot = (Robot) obstruction;
+                GameScreen.shootLaser(rob.getX(), rob.getY(), targetRobot.getX(), targetRobot.getY(), shootingDir);
+                targetRobot.takeDamage();
+                if (targetRobot.isDestroyed()) {
+                    updateBoard((targetRobot).getPosition(),null);
                 }
+            } else if (obstruction instanceof IItem){
+
+                // shot into obstacle
+//                GameScreen.shootLaser(rob.getX(), rob.getY(), target.getX(), target.getY(), shootingDir);
+            } else {
+                // shot out of map
             }
         }
     }
