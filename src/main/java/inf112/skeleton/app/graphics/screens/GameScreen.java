@@ -116,7 +116,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         cardMap = new HashMap<>();
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
+        tiledMap = new TmxMapLoader().load("assets/maps/Level3.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         game.setBoard(new Board(tiledMap));
 

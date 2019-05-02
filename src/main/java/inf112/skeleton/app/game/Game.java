@@ -253,12 +253,16 @@ public class Game {
                     Direction dir2 = ((Wall) item).getDir2();
 
                     if (dir1 == shootingDir.getOppositeDirection()) {
+                        // Move position back to return latest position
+                        shotPos.move(shootingDir.getOppositeDirection());
                         trackingInfo.add(shotPos);
                         trackingInfo.add(item);
                         trackingInfo.add(steps);
                         return trackingInfo;
                     }
                     if (dir2 != null && dir2 == shootingDir.getOppositeDirection()) {
+                        // Move position back to return latest position
+                        shotPos.move(shootingDir.getOppositeDirection());
                         trackingInfo.add(shotPos);
                         trackingInfo.add(item);
                         trackingInfo.add(steps);
