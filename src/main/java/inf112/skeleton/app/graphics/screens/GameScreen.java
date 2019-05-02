@@ -184,7 +184,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public static void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
-        if (selectedCards.size() == 5) {
+        int numberOfCards = 9 - game.getRobots()[currentRobot].getDamageTokens();
+        if (numberOfCards > 5) {
+            numberOfCards = 5;
+        }
+        if (selectedCards.size() == numberOfCards) {
             //Deep copy of the list
             ArrayList<ProgramCard> newList = new ArrayList<>();
             for (ProgramCard pc : selectedCards) {

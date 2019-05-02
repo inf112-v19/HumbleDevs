@@ -420,12 +420,12 @@ public class Game {
      */
     public void robotDoTurn(Robot rob, int nr) {
 
-        if (rob.isDestroyed()) {
+        if (rob.isDestroyed() ||rob.getCards().length <= nr) {
             return;
         }
+
         ProgramCard card = rob.getCards()[nr];
         GameScreen.deleteCard(rob, card);
-
         GameScreen.sequenceDrawHUD();
 
         Action action = card.getAction();
@@ -593,6 +593,11 @@ public class Game {
 		double[][] pri = new double[robots.length][2];
 		int count = 0;
 		for(int x = 0; x < robots.length; x++) {
+		    if (robots[x].getCards().length <= cardnr) {
+		        pri[x][0] = -1;
+		        pri[x][1] = x;
+		        continue;
+            }
 			ProgramCard card = robots[x].getCards()[cardnr];
 			if(card == null){
 				pri[x][1] = x;
