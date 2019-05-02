@@ -76,6 +76,7 @@ public class Game {
         for (int x = robots.length - 1; x >= 0; x--) {
             int robot = prio[x];
             robotDoTurn(robots[robot], nr);
+            System.out.println(robots[robot].getName());
         }
     }
     /**
@@ -166,6 +167,9 @@ public class Game {
      */
     public void activatePassiveItems() {
         for (Robot rob : robots) {
+            if(rob.isDestroyed()) {
+                continue;
+            }
             ArrayList<IItem> items = board.getItems(rob.getPosition());
             for (IItem item : items) {
                 if (item instanceof LaserShoot) {
@@ -278,7 +282,7 @@ public class Game {
      */
     public void repairAndCheckFlags() {
         for (Robot rob : robots) {
-            if (rob.isDestroyed()) {
+            if (rob.isDestroyed() || rob.isPoweredDown()) {
                 continue;
             }
             ArrayList<IItem> items = board.getItems(rob.getPosition());
@@ -323,6 +327,10 @@ public class Game {
         }
         ProgramCard card = rob.getCards()[nr];
         Action action = card.getAction();
+
+        GameScreen.deleteCard(rob, card);
+
+
         if (action == Action.LEFTTURN) {
             rob.rotateLeft();
             GameScreen.updateBoard(rob);
