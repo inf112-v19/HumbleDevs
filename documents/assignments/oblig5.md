@@ -1,3 +1,4 @@
+#Obligatorisk oppgave 5
 ### Deloppgave 1: Prosjekt og prosjektstruktur
 
 I den siste innleveringen forteller vi litt om testene i prosjektet, hvordan gruppedynamikken har vært, litt om
@@ -77,3 +78,21 @@ En annen viktig ting vi har lært gjennom prosjektet er viktigheten av å sette 
 kode, og et viktig punkt vi har lært underveis er at denne prosessen er tidkrevende. Dermed har vi sett viktigheten av
 kommentarer og strukturert kode, slik at det er lett for andre å sette seg inn i. Med å gå igjennom koden på tavlen har vi
 alle fått en bedre forståelse for spillet, og prosessen med å forstå koden har vært god.
+
+### Deloppgave 2: Krav
+**Oppdatert Status MVP Krav**
+- [ ] Spille en komplett runde
+- [x] Vinne spillet ved å besøke siste flagg (fullføre et spill)
+- [x] Det skal være lasere på brettet
+- [x] Det skal være hull på brettet
+- [ ] Skademekanismer (spilleren får færre kort ved skade)
+- [x] Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem
+- [x] Fungerende samlebånd på brettet som flytter robotene
+- [x] Fungerende gyroer på brettet som flytter robotene
+- [x] Game over etter 3 tapte liv
+- [ ] Multiplayer over LAN eller Internet 
+- [ ] Power down
+- [x] Samlebånd som går i dobbelt tempo
+- [ ] Options-kort
+- [ ] Plassere flagg selv før spillet starter
+- [ ] Sette sammen ulike brett til større spillflate
