@@ -27,17 +27,17 @@ public class Main {
             game.round();
             readyToLaunch = false;
 
+            Robot gameFinished = game.finished();
+            if(gameFinished != null) {
+                System.out.println("Winner is " + gameFinished.getName());
+                break;
+            }
             if (!readyToLaunch) {
                 GameScreen.startNewRound();
             }
 
-            Robot gameFinished = game.finished();
-            if(gameFinished != null) {
-                System.out.println("WInner is " + gameFinished.getName());
-                break;
-            }
         }
-        //System.out.println("YIHA");
+        System.out.println("YIHA");
         //game.round(); //LOL
 
 
