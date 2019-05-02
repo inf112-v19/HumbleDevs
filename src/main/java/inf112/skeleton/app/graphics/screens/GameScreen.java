@@ -201,10 +201,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             if (currentRobot == game.getRobots().length) {
                 table.clear();
                 for (int i = 0; i < currentRobot; i++) {
-                    int nrCards = 5;
-                    int corNr = 9 - game.getRobots()[i].getDamageTokens();
-                    if (corNr < 5) nrCards = corNr;
-                    ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[corNr]);
+                    ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[i]);
                     game.getRobots()[i].setCards(cards);
                 }
 

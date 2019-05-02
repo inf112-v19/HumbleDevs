@@ -74,7 +74,11 @@ public class Game {
             repairAndCheckFlags();
         }
         respawnRobots();
-        return;
+    }
+    public void startRobots() {
+        for (Robot rob : robots){
+            rob.powerUp();
+        }
     }
     /**
      * Starts one phase. The robots are first sorted with respect to the priority of the card that

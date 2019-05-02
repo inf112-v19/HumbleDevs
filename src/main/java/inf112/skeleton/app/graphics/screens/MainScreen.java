@@ -96,6 +96,7 @@ public class MainScreen implements Screen {
             }
         });
         //Add table to stage
+
         stage.addActor(mainTable);
     }
 

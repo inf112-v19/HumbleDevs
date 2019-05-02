@@ -20,11 +20,13 @@ public class Main {
 
         LwjglApplication lw = new LwjglApplication(new GUI(game), cfg);
         while(true) {
+
             while (true) {
                 System.out.print("");
                 if (readyToLaunch) break;
             }
             game.round();
+
             readyToLaunch = false;
 
             Robot gameFinished = game.finished();
@@ -35,27 +37,12 @@ public class Main {
             if (!readyToLaunch) {
                 GameScreen.startNewRound();
             }
+            game.startRobots();
 
         }
         System.out.println("YIHA");
         //game.round(); //LOL
 
 
-
-
-
-//        Board board = new Board(map);
-//
-//        Game game = new Game(board);
-//        Robot[] robots = game.getRobots();
-
-//        boolean done = false;
-//        while (!done){
-//            Robot rob = game.round();
-//            if (rob != null) {
-//                done = true;
-//                // Annonser rob som vinner
-//            }
-//        }
     }
 }
