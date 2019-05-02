@@ -315,9 +315,25 @@ public class Game {
      * @return the robot that have visited all flags, returns null if nobody has done it yet.
      */
     public Robot finished() {
+        int robotsAlive = 0;
+        // Win condition #1: Visit all four flags
         for (Robot robot : robots) {
+            if(!robot.gameOver()){
+                robotsAlive++;
+            }
             if (robot.visitedFlags() == 4) {
                 return robot;
+            }
+        }
+        if(robotsAlive == 0){
+
+        }
+        // Win condition #2: Be the only robot alive
+        if(robotsAlive == 1){
+            for (Robot robot : robots){
+                if(!robot.gameOver()){
+                    return robot;
+                }
             }
         }
         return null;
