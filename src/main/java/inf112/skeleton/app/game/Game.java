@@ -209,7 +209,8 @@ public class Game {
      * in the case there is no obstacle)
      */
     public ArrayList<Object> trackLaser(Direction shootingDir, Position pos) {
-        ArrayList<Object> tileInfo = new ArrayList<>();
+        Integer steps = 1;
+        ArrayList<Object> trackingInfo = new ArrayList<>();
         Position shotPos = new Position(pos.getX(), pos.getY());
         ArrayList<IItem> currentItems = board.getItems(shotPos);
         // Check current tile for wall in shooting direction
@@ -218,15 +219,17 @@ public class Game {
                 Direction dir1 = ((Wall) item).getDir();
                 Direction dir2 = ((Wall) item).getDir2();
                 if (dir1 == shootingDir || dir2 == shootingDir) {
-                    tileInfo.add(shotPos);
-                    tileInfo.add(item);
-                    return tileInfo;
+                    trackingInfo.add(shotPos);
+                    trackingInfo.add(item);
+                    trackingInfo.add(steps);
+                    return trackingInfo;
                 }
             }
             if (item instanceof LaserStart){
-                tileInfo.add(shotPos);
-                tileInfo.add(item);
-                return tileInfo;
+                trackingInfo.add(shotPos);
+                trackingInfo.add(item);
+                trackingInfo.add(steps);
+                return trackingInfo;
             }
         }
         // Iterate through all tiles in shooting direction
@@ -237,9 +240,10 @@ public class Game {
                     || shotPos.getX() < 0) {
                 // Move position back to return latest position
                 shotPos.move(shootingDir.getOppositeDirection());
-                tileInfo.add(shotPos);
-                tileInfo.add(null);
-                return tileInfo;
+                trackingInfo.add(shotPos);
+                trackingInfo.add(null);
+                trackingInfo.add(steps);
+                return trackingInfo;
             }
             ArrayList<IItem> items = board.getItems(shotPos);
             // Check if closest side of tile in shooting direction has wall
@@ -249,23 +253,26 @@ public class Game {
                     Direction dir2 = ((Wall) item).getDir2();
 
                     if (dir1 == shootingDir.getOppositeDirection()) {
-                        tileInfo.add(shotPos);
-                        tileInfo.add(item);
-                        return tileInfo;
+                        trackingInfo.add(shotPos);
+                        trackingInfo.add(item);
+                        trackingInfo.add(steps);
+                        return trackingInfo;
                     }
                     if (dir2 != null && dir2 == shootingDir.getOppositeDirection()) {
-                        tileInfo.add(shotPos);
-                        tileInfo.add(item);
-                        return tileInfo;
+                        trackingInfo.add(shotPos);
+                        trackingInfo.add(item);
+                        trackingInfo.add(steps);
+                        return trackingInfo;
                     }
                 }
             }
             // Check if tile contains robot
             Robot target = board.getRobot(shotPos);
             if (target != null) {
-                tileInfo.add(shotPos);
-                tileInfo.add(target);
-                return tileInfo;
+                trackingInfo.add(shotPos);
+                trackingInfo.add(target);
+                trackingInfo.add(steps);
+                return trackingInfo;
             }
 
             for (IItem item : items) {
@@ -273,9 +280,10 @@ public class Game {
                 if (item instanceof LaserStart) {
                     Direction turretDir = ((LaserStart) item).getDirection();
                     if (turretDir == shootingDir.getOppositeDirection()) {
-                        tileInfo.add(shotPos);
-                        tileInfo.add(item);
-                        return tileInfo;
+                        trackingInfo.add(shotPos);
+                        trackingInfo.add(item);
+                        trackingInfo.add(steps);
+                        return trackingInfo;
                     }
                 }
                 // Check far side of tile in shooting direction has wall
@@ -284,17 +292,20 @@ public class Game {
                     Direction dir2 = ((Wall) item).getDir2();
 
                     if (dir1 == shootingDir) {
-                        tileInfo.add(shotPos);
-                        tileInfo.add(item);
-                        return tileInfo;
+                        trackingInfo.add(shotPos);
+                        trackingInfo.add(item);
+                        trackingInfo.add(steps);
+                        return trackingInfo;
                     }
                     if (dir2 != null && dir2 == shootingDir) {
-                        tileInfo.add(shotPos);
-                        tileInfo.add(item);
-                        return tileInfo;
+                        trackingInfo.add(shotPos);
+                        trackingInfo.add(item);
+                        trackingInfo.add(steps);
+                        return trackingInfo;
                     }
                 }
             }
+            steps++;
         }
     }
     /**
