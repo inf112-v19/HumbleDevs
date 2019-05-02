@@ -110,7 +110,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.currentRobot = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
-        cardMap = new HashMap<>();
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
