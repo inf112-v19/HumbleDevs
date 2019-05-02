@@ -55,7 +55,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float STEP_DELAY = 0.04f; // in seconds
+    private final static float STEP_DELAY = 0.1f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -292,23 +292,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
 
-//        shootRobotLaser(3, 1, 3, 7, Direction.NORTH);
-//        shootRobotLaser(4, 1, 4, 7, Direction.NORTH);
-//        shootRobotLaser(5, 1, 5, 7, Direction.NORTH);
-//        shootRobotLaser(6, 1, 6, 7, Direction.NORTH);
-//        shootRobotLaser(0,4,7,4, Direction.EAST);
-//        shootRobotLaser(7,4,0,4, Direction.WEST);
-//
-//        shootRobotLaser(3, 7, 3, 1, Direction.SOUTH);
-
-
     }
 
     /**
      * This method will present cards to pick from to a player
      * If this "player" is a robot, random cards are chosen.
      */
-
     public static void presentCards() {
         table.clear();
 
@@ -365,10 +354,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
     }
+
     /**
      * This method will update the position and direction of a robot on the board
-     *
-     * */
+     * performed as animated actions
+     * @param robot
+     */
     public static void updateBoard(final Robot robot) {
         Image curActor = (Image) stage.getActors().get(robot.getId());
 
@@ -416,6 +407,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
+    /**
+     * Shoots an animated laser beam (added to the action sequence)
+     *
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @param dir
+     * @param steps Number of tiles the laser beam traverses
+     */
     public static void shootRobotLaser(int fromX, int fromY, int toX, int toY, Direction dir, Integer steps) {
         // Add correct rotation to the shot
         RotateToAction rotateAction = Actions.rotateTo(directionToRotation(dir));
@@ -426,8 +427,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Move shot to correct start position
         MoveToAction positionAction = Actions.moveTo(fromX*TILE_SIZE, fromY*TILE_SIZE);
         positionAction.setActor(laserShotActor);
-
-
         sequenceAction.addAction(positionAction);
 
         // Set visible
@@ -447,13 +446,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         invisible.setActor(laserShotActor);
         sequenceAction.addAction(invisible);
 
-        // Add delay for next action
+        // Add delay before next action
         DelayAction da = Actions.delay(STEP_DELAY);
         da.setActor(laserShotActor);
         sequenceAction.addAction(da);
     }
 
-
+    /**
+     * Signals a new round
+     */
     public static void startNewRound() {
         sequenceAction.addAction(Actions.run(new Runnable() {
             @Override
