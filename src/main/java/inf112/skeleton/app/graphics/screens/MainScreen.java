@@ -2,8 +2,7 @@ package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,17 +24,27 @@ public class MainScreen implements Screen {
     private OrthographicCamera camera;
     private TextureAtlas atlas;
     protected Skin skin;
+    protected Skin defaultSkin;
+    protected Skin altSkin;
     final GUI gui;
+    private Texture texture;
     Table mainTable;
     ArrayList<String> playerNames;
     Game game;
+
 
     public MainScreen(final GUI gui, Game game) {
         this.game = game;
         this.gui = gui;
         this.playerNames = new ArrayList<>();
 
-        skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
+        defaultSkin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        //altSkin = new Skin(Gdx.files.internal("assets/UI/alt/uiskin.json"));
+
+        texture = new Texture(Gdx.files.internal("assets/UI/frontRobot.png"));
+
+
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         viewport = new FitViewport(500, 500, camera);
@@ -45,6 +54,7 @@ public class MainScreen implements Screen {
         camera.update();
 
         stage = new Stage(viewport, batch);
+
     }
 
 
@@ -59,24 +69,57 @@ public class MainScreen implements Screen {
         mainTable.setFillParent(true);
         //Set alignment of contents in the table.
         mainTable.top();
+        Label hey = new Label("Welcome to the RoboRally Game!", skin);
+        final Dialog di = new Dialog("Max 6 players", defaultSkin);
+        final Dialog dplayer = new Dialog("Number of Players", defaultSkin);
+        final Dialog dcomputer = new Dialog("Number of computerPlayers", defaultSkin);
+
+        di.setPosition(60, 195);
+        di.setHeight(20);
+        di.setWidth(110);
+        di.setColor(Color.GREEN);
+
+        hey.setPosition(10, 300);
+        hey.setHeight(200);
+        hey.setWidth(310);
+        hey.setFontScale(1,1);
+
+        dplayer.setPosition(0, 280);
+        dplayer.setHeight(20);
+        dplayer.setWidth(150);
+        dplayer.setColor(Color.BLUE);
+
+        dcomputer.setPosition(150, 280);
+        dcomputer.setHeight(20);
+        dcomputer.setWidth(225);
+        dcomputer.setColor(Color.PINK);
+
+
+        stage.addActor(hey);
+        stage.addActor(di);
+        stage.addActor(dplayer);
+        stage.addActor(dcomputer);
 
         //Create buttons
-        TextButton playButton = new TextButton("Play", skin);
-        //TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
+        TextButton playButton = new TextButton("Play", skin);
 
         //Add buttons to table
-        mainTable.add(playButton);
         mainTable.row();
-        final SelectBox<Integer> selectBoxPlayers = new SelectBox<Integer>(skin);
+        // Set row in center for better GUI
+        mainTable.center();
+;       final SelectBox<Integer> selectBoxPlayers = new SelectBox<Integer>(skin);
         final SelectBox<Integer> selectBoxRobots = new SelectBox<Integer>(skin);
 
-        selectBoxPlayers.setItems(1, 2, 3, 4, 5, 6);
-        selectBoxRobots.setItems(1, 2, 3, 4, 5, 6);
 
+        // Selection box
+        selectBoxPlayers.setItems(0, 1, 2, 3, 4, 5, 6);
+        selectBoxRobots.setItems(0, 1, 2, 3, 4, 5, 6);
+
+        // Add boxes to mainTable
         mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
-
+        mainTable.add(playButton);
         mainTable.add(exitButton);
 
         //Add listeners to buttons
@@ -85,8 +128,12 @@ public class MainScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (selectBoxPlayers.getSelected() + selectBoxRobots.getSelected() > 6) {
                     System.out.println("Max 6 players");
+                } else {
+                    di.remove();
+                    dcomputer.remove();
+                    dplayer.remove();
+                    setNames(selectBoxPlayers.getSelected(), selectBoxRobots.getSelected());
                 }
-                setNames(selectBoxPlayers.getSelected(), selectBoxRobots.getSelected());
             }
         });
         exitButton.addListener(new ClickListener(){
@@ -134,7 +181,6 @@ public class MainScreen implements Screen {
             helper(index, players, robots);
             index++;
         }
-        //TODO get random names for the robots
     }
 
     public void customCreate(int robots) {
