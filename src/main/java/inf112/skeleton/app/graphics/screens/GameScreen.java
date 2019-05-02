@@ -263,14 +263,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         programCardDeck = new ProgramCardDeck();
 
         //if(!aRobotIsDead)
-        shootLaser(3, 1, 3, 7, Direction.NORTH);
-        shootLaser(4, 1, 4, 7, Direction.NORTH);
-        shootLaser(5, 1, 5, 7, Direction.NORTH);
-        shootLaser(6, 1, 6, 7, Direction.NORTH);
-        shootLaser(0,4,7,4, Direction.EAST);
-        shootLaser(7,4,0,4, Direction.WEST);
-
-        shootLaser(3, 7, 3, 1, Direction.SOUTH);
+//        shootLaser(3, 1, 3, 7, Direction.NORTH);
+//        shootLaser(4, 1, 4, 7, Direction.NORTH);
+//        shootLaser(5, 1, 5, 7, Direction.NORTH);
+//        shootLaser(6, 1, 6, 7, Direction.NORTH);
+//        shootLaser(0,4,7,4, Direction.EAST);
+//        shootLaser(7,4,0,4, Direction.WEST);
+//
+//        shootLaser(3, 7, 3, 1, Direction.SOUTH);
 
 
     }
