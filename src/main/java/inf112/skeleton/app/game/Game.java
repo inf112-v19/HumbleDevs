@@ -45,6 +45,19 @@ public class Game {
         this.board = board;
     }
 
+    /**
+     * Starts the a new round by dealing new cards to every player
+     */
+    public void startRound() {
+        ProgramCardDeck cardPack = new ProgramCardDeck();
+        for (Robot robot : robots) {
+            // Må først avgjøre om man ønsker å "power down"
+            int numbCards = 9 - robot.getDamageTokens();
+            ProgramCard[] newCards = cardPack.getRandomCards(numbCards);
+            robot.chooseCards(newCards);
+        }
+    }
+
 
     /**
      * Starts the a new round by dealing new cards to every player
@@ -76,6 +89,7 @@ public class Game {
         for (int x = robots.length - 1; x >= 0; x--) {
             int robot = prio[x];
             robotDoTurn(robots[robot], nr);
+
         }
     }
     /**
@@ -260,14 +274,14 @@ public class Game {
             if (rob.isDestroyed()) {
                 if (!rob.gameOver()) {
                     rob.respawn();
-                    if (board.isFree(rob.getPosition())) {
-                        board.insertRobot(rob.getPosition(),rob);
-                        GameScreen.updateBoard(rob);
-                    } else {
-                        // Tilfeldig posisjon?
-                        // Må la spilleren velge en posisjon ved siden av backup
-                        // Roboten må oppdatere plasseringen sin
+                    if (!board.isFree(rob.getPosition())) {
+                        Position pos = board.getRandomPositionNextToPosition(rob.getPosition());
+                        rob.makeBackup(new Position(pos.getX(), pos.getY()));
+                        rob.respawn();
                     }
+                    board.insertRobot(rob.getPosition(),rob);
+
+//                  GameScreen.updateBoard(rob);
                 }
             }
         }
@@ -301,9 +315,25 @@ public class Game {
      * @return the robot that have visited all flags, returns null if nobody has done it yet.
      */
     public Robot finished() {
+        int robotsAlive = 0;
+        // Win condition #1: Visit all four flags
         for (Robot robot : robots) {
+            if(!robot.gameOver()){
+                robotsAlive++;
+            }
             if (robot.visitedFlags() == 4) {
                 return robot;
+            }
+        }
+        if(robotsAlive == 0){
+
+        }
+        // Win condition #2: Be the only robot alive
+        if(robotsAlive == 1){
+            for (Robot robot : robots){
+                if(!robot.gameOver()){
+                    return robot;
+                }
             }
         }
         return null;
