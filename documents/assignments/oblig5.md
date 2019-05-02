@@ -81,17 +81,17 @@ alle fått en bedre forståelse for spillet, og prosessen med å forstå koden h
 
 ### Deloppgave 2: Krav
 **Oppdatert Status MVP Krav**
-- [ ] Spille en komplett runde
+- [x] Spille en komplett runde
 - [x] Vinne spillet ved å besøke siste flagg (fullføre et spill)
 - [x] Det skal være lasere på brettet
 - [x] Det skal være hull på brettet
-- [ ] Skademekanismer (spilleren får færre kort ved skade)
+- [x] Skademekanismer (spilleren får færre kort ved skade)
 - [x] Spillmekanismer for å skyte andre spillere innen rekkevidde med laser som peker rett frem
 - [x] Fungerende samlebånd på brettet som flytter robotene
 - [x] Fungerende gyroer på brettet som flytter robotene
-- [x] Game over etter 3 tapte liv
-- [ ] Multiplayer over LAN eller Internet 
-- [ ] Power down
+- [x] Game over etter 3 tapte liv 
+- [x] Power down
+- [x] Spille mot random robot
 - [x] Samlebånd som går i dobbelt tempo
-- [ ] Plassere flagg selv før spillet starter
-- [ ] Sette sammen ulike brett til større spillflate
+- [ ] Feilhåndtering ved disconnect
+- [ ] Multiplayer over LAN eller Internet
