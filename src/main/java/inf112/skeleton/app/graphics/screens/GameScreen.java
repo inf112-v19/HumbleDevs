@@ -190,6 +190,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
+
+
     private static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
         table.top();
