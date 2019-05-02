@@ -23,8 +23,8 @@ public class MainScreen implements Screen {
     private Viewport viewport;
     private OrthographicCamera camera;
     private TextureAtlas atlas;
-    protected Skin skin;
-    protected Skin defaultSkin;
+    protected static Skin skin;
+    protected static Skin defaultSkin;
     protected Skin altSkin;
     final GUI gui;
     private Texture texture;

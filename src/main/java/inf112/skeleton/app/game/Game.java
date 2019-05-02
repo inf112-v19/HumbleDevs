@@ -88,11 +88,14 @@ public class Game {
      */
     public void phase(int nr) {
         int[] prio = findPriority(nr);
-        for (int x = prio.length-1; x >= 0; x--) {
-            int robot = prio[x];
-            robotDoTurn(robots[robot], nr);
-
-        }
+        for (Robot rob : robots)  {
+            robotDoTurn(rob,nr);
+      }    
+//        for (int x = prio.length-1; x >= 0; x--) {
+//            int robot = prio[x];
+//            robotDoTurn(robots[robot], nr);
+//
+//        }
     }
     /**
      * Method that does the movement actions on the board e.g. gear
@@ -670,7 +673,7 @@ public class Game {
             int index = y + nameOfPlayers.size();
             Position pos = startDocks[index];
             String filePath = AssetManager.getTextureByIndex(index);
-            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "Destroyer" + (y+1), filePath);
+            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "fdsf" + (y+1), filePath);
             robots[index] = ai;
             board.insertRobot(pos,ai);
         }

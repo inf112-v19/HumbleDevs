@@ -1,5 +1,7 @@
 package inf112.skeleton.app.card;
 
+import java.util.Objects;
+
 /**
  * An implementation of the IProgramCard interface
  *
@@ -10,6 +12,7 @@ public class ProgramCard implements IProgramCard {
     private int move;
     private int priority;
     private Action action;
+    private boolean used;
 
     /**
      * Constructor of the movement cards
@@ -22,6 +25,13 @@ public class ProgramCard implements IProgramCard {
         this.move=move;
         this.priority=priority;
         this.action=action;
+        this.used = false;
+    }
+    public void use(){
+        this.used = true;
+    }
+    public boolean isUsed(){
+        return this.used;
     }
     /**
      *
@@ -50,6 +60,19 @@ public class ProgramCard implements IProgramCard {
         return action+String.valueOf(movement);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProgramCard that = (ProgramCard) o;
+        return move == that.move &&
+                priority == that.priority &&
+                used == that.used &&
+                action == that.action;
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(move, priority, action, used);
+    }
 }

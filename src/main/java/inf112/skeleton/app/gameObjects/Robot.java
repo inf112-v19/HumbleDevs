@@ -2,7 +2,10 @@ package inf112.skeleton.app.gameObjects;
 import inf112.skeleton.app.gameObjects.Items.Flag;
 import inf112.skeleton.app.board.Direction;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import inf112.skeleton.app.board.Position;
 import inf112.skeleton.app.card.ProgramCard;
@@ -35,15 +38,26 @@ public abstract class Robot implements IRobot {
     }
 
     public void chooseCards(ProgramCard[] pos_cards) {
-        cards = new ProgramCard[5];
+        HashSet<ProgramCard> set = new HashSet<>(5);
         Random rn = new Random();
         int register = 9 - getDamageTokens();
         if(register > 5){
             register = 5;
         }
-        for(int x = 0; x < register; x++) {
+        this.cards = new ProgramCard[register];
+        while(true) {
             ProgramCard s = pos_cards[rn.nextInt(pos_cards.length)];
-            this.cards[x] = s;
+            System.out.println(s.hashCode());
+            set.add(s);
+            if(set.size() == register){
+                break;
+            }
+        }
+        ArrayList<ProgramCard> rr = new ArrayList<>(set);
+        System.out.println(rr.size());
+        for(int x = 0; x < rr.size(); x++) {
+            cards[x] = rr.get(x);
+
         }
     }
     @Override
