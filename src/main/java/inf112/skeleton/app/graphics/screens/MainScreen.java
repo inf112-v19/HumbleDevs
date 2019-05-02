@@ -36,7 +36,7 @@ public class MainScreen implements Screen {
         this.gui = gui;
         this.playerNames = new ArrayList<>();
 
-        skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         viewport = new FitViewport(500, 500, camera);
@@ -47,9 +47,6 @@ public class MainScreen implements Screen {
 
         stage = new Stage(viewport, batch);
 
-        // Add colour to buttons
-        //Color red = skin.getColor("red");
-        skin.getColor("red");
     }
 
 
@@ -80,10 +77,11 @@ public class MainScreen implements Screen {
         final SelectBox<Integer> selectBoxPlayers = new SelectBox<Integer>(skin);
         final SelectBox<Integer> selectBoxRobots = new SelectBox<Integer>(skin);
 
+
         selectBoxPlayers.setItems(1, 2, 3, 4, 5, 6);
         selectBoxRobots.setItems(1, 2, 3, 4, 5, 6);
 
-        mainTable.add(selectBoxPlayers);
+        //mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
 
         mainTable.add(playButton);
@@ -115,9 +113,11 @@ public class MainScreen implements Screen {
     public void helper(int idx, final int players, final int robots) {
         mainTable.clear();
         // OVERSKRIFT: VELG NAVN TIL SPILLER i
+        //Label hey = new Label("Welcome to the RoboRally Game!" + idx + "\n \n \n", skin);
         Label label = new Label("Skriv inn navnet til spiller " + idx, skin);
         final TextField tf = new TextField("", skin);
         final TextButton submitButton = new TextButton("Submit", skin);
+        //mainTable.add(hey);
         mainTable.add(label);
         mainTable.row();
         mainTable.add(tf);

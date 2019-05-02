@@ -68,7 +68,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.assetManager = new AssetManager();
         this.stage = new Stage();
         this.table = new Table();
-        this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        this.skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
