@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
@@ -61,6 +62,43 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private SequenceAction[] parallellAction;
     private static Game game;
     private static boolean aRobotIsDead = false;
+    // Variables necessary for animation of laser shot
+    private static Actor laserShotActor;
+    private Texture laserShotSheet;
+    private Animation<TextureRegion> laserShotAnimation;
+    private SpriteBatch laserBatch;
+    private int FRAME_COLS = 4;
+    private int FRAME_ROWS = 4;
+    private float laserShotStateTime = 0;
+
+    public class AnimatedActor extends Actor {
+        private Animation animation;
+        private TextureRegion currentRegion;
+
+        private float stateTime = 0f;
+
+        public AnimatedActor(Animation animation) {
+            this.animation = animation;
+        }
+
+        @Override
+        public void act(float delta){
+            currentRegion = (TextureRegion) animation.getKeyFrame(stateTime, true);
+
+            super.act(delta);
+            stateTime += delta;
+
+        }
+
+        @Override
+        public void draw(Batch batch, float alpha) {
+            super.draw(batch, alpha);
+            batch.draw(currentRegion, getX(), getY());
+        }
+
+    }
+
+
 
 
     public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
@@ -84,8 +122,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Initiate robot actors
         for (int i = 0; i < game.getRobots().length; i++) {
-            // Create the robot actors,
-
 
             Texture texture = new Texture(Gdx.files.internal(game.getRobots()[i].getPath()));
             TextureRegion region = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
@@ -96,6 +132,29 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             //add it to the stage,
             stage.addActor(robotActor);
         }
+
+        // Instantiate laser shot animation
+        laserShotSheet = new Texture(Gdx.files.internal("texture/laserShot.png"));
+        TextureRegion[][] tmp = TextureRegion.split(laserShotSheet, TILE_SIZE, TILE_SIZE);
+        TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+                walkFrames[index++] = tmp[i][j];
+            }
+        }
+        laserShotActor = new AnimatedActor(new Animation<TextureRegion>(0.025f, walkFrames));
+
+        stage.addActor(laserShotActor);
+        laserShotActor.setVisible(false);
+
+
+
+
+//        laserBatch = new SpriteBatch();
+
+
+
 
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
@@ -151,13 +210,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[5]);
                     game.getRobots()[i].setCards(cards);
                 }
-//                for (int i = 0; i < game.getRobots()[0].getCards().length; i++) {
-//                    System.out.println(game.getRobots()[0].getCards()[i].getAction());
-//                }
-//                System.out.println();
-//                for (int i = 0; i < game.getRobots()[1].getCards().length; i++) {
-//                    System.out.println(game.getRobots()[1].getCards()[i].getAction());
-//                }
+
                 drawHUD(map);
                 Main.readyToLaunch = true;
                 return;
@@ -245,7 +298,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
 
-        //if(!aRobotIsDead)
+//        shootLaser(3, 1, 3, 7, Direction.NORTH);
+//        shootLaser(4, 1, 4, 7, Direction.NORTH);
+//        shootLaser(5, 1, 5, 7, Direction.NORTH);
+//        shootLaser(6, 1, 6, 7, Direction.NORTH);
+//        shootLaser(0,4,7,4, Direction.EAST);
+//        shootLaser(7,4,0,4, Direction.WEST);
+//
+//        shootLaser(3, 7, 3, 1, Direction.SOUTH);
+
 
     }
 
@@ -342,13 +403,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Add rotation action
         RotateToAction a2 = Actions.rotateTo(directionToRotation(robot.getDirection()));
         a2.setActor(curActor);
-        a2.setDuration(GAMESPEED);
+        a2.setDuration(GAMESPEED*2);
         a2.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(a2);
 
         // Toggle robot visibility: Respawn, fade in
         if (!robot.isDestroyed()) {
-            AlphaAction a0 = Actions.fadeIn(GAMESPEED*2);
+            AlphaAction a0 = Actions.fadeIn(GAMESPEED);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
         }
@@ -361,6 +422,39 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Set the actor for the sequence
         sequenceAction.setActor(curActor);
 
+    }
+
+    public static void shootLaser(int fromX, int fromY, int toX, int toY, Direction dir) {
+        // Add correct rotation to the shot
+        RotateToAction rotateAction = Actions.rotateTo(directionToRotation(dir));
+//        rotateAction.setActor(laserShotActor);
+//        rotateAction.setDuration(GAMESPEED);
+        rotateAction.setInterpolation(Interpolation.linear);
+        sequenceAction.addAction(rotateAction);
+
+        // Move shot to correct start position
+        MoveToAction positionAction = Actions.moveTo(fromX*TILE_SIZE, fromY*TILE_SIZE);
+//        positionAction.setActor(laserShotActor);
+
+        sequenceAction.addAction(positionAction);
+
+        // Set visible
+        Action visible = Actions.visible(true);
+        sequenceAction.addAction(visible);
+
+        // Do firemove
+        MoveToAction a1 = Actions.moveTo(toX*TILE_SIZE, toY*TILE_SIZE);
+        a1.setActor(laserShotActor);
+        a1.setDuration(GAMESPEED*2);
+        a1.setInterpolation(Interpolation.smooth);
+        sequenceAction.addAction(a1);
+
+        // Remove shot from board
+        Action invisible = Actions.visible(false);
+//        invisible.setActor(laserShotActor);
+        sequenceAction.addAction(invisible);
+
+        sequenceAction.setActor(laserShotActor);
     }
 
 
@@ -425,6 +519,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
 
+        // Shoot laser
+//        laserShotStateTime += delta;
+//        TextureRegion currentFrame = laserShotAnimation.getKeyFrame(laserShotStateTime, true);
+//        laserBatch.begin();
+//        laserBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
+//        laserBatch.end();
+
         //stage
         update(delta);
         stage.draw(); // important
@@ -452,5 +553,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        laserBatch.dispose();
+        laserShotSheet.dispose();
     }
 }
