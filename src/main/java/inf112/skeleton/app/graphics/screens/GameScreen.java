@@ -63,7 +63,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Game game;
     private static boolean aRobotIsDead = false;
     // Variables necessary for animation of laser shot
-    private static Actor laserShotActor;
+    private static AnimatedActor laserShotActor;
     private Texture laserShotSheet;
     private int FRAME_COLS = 4;
     private int FRAME_ROWS = 4;
@@ -92,6 +92,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             super.draw(batch, alpha);
             // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
             batch.draw(currentRegion, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation());
+        }
+
+        public void resetStateTime() {
+            stateTime = 0f;
         }
 
     }
@@ -141,7 +145,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 walkFrames[index++] = tmp[i][j];
             }
         }
-        laserShotActor = new AnimatedActor(new Animation<>(0.025f, walkFrames));
+        laserShotActor = new AnimatedActor(new Animation<>(1f*STEP_DELAY, walkFrames));
         laserShotActor.setOrigin(TILE_SIZE/2, TILE_SIZE/2);
         laserShotActor.setSize(TILE_SIZE, TILE_SIZE);
         laserShotActor.setScale(1, 1);
@@ -445,6 +449,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Action invisible = Actions.visible(false);
         invisible.setActor(laserShotActor);
         sequenceAction.addAction(invisible);
+
+        // Reset animation
+        sequenceAction.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                laserShotActor.resetStateTime();
+            }
+        }));
 
         // Add delay before next action
         DelayAction da = Actions.delay(STEP_DELAY);
