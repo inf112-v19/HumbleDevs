@@ -33,13 +33,13 @@ public class AssetManager {
         this.stringMap.put("MOVEBACKWARD1", new Texture("texture/movementCards/backUp.png"));
 
         // Replacement card when a player powers down
-        this.stringMap.put("null0", new Texture("texture/katt.jpg"));
+        //this.stringMap.put("null0", new Texture("texture/katt.jpg"));
 
         // Life icon
         this.stringMap.put("lifeIcon", new Texture("texture/lifeicon.png"));
 
         // Power down icon
-        this.stringMap.put("powerDown", new Texture("texture/katt.jpg"));
+        //this.stringMap.put("powerDown", new Texture("texture/katt.jpg"));
 
         this.intMap = new HashMap<>();
         this.intMap.put(0, "texture/robot1.png");

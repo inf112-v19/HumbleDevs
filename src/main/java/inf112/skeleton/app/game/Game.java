@@ -74,7 +74,11 @@ public class Game {
             repairAndCheckFlags();
         }
         respawnRobots();
-        return;
+    }
+    public void startRobots() {
+        for (Robot rob : robots){
+            rob.powerUp();
+        }
     }
     /**
      * Starts one phase. The robots are first sorted with respect to the priority of the card that
@@ -415,10 +419,15 @@ public class Game {
      * @param nr  The phase number
      */
     public void robotDoTurn(Robot rob, int nr) {
+
         if (rob.isDestroyed()) {
             return;
         }
         ProgramCard card = rob.getCards()[nr];
+        GameScreen.deleteCard(rob, card);
+
+        GameScreen.sequenceDrawHUD();
+
         Action action = card.getAction();
         if (action == Action.LEFTTURN) {
             rob.rotateLeft();

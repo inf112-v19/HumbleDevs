@@ -164,6 +164,9 @@ public abstract class Robot implements IRobot {
         this.damageTokens = 0;
         this.poweredDown = true;
     }
+    public void powerUp() {
+        poweredDown = false;
+    }
 
     @Override
     public boolean isPoweredDown(){
