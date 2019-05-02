@@ -54,7 +54,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float GAMESPEED = 0.2f; // in seconds
+    private final static float STEP_DELAY = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -262,14 +262,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
 
-//        shootLaser(3, 1, 3, 7, Direction.NORTH);
-//        shootLaser(4, 1, 4, 7, Direction.NORTH);
-//        shootLaser(5, 1, 5, 7, Direction.NORTH);
-//        shootLaser(6, 1, 6, 7, Direction.NORTH);
-//        shootLaser(0,4,7,4, Direction.EAST);
-//        shootLaser(7,4,0,4, Direction.WEST);
+//        shootRobotLaser(3, 1, 3, 7, Direction.NORTH);
+//        shootRobotLaser(4, 1, 4, 7, Direction.NORTH);
+//        shootRobotLaser(5, 1, 5, 7, Direction.NORTH);
+//        shootRobotLaser(6, 1, 6, 7, Direction.NORTH);
+//        shootRobotLaser(0,4,7,4, Direction.EAST);
+//        shootRobotLaser(7,4,0,4, Direction.WEST);
 //
-//        shootLaser(3, 7, 3, 1, Direction.SOUTH);
+//        shootRobotLaser(3, 7, 3, 1, Direction.SOUTH);
 
 
     }
@@ -325,7 +325,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Toggle robot visibility: Die, fade out
         if(robot.isDestroyed()) {
-            AlphaAction a0 = Actions.fadeOut(GAMESPEED/3);
+            AlphaAction a0 = Actions.fadeOut(STEP_DELAY /3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
 
@@ -340,26 +340,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // Add move action
         MoveToAction a1 = Actions.moveTo(robot.getX()*TILE_SIZE, robot.getY()*TILE_SIZE);
         a1.setActor(curActor);
-        a1.setDuration(GAMESPEED);
+        a1.setDuration(STEP_DELAY);
         a1.setInterpolation(Interpolation.smooth);
         sequenceAction.addAction(a1);
 
         // Add rotation action
         RotateToAction a2 = Actions.rotateTo(directionToRotation(robot.getDirection()));
         a2.setActor(curActor);
-        a2.setDuration(GAMESPEED*2);
+        a2.setDuration(STEP_DELAY *2);
         a2.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(a2);
 
         // Toggle robot visibility: Respawn, fade in
         if (!robot.isDestroyed()) {
-            AlphaAction a0 = Actions.fadeIn(GAMESPEED);
+            AlphaAction a0 = Actions.fadeIn(STEP_DELAY);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
         }
 
         // Lastly add delay for each step (in seconds)
-        DelayAction da = Actions.delay(GAMESPEED);
+        DelayAction da = Actions.delay(STEP_DELAY);
         da.setActor(curActor);
         sequenceAction.addAction(da);
         // Set the actor for the sequence
@@ -367,37 +367,43 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
-    public static void shootLaser(int fromX, int fromY, int toX, int toY, Direction dir) {
+    public static void shootRobotLaser(int fromX, int fromY, int toX, int toY, Direction dir) {
         // Add correct rotation to the shot
         RotateToAction rotateAction = Actions.rotateTo(directionToRotation(dir));
 //        rotateAction.setActor(laserShotActor);
-//        rotateAction.setDuration(GAMESPEED);
+//        rotateAction.setDuration(STEP_DELAY);
+        rotateAction.setActor(laserShotActor);
         rotateAction.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(rotateAction);
 
         // Move shot to correct start position
         MoveToAction positionAction = Actions.moveTo(fromX*TILE_SIZE, fromY*TILE_SIZE);
-//        positionAction.setActor(laserShotActor);
+        positionAction.setActor(laserShotActor);
+
 
         sequenceAction.addAction(positionAction);
 
         // Set visible
         Action visible = Actions.visible(true);
+        visible.setActor(laserShotActor);
         sequenceAction.addAction(visible);
 
         // Do firemove
         MoveToAction a1 = Actions.moveTo(toX*TILE_SIZE, toY*TILE_SIZE);
         a1.setActor(laserShotActor);
-        a1.setDuration(GAMESPEED*2);
+        a1.setDuration(STEP_DELAY * 4);
         a1.setInterpolation(Interpolation.smooth);
         sequenceAction.addAction(a1);
 
         // Remove shot from board
         Action invisible = Actions.visible(false);
-//        invisible.setActor(laserShotActor);
+        invisible.setActor(laserShotActor);
         sequenceAction.addAction(invisible);
 
-        sequenceAction.setActor(laserShotActor);
+        DelayAction da = Actions.delay(STEP_DELAY);
+        da.setActor(laserShotActor);
+        sequenceAction.addAction(da);
+//        sequenceAction.setActor(laserShotActor);
     }
 
 

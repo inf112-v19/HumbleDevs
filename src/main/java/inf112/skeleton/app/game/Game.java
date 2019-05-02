@@ -1,7 +1,5 @@
 package inf112.skeleton.app.game;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import inf112.skeleton.app.gameObjects.AI;
 import inf112.skeleton.app.gameObjects.Items.*;
 import inf112.skeleton.app.gameObjects.Items.ConveyorBelt;
@@ -183,10 +181,17 @@ public class Game {
             ArrayList<IItem> items = board.getItems(rob.getPosition());
             for (IItem item : items) {
                 if (item instanceof Laser) {
-                    Direction dir = ((Laser) item).getDirection().getOppositeDirection();
-                    Object obstruction = trackLaser(dir, rob.getPosition());
-                    if (obstruction instanceof Wall) {
-                        rob.takeDamage(((Laser) item).getDamageMultiplier());
+                    Laser laser = (Laser) item;
+                    // Need to check both directions and find the LaserStart object which decides
+                    // the firing direction of this robot. If we find an obstruction (wall or another robot), we can earlyreturn.
+                    Direction dir1 = laser.getDirection();
+                    Direction dir2 = dir1.getOppositeDirection();
+
+                    Object obstruction1 = trackLaser(dir1, rob.getPosition()).get(1);
+                    Object obstruction2 = trackLaser(dir2, rob.getPosition()).get(1);
+
+                    if (obstruction1 instanceof LaserStart || obstruction2 instanceof LaserStart) {
+                        rob.takeDamage(laser.getDamageMultiplier());
                         if (rob.isDestroyed()) {
                             updateBoard(rob.getPosition(),null);
                         }
@@ -196,52 +201,97 @@ public class Game {
         }
     }
     /**
-     * Method that returns the first obstacle you hit in a given direction from a position
+     * Method that returns the first info about the first obstacle a robot hits in a given direction from a position.
      *
      * @param shootingDir the direction of the line
      * @param pos         the start position
-     * @return an object of whatever that is in the way, return null if there is no obstacles
+     * @return [Position, Object] a ArrayList with a Position and an Object (either a Wall, Robot, LaserStart or null,
+     * in the case there is no obstacle)
      */
-    public Object trackLaser(Direction shootingDir, Position pos) {
+    public ArrayList<Object> trackLaser(Direction shootingDir, Position pos) {
+        ArrayList<Object> tileInfo = new ArrayList<>();
         Position shotPos = new Position(pos.getX(), pos.getY());
         ArrayList<IItem> currentItems = board.getItems(shotPos);
-        for (IItem currIt : currentItems) {
-            if (currIt instanceof Wall) {
-                Direction dir1 = ((Wall) currIt).getDir();
-                Direction dir2 = ((Wall) currIt).getDir2();
+        // Check current tile for wall in shooting direction
+        for (IItem item : currentItems) {
+            if (item instanceof Wall) {
+                Direction dir1 = ((Wall) item).getDir();
+                Direction dir2 = ((Wall) item).getDir2();
                 if (dir1 == shootingDir || dir2 == shootingDir) {
-                    return currIt;
+                    tileInfo.add(shotPos);
+                    tileInfo.add(item);
+                    return tileInfo;
                 }
             }
-            if (currIt instanceof Laser){
-                return currIt;
+            if (item instanceof LaserStart){
+                tileInfo.add(shotPos);
+                tileInfo.add(item);
+                return tileInfo;
             }
         }
+        // Iterate through all tiles in shooting direction
         while (true) {
+            // Check if we are out of bounds
             shotPos.move(shootingDir);
             if (shotPos.getY() >= board.getWidth() || shotPos.getY() < 0 || shotPos.getX() >= board.getHeight()
                     || shotPos.getX() < 0) {
-                return null;
+                // Move position back to return latest position
+                shotPos.move(shootingDir.getOppositeDirection());
+                tileInfo.add(shotPos);
+                tileInfo.add(null);
+                return tileInfo;
             }
             ArrayList<IItem> items = board.getItems(shotPos);
+            // Check if closest side of tile in shooting direction has wall
             for (IItem item : items) {
                 if (item instanceof Wall) {
                     Direction dir1 = ((Wall) item).getDir();
                     Direction dir2 = ((Wall) item).getDir2();
-                    if (dir1 == shootingDir.getOppositeDirection() || dir2 == shootingDir.getOppositeDirection()) {
-                        return item;
+
+                    if (dir1 == shootingDir.getOppositeDirection()) {
+                        tileInfo.add(shotPos);
+                        tileInfo.add(item);
+                        return tileInfo;
+                    }
+                    if (dir2 != null && dir2 == shootingDir.getOppositeDirection()) {
+                        tileInfo.add(shotPos);
+                        tileInfo.add(item);
+                        return tileInfo;
                     }
                 }
             }
+            // Check if tile contains robot
             Robot target = board.getRobot(shotPos);
             if (target != null) {
-                return target;
+                tileInfo.add(shotPos);
+                tileInfo.add(target);
+                return tileInfo;
             }
+
             for (IItem item : items) {
-                if (item instanceof Laser) {
-                    Direction turretDir = ((Laser) item).getDirection();
+                // Check LaserStart
+                if (item instanceof LaserStart) {
+                    Direction turretDir = ((LaserStart) item).getDirection();
                     if (turretDir == shootingDir.getOppositeDirection()) {
-                        return item;
+                        tileInfo.add(shotPos);
+                        tileInfo.add(item);
+                        return tileInfo;
+                    }
+                }
+                // Check far side of tile in shooting direction has wall
+                if (item instanceof Wall) {
+                    Direction dir1 = ((Wall) item).getDir();
+                    Direction dir2 = ((Wall) item).getDir2();
+
+                    if (dir1 == shootingDir) {
+                        tileInfo.add(shotPos);
+                        tileInfo.add(item);
+                        return tileInfo;
+                    }
+                    if (dir2 != null && dir2 == shootingDir) {
+                        tileInfo.add(shotPos);
+                        tileInfo.add(item);
+                        return tileInfo;
                     }
                 }
             }
@@ -256,23 +306,21 @@ public class Game {
                 continue;
             }
             Direction shootingDir = rob.getDirection();
-            Object obstruction = trackLaser(shootingDir, rob.getPosition());
+            ArrayList<Object> tracking = trackLaser(shootingDir, rob.getPosition());
+            Position finalPos = (Position) tracking.get(0);
+            Object obstruction = tracking.get(1);
+
+            GameScreen.shootRobotLaser(rob.getX(), rob.getY(), finalPos.getX(), finalPos.getY(), shootingDir);
 
             if (obstruction instanceof Robot) {
                 // shot into robot
                 Robot targetRobot = (Robot) obstruction;
-                GameScreen.shootLaser(rob.getX(), rob.getY(), targetRobot.getX(), targetRobot.getY(), shootingDir);
                 targetRobot.takeDamage();
                 if (targetRobot.isDestroyed()) {
                     updateBoard((targetRobot).getPosition(),null);
                 }
-            } else if (obstruction instanceof IItem){
-
-                // shot into obstacle
-//                GameScreen.shootLaser(rob.getX(), rob.getY(), target.getX(), target.getY(), shootingDir);
-            } else {
-                // shot out of map
             }
+
         }
     }
 

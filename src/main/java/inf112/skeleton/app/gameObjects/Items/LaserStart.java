@@ -11,7 +11,6 @@ public class LaserStart extends Laser {
         super(dir, damageMultiplier);
     }
 
-
     @Override
     public String getName() {
         return "LaserStart";
