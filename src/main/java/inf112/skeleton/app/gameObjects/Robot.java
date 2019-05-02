@@ -101,7 +101,7 @@ public abstract class Robot implements IRobot {
     @Override
     public void takeDamage(){
         this.damageTokens++;
-        if(this.damageTokens == 10) {
+        if(this.damageTokens >= 10) {
             this.die();
             damageTokens = 0;
         }
@@ -118,7 +118,9 @@ public abstract class Robot implements IRobot {
 
     @Override
     public void repairDamage(){
-        this.damageTokens--;
+        if (!(damageTokens == 0)){
+            this.damageTokens--;
+        }
     }
 
     @Override
@@ -144,7 +146,7 @@ public abstract class Robot implements IRobot {
     public void visitFlag(Flag flag) {
         if(visitedFlags == (flag.getFlagNum() - 1)){
             visitedFlags++;
-            makeBackup(this.pos);
+            makeBackup(new Position(pos.getX(), pos.getY()));
         }
     }
     @Override

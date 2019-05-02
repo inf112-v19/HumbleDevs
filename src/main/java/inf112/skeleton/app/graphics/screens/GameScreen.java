@@ -54,7 +54,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float GAMESPEED = 0.2f; // in seconds
+    private final static float GAMESPEED = 0.0002f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -76,7 +76,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         cardMap = new HashMap<>();
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
+        tiledMap = new TmxMapLoader().load("assets/maps/Level3.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         game.setBoard(new Board(tiledMap));
 
@@ -134,7 +134,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public static void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
-        if (selectedCards.size() == 5 || selectedCards.size() == (9 - game.getRobots()[currentRobot].getDamageTokens())) {
+        //System.out.println(game.getRobots().length);
+        if (selectedCards.size() == 5 ) {
             //Deep copy of the list
             ArrayList<ProgramCard> newList = new ArrayList<>();
             for (ProgramCard pc : selectedCards) {
@@ -181,7 +182,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 for (int i = 0; i < robot.getCards().length; i++) {
                     if(robot.getCards()[i] != null && robot.getCards()[i].equals(card)) {
                         robot.getCards()[i] = null;
-                        System.out.println(i + " We deleted a card from: " + robot.getName() + ". The card had move: " + card.getMove());
+                        //System.out.println(i + " We deleted a card from: " + robot.getName() + ". The card had move: " + card.getMove());
                         return;
                     }
                 }
@@ -196,7 +197,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         table.clear();
         table.top();
 
-        System.out.println("Drawing..");
+       // System.out.println("Drawing..");
 
 
         table.pad(0, 0, 0, 0);
@@ -219,8 +220,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 table.add(poweredDown1);
                 table.add(poweredDown2);
             } else {
-
-
                 ProgramCard[] arr = game.getRobots()[i].getCards();
 
 
@@ -231,10 +230,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     ProgramCard card = arr[j];
 
                     if (card == null) {
-                        System.out.println("NULLFORFAEN");
                         continue;
                     }
-                    System.out.println("Drawing card number: " + j);
+                   // System.out.println("Drawing card number: " + j);
 
 
                     Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
@@ -303,13 +301,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.getRobots()[currentRobot].powerDown();
-
+                selectedCards.clear();
                 for (int i = 0; i < 5; i++) {
                     ProgramCard nullCard = new ProgramCard(0, 0, null);
                     addCardToSelected(nullCard);
                 }
             }
         });
+
 
     }
     /**
