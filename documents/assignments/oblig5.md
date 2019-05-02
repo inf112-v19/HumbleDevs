@@ -1,4 +1,4 @@
-#Obligatorisk oppgave 5
+Obligatorisk oppgave 5
 ### Deloppgave 1: Prosjekt og prosjektstruktur
 
 I den siste innleveringen forteller vi litt om testene i prosjektet, hvordan gruppedynamikken har vært, litt om
