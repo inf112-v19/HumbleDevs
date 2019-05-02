@@ -269,7 +269,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + game.getRobots()[currentRobot].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
-
+        
         for (int i = 0; i < cards.length; i++) {
             // Her kan vi hente retning av kort og bruke assetmanager til å hente riktig bilde cards[i].getMove();
             Texture cardTexture = assetManager.getTexture(cards[i].getActionAndMovement(cards[i].getAction(), cards[i].getMove()));
