@@ -2,9 +2,7 @@ package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,9 +27,12 @@ public class MainScreen implements Screen {
     protected Skin defaultSkin;
     protected Skin altSkin;
     final GUI gui;
+    private Texture texture;
     Table mainTable;
     ArrayList<String> playerNames;
     Game game;
+    private SpriteBatch bat;
+
 
     public MainScreen(final GUI gui, Game game) {
         this.game = game;
@@ -41,6 +42,10 @@ public class MainScreen implements Screen {
         skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
         defaultSkin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
         //altSkin = new Skin(Gdx.files.internal("assets/UI/alt/uiskin.json"));
+
+        texture = new Texture(Gdx.files.internal("assets/UI/frontRobot.png"));
+
+
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         viewport = new FitViewport(500, 500, camera);
@@ -79,12 +84,14 @@ public class MainScreen implements Screen {
         stage.addActor(hey);
         stage.addActor(di);
 
+        batch.begin();
+        batch.draw(texture, 1000, 1000);
+        batch.end();
+
 
         //Create buttons
-
         TextButton exitButton = new TextButton("Exit", skin);
         TextButton playButton = new TextButton("Play", skin);
-        //TextButton optionsButton = new TextButton("Options", skin);
 
         //Add buttons to table
         //mainTable.add(playButton);
