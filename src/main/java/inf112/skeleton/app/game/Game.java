@@ -419,10 +419,15 @@ public class Game {
      * @param nr  The phase number
      */
     public void robotDoTurn(Robot rob, int nr) {
+
         if (rob.isDestroyed()) {
             return;
         }
         ProgramCard card = rob.getCards()[nr];
+        GameScreen.deleteCard(rob, card);
+
+        GameScreen.sequenceDrawHUD();
+
         Action action = card.getAction();
         if (action == Action.LEFTTURN) {
             rob.rotateLeft();

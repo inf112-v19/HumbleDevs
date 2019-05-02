@@ -26,7 +26,6 @@ public class Main {
                 if (readyToLaunch) break;
             }
             game.round();
-
             readyToLaunch = false;
 
             Robot gameFinished = game.finished();
@@ -34,10 +33,14 @@ public class Main {
                 System.out.println("Winner is " + gameFinished.getName());
                 break;
             }
+
             if (!readyToLaunch) {
+                game.startRobots();
                 GameScreen.startNewRound();
+
             }
-            game.startRobots();
+
+
 
         }
         System.out.println("YIHA");

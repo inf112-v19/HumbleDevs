@@ -46,8 +46,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static Table table;
     private static ProgramCardDeck programCardDeck;
 
-    private static Map<Robot, ArrayList> map;
-    private static Map<Robot, ArrayList<Image>> cardMap;
+    public static Map<Robot, ArrayList> map;
 
 
     private static int currentRobot;
@@ -55,7 +54,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float STEP_DELAY = 0.04f; // in seconds
+    private final static float STEP_DELAY = 0.25f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -97,8 +96,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-
-
     public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
         this.gui = gui;
         this.game = game;
@@ -109,7 +106,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.currentRobot = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
-        cardMap = new HashMap<>();
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
@@ -239,7 +235,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
 
-    private static void drawHUD(Map<Robot, ArrayList> map) {
+    public static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
         table.top();
 
@@ -299,6 +295,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 //        shootRobotLaser(3, 7, 3, 1, Direction.SOUTH);
 
 
+    }
+
+
+    public static void sequenceDrawHUD() {
+        sequenceAction.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                drawHUD(map);
+            }
+        }));
     }
 
     /**
@@ -505,7 +511,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
 
         if (aRobotIsDead) {
-            drawHUD(map);
+            //drawHUD(map);
             aRobotIsDead = false;
         }
 

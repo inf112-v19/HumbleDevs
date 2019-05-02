@@ -113,7 +113,7 @@ public class MainScreen implements Screen {
 
 
         // Selection box
-        selectBoxPlayers.setItems(0, 1, 2, 3, 4, 5, 6);
+        selectBoxPlayers.setItems(1, 2, 3, 4, 5, 6);
         selectBoxRobots.setItems(0, 1, 2, 3, 4, 5, 6);
 
         // Add boxes to mainTable
