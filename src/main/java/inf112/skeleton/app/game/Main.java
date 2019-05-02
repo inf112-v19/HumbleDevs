@@ -12,6 +12,7 @@ public class Main {
     public static boolean readyToLaunch = false;
 
     public static void main(String[] args) {
+
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "RoboRally";
         cfg.width = 1100;
@@ -20,32 +21,31 @@ public class Main {
 
         LwjglApplication lw = new LwjglApplication(new GUI(game), cfg);
         while(true) {
+            while(true) {
+                while (true) {
+                    System.out.print("");
+                    if (readyToLaunch) break;
+                }
+                Robot gameFinished = game.finished();
+                if(gameFinished != null) {
+                    System.out.println("Winner is " + gameFinished.getName());
+                    GameScreen.checkForEndScreen();
+                    break;
+                }
+                game.round();
+                readyToLaunch = false;
 
-            while (true) {
-                System.out.print("");
-                if (readyToLaunch) break;
+                if (!readyToLaunch) {
+                    GameScreen.startNewRound();
+                }
             }
-            game.round();
-            readyToLaunch = false;
 
-            Robot gameFinished = game.finished();
-            if(gameFinished != null) {
-                System.out.println("Winner is " + gameFinished.getName());
-                break;
+            while(true) {
+                if(GameScreen.click) break;
+                System.out.println("ajsfdsdfsd");
             }
-
-            if (!readyToLaunch) {
-                game.startRobots();
-                GameScreen.startNewRound();
-
-            }
-
-
-
+            System.out.println("ajsfdsdfsd");
+            if (!GameScreen.newGame) break;
         }
-        System.out.println("YIHA");
-        //game.round(); //LOL
-
-
     }
 }

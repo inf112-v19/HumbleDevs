@@ -88,11 +88,14 @@ public class Game {
      */
     public void phase(int nr) {
         int[] prio = findPriority(nr);
-        for (int x = prio.length-1; x >= 0; x--) {
-            int robot = prio[x];
-            robotDoTurn(robots[robot], nr);
-
-        }
+        for (Robot rob : robots)  {
+            robotDoTurn(rob,nr);
+      }    
+//        for (int x = prio.length-1; x >= 0; x--) {
+//            int robot = prio[x];
+//            robotDoTurn(robots[robot], nr);
+//
+//        }
     }
     /**
      * Method that does the movement actions on the board e.g. gear
@@ -424,12 +427,12 @@ public class Game {
      */
     public void robotDoTurn(Robot rob, int nr) {
 
-        if (rob.isDestroyed()) {
+        if (rob.isDestroyed() ||rob.getCards().length <= nr) {
             return;
         }
+
         ProgramCard card = rob.getCards()[nr];
         GameScreen.deleteCard(rob, card);
-
         GameScreen.sequenceDrawHUD();
 
         Action action = card.getAction();
@@ -597,6 +600,11 @@ public class Game {
 		double[][] pri = new double[robots.length][2];
 		int count = 0;
 		for(int x = 0; x < robots.length; x++) {
+		    if (robots[x].getCards().length <= cardnr) {
+		        pri[x][0] = -1;
+		        pri[x][1] = x;
+		        continue;
+            }
 			ProgramCard card = robots[x].getCards()[cardnr];
 			if(card == null){
 				pri[x][1] = x;
@@ -643,11 +651,6 @@ public class Game {
 		GameScreen.updateBoard(rob);
 	}
 
-	public void addR(Robot robot) {
-	    robots = new Robot[1];
-        robots[0] = robot;
-    }
-
     public void initializePlayers(int numb, ArrayList<String> nameOfPlayers) {
 	    if(nameOfPlayers.size() == 0 && numb > 0){
 	        return;
@@ -670,7 +673,7 @@ public class Game {
             int index = y + nameOfPlayers.size();
             Position pos = startDocks[index];
             String filePath = AssetManager.getTextureByIndex(index);
-            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "Destroyer" + (y+1), filePath);
+            Robot ai = new AI(index, Direction.NORTH, pos.getX(),pos.getY(), "fdsf" + (y+1), filePath);
             robots[index] = ai;
             board.insertRobot(pos,ai);
         }

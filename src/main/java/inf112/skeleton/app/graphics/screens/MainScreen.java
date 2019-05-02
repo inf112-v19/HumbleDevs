@@ -23,8 +23,8 @@ public class MainScreen implements Screen {
     private Viewport viewport;
     private OrthographicCamera camera;
     private TextureAtlas atlas;
-    protected Skin skin;
-    protected Skin defaultSkin;
+    protected static Skin skin;
+    protected static Skin defaultSkin;
     protected Skin altSkin;
     final GUI gui;
     private Texture texture;
@@ -71,8 +71,8 @@ public class MainScreen implements Screen {
         mainTable.top();
         Label hey = new Label("Welcome to the RoboRally Game!", skin);
         final Dialog di = new Dialog("Max 6 players", defaultSkin);
-        final Dialog dplayer = new Dialog("Number of Players", defaultSkin);
-        final Dialog dcomputer = new Dialog("Number of computerPlayers", defaultSkin);
+        final Dialog dplayer = new Dialog("Nr of Players", defaultSkin);
+        final Dialog dcomputer = new Dialog("Nr of AIs", defaultSkin);
 
         di.setPosition(60, 195);
         di.setHeight(20);
@@ -84,14 +84,14 @@ public class MainScreen implements Screen {
         hey.setWidth(310);
         hey.setFontScale(1,1);
 
-        dplayer.setPosition(0, 280);
+        dplayer.setPosition(45, 280);
         dplayer.setHeight(20);
-        dplayer.setWidth(150);
+        dplayer.setWidth(100);
         dplayer.setColor(Color.BLUE);
 
-        dcomputer.setPosition(150, 280);
+        dcomputer.setPosition(145, 280);
         dcomputer.setHeight(20);
-        dcomputer.setWidth(225);
+        dcomputer.setWidth(90);
         dcomputer.setColor(Color.PINK);
 
 
@@ -154,6 +154,7 @@ public class MainScreen implements Screen {
         // OVERSKRIFT: VELG NAVN TIL SPILLER i
         Label label = new Label("Skriv inn navnet til spiller " + idx, skin);
         final TextField tf = new TextField("", skin);
+        tf.setMaxLength(6);
         final TextButton submitButton = new TextButton("Submit", skin);
         mainTable.add(label);
         mainTable.row();

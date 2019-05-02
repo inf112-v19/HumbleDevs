@@ -37,7 +37,7 @@ import java.util.*;
  */
 
 public class GameScreen extends ApplicationAdapter implements Screen {
-    final GUI gui;
+    static GUI gui;
     private TiledMap tiledMap;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -45,6 +45,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public BitmapFont font;
     public static Table table;
     private static ProgramCardDeck programCardDeck;
+    public static boolean newGame;
+    public static boolean click;
 
     public static Map<Robot, ArrayList> map;
 
@@ -100,7 +102,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-    public GameScreen(final GUI gui, Game game, ArrayList<String> playerNames, int robots) {
+    public GameScreen(GUI gui, Game game, ArrayList<String> playerNames, int robots) {
         this.gui = gui;
         this.game = game;
         this.assetManager = new AssetManager();
@@ -110,6 +112,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.currentRobot = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
+        newGame = false;
+        click = false;
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
@@ -188,7 +192,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public static void addCardToSelected(ProgramCard card) {
         selectedCards.add(card);
-        if (selectedCards.size() == 5) {
+        int numberOfCards = 9 - game.getRobots()[currentRobot].getDamageTokens();
+        if (numberOfCards > 5) {
+            numberOfCards = 5;
+        }
+        if (selectedCards.size() == numberOfCards) {
             //Deep copy of the list
             ArrayList<ProgramCard> newList = new ArrayList<>();
             for (ProgramCard pc : selectedCards) {
@@ -226,11 +234,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         sequenceAction.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < robot.getCards().length; i++) {
-                    if(robot.getCards()[i] != null && robot.getCards()[i].equals(card)) {
-                        robot.getCards()[i] = null;
-                        //System.out.println(i + " We deleted a card from: " + robot.getName() + ". The card had move: " + card.getMove());
-                        return;
+                    for (int i = 0; i < robot.getCards().length; i++) {
+                        if(robot.getCards()[i] != null && robot.getCards()[i] == card && !robot.getCards()[i].isUsed()) {
+                            robot.getCards()[i].use();
+                            break;
+
                     }
                 }
                 }
@@ -242,7 +250,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
         table.top();
-
 
         table.pad(0, 0, 0, 0);
         for (int i = 0; i < game.getRobots().length; i++) {
@@ -264,33 +271,32 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 table.add(poweredDown1);
                 table.add(poweredDown2);
             } else {
+
                 ProgramCard[] arr = game.getRobots()[i].getCards();
 
 
                 for (int j = 0; j < arr.length; j++) {
                     table.pad(10, 10, 10, 10);
-
-                    //ProgramCard card = (ProgramCard) cardList.get(j);
                     ProgramCard card = arr[j];
 
                     if (card == null) {
                         continue;
                     }
-                   // System.out.println("Drawing card number: " + j);
-
 
                     Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
                     Image img = new Image(texture);
-                    table.add(img);
+                    if(card.isUsed()){
+                        img.setColor(1,1,1,0.3f);
+                    }
+                    table.left();
+                    table.add(img).padBottom(3).height(img.getPrefHeight()).width(img.getPrefWidth()).size(60);
                 }
             }
             table.row();
         }
         // Getting a fresh deck for next round
         programCardDeck = new ProgramCardDeck();
-
     }
-
 
     public static void sequenceDrawHUD() {
         sequenceAction.addAction(Actions.run(new Runnable() {
@@ -307,6 +313,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      */
     public static void presentCards() {
         table.clear();
+        table.center();
 
         if (game.getRobots()[currentRobot] instanceof AI) {
             game.getRobots()[currentRobot].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()));
@@ -315,6 +322,11 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             addAllCardsFromAI(pcList);
             return;
         }
+        Texture robotTexture = new Texture(game.getRobots()[currentRobot].getPath());
+        Image robotImage = new Image(robotTexture);
+        table.add(robotImage).height(robotImage.getPrefHeight()).width(robotImage.getPrefWidth());
+        table.row();
+
         final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
@@ -337,7 +349,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     img.setColor(Color.GREEN);
                 }
             });
-            table.add(img).padBottom(20);
+
+            table.add(img).padBottom(3).height(img.getPrefHeight()).width(img.getPrefWidth()).size(50);
             table.row();
         }
         table.row();
@@ -358,8 +371,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 }
             }
         });
-
-
+        game.startRobots();
     }
 
     /**
@@ -368,6 +380,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * @param robot
      */
     public static void updateBoard(final Robot robot) {
+
+        checkForEndScreen();
+
         Image curActor = (Image) stage.getActors().get(robot.getId());
 
         // Toggle robot visibility: Die, fade out
@@ -480,6 +495,64 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }));
     }
 
+    public static void checkForEndScreen() {
+        final Robot robot = game.finished();
+        if (robot != null) {
+
+            sequenceAction.addAction(Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    GameScreen.drawEndScreen(robot);
+                }
+            }));
+        }
+    }
+
+    public static void drawEndScreen (Robot robot) {
+        Image robotImage = new Image(new Texture(Gdx.files.internal(robot.getPath())));
+        Button butt = new Button(MainScreen.skin);
+        Button butt2 = new Button(MainScreen.skin);
+        Button butt3 = new Button(MainScreen.skin);
+        Label lab = new Label("WINNER IS", MainScreen.skin);
+        Label lab2 = new Label("Exit", MainScreen.skin);
+        Label lab3 = new Label("New Game", MainScreen.skin);
+        butt.add(lab);
+        butt.setColor(1,0,0,1);
+        butt.add(robotImage);
+        butt.setSize(300,300);
+        butt.setPosition(290,240);
+
+        butt2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
+        butt3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gui.create();
+                newGame = true;
+                click = true;
+            }
+        });
+
+        butt2.add(lab2);
+        butt2.setSize(200,100);
+        butt2.setPosition(340,200);
+        butt2.setColor(0,0,1,1);
+
+        butt3.add(lab3);
+        butt3.setSize(200,100);
+        butt3.setPosition(340,470);
+        butt3.setColor(0,1,0,1);
+
+        stage.addActor(butt);
+        stage.addActor(butt2);
+        stage.addActor(butt3);
+    }
+
     /**
      * Utility function that converts a direction to a counter clockwise degree representation
      * (which is the representation used by the drawing function in GameScreen)
@@ -521,12 +594,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         mapRenderer.setView(camera);
         mapRenderer.render();
-
-
-        if (aRobotIsDead) {
-            //drawHUD(map);
-            aRobotIsDead = false;
-        }
 
         //Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
