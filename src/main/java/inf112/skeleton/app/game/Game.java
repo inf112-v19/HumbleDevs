@@ -320,8 +320,9 @@ public class Game {
             ArrayList<Object> tracking = trackLaser(shootingDir, rob.getPosition());
             Position finalPos = (Position) tracking.get(0);
             Object obstruction = tracking.get(1);
+            Integer steps = (Integer) tracking.get(2);
 
-            GameScreen.shootRobotLaser(rob.getX(), rob.getY(), finalPos.getX(), finalPos.getY(), shootingDir);
+            GameScreen.shootRobotLaser(rob.getX(), rob.getY(), finalPos.getX(), finalPos.getY(), shootingDir, steps);
 
             if (obstruction instanceof Robot) {
                 // shot into robot

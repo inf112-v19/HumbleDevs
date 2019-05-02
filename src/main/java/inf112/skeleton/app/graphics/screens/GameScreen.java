@@ -54,7 +54,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float STEP_DELAY = 0.2f; // in seconds
+    private final static float STEP_DELAY = 0.04f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -367,7 +367,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
-    public static void shootRobotLaser(int fromX, int fromY, int toX, int toY, Direction dir) {
+    public static void shootRobotLaser(int fromX, int fromY, int toX, int toY, Direction dir, Integer steps) {
         // Add correct rotation to the shot
         RotateToAction rotateAction = Actions.rotateTo(directionToRotation(dir));
         rotateAction.setActor(laserShotActor);
@@ -389,7 +389,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // FIRE!
         MoveToAction a1 = Actions.moveTo(toX*TILE_SIZE, toY*TILE_SIZE);
         a1.setActor(laserShotActor);
-        a1.setDuration(STEP_DELAY * 4);
+        a1.setDuration(STEP_DELAY * steps);
         a1.setInterpolation(Interpolation.smooth);
         sequenceAction.addAction(a1);
 
