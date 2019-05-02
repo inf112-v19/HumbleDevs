@@ -65,11 +65,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     // Variables necessary for animation of laser shot
     private static Actor laserShotActor;
     private Texture laserShotSheet;
-    private Animation<TextureRegion> laserShotAnimation;
-    private SpriteBatch laserBatch;
     private int FRAME_COLS = 4;
     private int FRAME_ROWS = 4;
-    private float laserShotStateTime = 0;
 
     public class AnimatedActor extends Actor {
         private Animation animation;
@@ -93,7 +90,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         @Override
         public void draw(Batch batch, float alpha) {
             super.draw(batch, alpha);
-            batch.draw(currentRegion, getX(), getY());
+            // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+            batch.draw(currentRegion, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation());
         }
 
     }
@@ -133,7 +131,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             stage.addActor(robotActor);
         }
 
-        // Instantiate laser shot animation
+        // Initiate laser shot animation
         laserShotSheet = new Texture(Gdx.files.internal("texture/laserShot.png"));
         TextureRegion[][] tmp = TextureRegion.split(laserShotSheet, TILE_SIZE, TILE_SIZE);
         TextureRegion[] walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -143,15 +141,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 walkFrames[index++] = tmp[i][j];
             }
         }
-        laserShotActor = new AnimatedActor(new Animation<TextureRegion>(0.025f, walkFrames));
-
+        laserShotActor = new AnimatedActor(new Animation<>(0.025f, walkFrames));
+        laserShotActor.setOrigin(TILE_SIZE/2, TILE_SIZE/2);
+        laserShotActor.setSize(TILE_SIZE, TILE_SIZE);
+        laserShotActor.setScale(1, 1);
         stage.addActor(laserShotActor);
         laserShotActor.setVisible(false);
-
-
-
-
-//        laserBatch = new SpriteBatch();
 
 
 
@@ -551,7 +546,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-        laserBatch.dispose();
         laserShotSheet.dispose();
     }
 }
