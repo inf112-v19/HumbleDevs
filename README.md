@@ -8,6 +8,7 @@ Direct links:
 * [Exercise 2](documents/assignments/oblig2.md)
 * [Exercise 3](documents/assignments/oblig3.md)
 * [Exercise 4](documents/assignments/oblig4.md)
+* [Exercise 5](documents/assignments/oblig5.md)
 
 ## Known bugs
 Currently throws "WARNING: An illegal reflective access operation has occurred", 
