@@ -108,7 +108,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.stage = new Stage();
         this.table = new Table();
         this.skin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
-        this.playerCounter = 0;
+        this.currentRobot = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
         cardMap = new HashMap<>();
@@ -243,8 +243,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-
-    }
 
     private static void drawHUD(Map<Robot, ArrayList> map) {
         table.clear();
