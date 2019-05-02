@@ -2,6 +2,7 @@ package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,6 +46,10 @@ public class MainScreen implements Screen {
         camera.update();
 
         stage = new Stage(viewport, batch);
+
+        // Add colour to buttons
+        //Color red = skin.getColor("red");
+        skin.getColor("red");
     }
 
 
@@ -60,14 +65,18 @@ public class MainScreen implements Screen {
         //Set alignment of contents in the table.
         mainTable.top();
 
+
         //Create buttons
+
+        TextButton exitButton = new TextButton("Exit", skin);
         TextButton playButton = new TextButton("Play", skin);
         //TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
 
         //Add buttons to table
-        mainTable.add(playButton);
+        //mainTable.add(playButton);
         mainTable.row();
+        // Set row in center for better GUI
+        mainTable.center();
         final SelectBox<Integer> selectBoxPlayers = new SelectBox<Integer>(skin);
         final SelectBox<Integer> selectBoxRobots = new SelectBox<Integer>(skin);
 
@@ -77,6 +86,8 @@ public class MainScreen implements Screen {
         mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
 
+        mainTable.add(playButton);
+        //mainTable.row();
         mainTable.add(exitButton);
 
         //Add listeners to buttons

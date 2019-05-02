@@ -33,7 +33,7 @@ public class Main {
 
             Robot gameFinished = game.finished();
             if(gameFinished != null) {
-                System.out.println("WInner is " + gameFinished.getName());
+                System.out.println("Winner is " + gameFinished.getName());
                 break;
             }
         }
