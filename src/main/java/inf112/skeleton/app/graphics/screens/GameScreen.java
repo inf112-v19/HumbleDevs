@@ -120,10 +120,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Initiate robot actors
         for (int i = 0; i < game.getRobots().length; i++) {
-            // Create the robot actors,
-
-            System.out.println(Gdx.files.internal(game.getRobots()[i].getPath()));
-
+            // Create the robot actors
             Texture texture = new Texture(Gdx.files.internal(game.getRobots()[i].getPath()));
             TextureRegion region = new TextureRegion(texture, TILE_SIZE, TILE_SIZE);
             Image robotActor = new Image(region);
@@ -210,13 +207,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[5]);
                     game.getRobots()[i].setCards(cards);
                 }
-                for (int i = 0; i < game.getRobots()[0].getCards().length; i++) {
-                    System.out.println(game.getRobots()[0].getCards()[i].getAction());
-                }
-                System.out.println();
-                for (int i = 0; i < game.getRobots()[1].getCards().length; i++) {
-                    System.out.println(game.getRobots()[1].getCards()[i].getAction());
-                }
+
                 drawHUD(map);
                 Main.readyToLaunch = true;
                 return;
