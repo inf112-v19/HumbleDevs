@@ -644,6 +644,21 @@
 //        assertEquals(5,robs.length);
 //        assertEquals(3,players);
 //        assertEquals(2,ais);
+//    }
 //
+//    @Test
+//    public void testOccupiedBackUp(){
+//        Robot rob1 = robs[0];
+//        Robot rob2 = robs[1];
+//
+//        rob1.makeBackup(new Position(5,5));
+//        rob2.makeBackup(new Position(5,5));
+//
+//        rob1.die();
+//        rob2.die();
+//
+//        game.respawnRobots();
+//        System.out.println(rob1.getPosition());
+//        System.out.println(rob2.getPosition());
 //    }
 //}
