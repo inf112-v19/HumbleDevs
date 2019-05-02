@@ -102,7 +102,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-    public GameScreen(GUI gui, Game game, ArrayList<String> playerNames, int robots) {
+    public GameScreen(GUI gui, Game game, ArrayList<String> playerNames, int robots, String tmxMap) {
         this.gui = gui;
         this.game = game;
         this.assetManager = new AssetManager();
@@ -116,7 +116,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         click = false;
 
 
-        tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
+        tiledMap = new TmxMapLoader().load(AssetManager.getTmxMap(tmxMap));
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         game.setBoard(new Board(tiledMap));
 

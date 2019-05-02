@@ -1,47 +1,55 @@
 package inf112.skeleton.app.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import inf112.skeleton.app.card.Action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AssetManager {
-    private Map<String, Texture> stringMap;
+    private static Map<String, Texture> textureMap;
     private static Map<Integer, String> intMap;
+    private static Map<String, String> tmxMap;
     private static ArrayList<String> randomNames;
 
     public AssetManager () {
-        this.stringMap = new HashMap<>();
+        this.textureMap = new HashMap<>();
 
         // robots and their colors
-        this.stringMap.put("darkPinkRobot", new Texture("texture/robot1.png"));
-        this.stringMap.put("blueRobot", new Texture("texture/robot2.png"));
-        this.stringMap.put("greenRobot", new Texture("texture/robot3.png"));
-        this.stringMap.put("redRobot", new Texture("texture/robot4.png"));
-        this.stringMap.put("lightPinkRobot", new Texture("texture/robot5.png"));
-        this.stringMap.put("blueRobot", new Texture("texture/robot6.png"));
-        this.stringMap.put("blackRobot", new Texture("texture/robot7.png"));
-        this.stringMap.put("yellowRobot", new Texture("texture/robot8.png"));
+        this.textureMap.put("darkPinkRobot", new Texture("texture/robot1.png"));
+        this.textureMap.put("blueRobot", new Texture("texture/robot2.png"));
+        this.textureMap.put("greenRobot", new Texture("texture/robot3.png"));
+        this.textureMap.put("redRobot", new Texture("texture/robot4.png"));
+        this.textureMap.put("lightPinkRobot", new Texture("texture/robot5.png"));
+        this.textureMap.put("blueRobot", new Texture("texture/robot6.png"));
+        this.textureMap.put("blackRobot", new Texture("texture/robot7.png"));
+        this.textureMap.put("yellowRobot", new Texture("texture/robot8.png"));
 
-        this.stringMap.put("MOVEFORWARD1", new Texture("texture/movementCards/move1.png"));
-        this.stringMap.put("MOVEFORWARD2", new Texture("texture/movementCards/move2.png"));
-        this.stringMap.put("MOVEFORWARD3", new Texture("texture/movementCards/move3.png"));
+        this.textureMap.put("MOVEFORWARD1", new Texture("texture/movementCards/move1.png"));
+        this.textureMap.put("MOVEFORWARD2", new Texture("texture/movementCards/move2.png"));
+        this.textureMap.put("MOVEFORWARD3", new Texture("texture/movementCards/move3.png"));
 
-        this.stringMap.put("RIGHTTURN0", new Texture("texture/movementCards/rotateRight.png"));
-        this.stringMap.put("LEFTTURN0", new Texture("texture/movementCards/rotateLeft.png"));
-        this.stringMap.put("UTURN0", new Texture("texture/movementCards/uTurn.png"));
-        this.stringMap.put("MOVEBACKWARD1", new Texture("texture/movementCards/backUp.png"));
+        this.textureMap.put("RIGHTTURN0", new Texture("texture/movementCards/rotateRight.png"));
+        this.textureMap.put("LEFTTURN0", new Texture("texture/movementCards/rotateLeft.png"));
+        this.textureMap.put("UTURN0", new Texture("texture/movementCards/uTurn.png"));
+        this.textureMap.put("MOVEBACKWARD1", new Texture("texture/movementCards/backUp.png"));
 
-        // Replacement card when a player powers down
-        //this.stringMap.put("null0", new Texture("texture/katt.jpg"));
+        // Map thumbnails
+        this.textureMap.put("level1", new Texture(Gdx.files.internal("texture/thumbnails/level1.png")));
+        this.textureMap.put("level2", new Texture(Gdx.files.internal("texture/thumbnails/level2.png")));
+        this.textureMap.put("level3", new Texture(Gdx.files.internal("texture/thumbnails/level3.png")));
+
+        // Tmx paths
+        this.tmxMap = new HashMap<>();
+
+        this.tmxMap.put("level1", "assets/maps/level1.tmx");
+        this.tmxMap.put("level2", "assets/maps/level2.tmx");
+        this.tmxMap.put("level3", "assets/maps/level3.tmx");
 
         // Life icon
-        this.stringMap.put("lifeIcon", new Texture("texture/lifeicon.png"));
+        this.textureMap.put("lifeIcon", new Texture("texture/lifeicon.png"));
 
-        // Power down icon
-        //this.stringMap.put("powerDown", new Texture("texture/katt.jpg"));
 
         this.intMap = new HashMap<>();
         this.intMap.put(0, "texture/robot1.png");
@@ -103,8 +111,12 @@ public class AssetManager {
         return intMap.get(index);
     }
 
-    public Texture getTexture (String name) {
-        return stringMap.get(name);
+    public static Texture getTexture (String name) {
+        return textureMap.get(name);
+    }
+
+    public static String getTmxMap (String name) {
+        return tmxMap.get(name);
     }
 
     public static String getNewRandomName() {
