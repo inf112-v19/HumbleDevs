@@ -3,12 +3,14 @@ package inf112.skeleton.app.graphics;
 import com.badlogic.gdx.graphics.Texture;
 import inf112.skeleton.app.card.Action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AssetManager {
     private Map<String, Texture> stringMap;
     private static Map<Integer, String> intMap;
+    private ArrayList<String> randomNames;
 
     public AssetManager () {
         this.stringMap = new HashMap<>();
@@ -51,7 +53,49 @@ public class AssetManager {
         this.intMap.put(6, "texture/robot7.png");
         this.intMap.put(7, "texture/robot8.png");
 
-
+        this.randomNames.add("Feisty");
+        this.randomNames.add("Dorky");
+        this.randomNames.add("Triana");
+        this.randomNames.add("Reidu");
+        this.randomNames.add("Jupill");
+        this.randomNames.add("Tutti");
+        this.randomNames.add("Frutti");
+        this.randomNames.add("Geir");
+        this.randomNames.add("Leet");
+        this.randomNames.add("M&M");
+        this.randomNames.add("8008");
+        this.randomNames.add("Mann1");
+        this.randomNames.add("Dam1");
+        this.randomNames.add("Trump");
+        this.randomNames.add("Ivanka");
+        this.randomNames.add("M&M");
+        this.randomNames.add(":--)");
+        this.randomNames.add("iCAN");
+        this.randomNames.add("Tine");
+        this.randomNames.add("Tina");
+        this.randomNames.add("Tinø");
+        this.randomNames.add("Tino");
+        this.randomNames.add("Dino");
+        this.randomNames.add("EttEtt");
+        this.randomNames.add("Fyra");
+        this.randomNames.add("Erna");
+        this.randomNames.add("Jeens");
+        this.randomNames.add("Joachim");
+        this.randomNames.add("Even");
+        this.randomNames.add("Linh");
+        this.randomNames.add("Amalie");
+        this.randomNames.add("Bendor");
+        this.randomNames.add("Fyra");
+        this.randomNames.add("Justin");
+        this.randomNames.add("GGlads");
+        this.randomNames.add("u-hu");
+        this.randomNames.add("Adam");
+        this.randomNames.add("Eve");
+        this.randomNames.add("Ripped");
+        this.randomNames.add("Stank");
+        this.randomNames.add("Tshawe");
+        this.randomNames.add("Bonaqua");
+        this.randomNames.add("Dogdog");
 
     }
 
@@ -61,6 +105,16 @@ public class AssetManager {
 
     public Texture getTexture (String name) {
         return stringMap.get(name);
+    }
+
+    public String getNewRandomName() {
+        if (randomNames.isEmpty()) return "NoMoreNames:(";
+        int idx = (int) (Math.random() * randomNames.size());
+        String name = randomNames.get(idx);
+        randomNames.remove(idx);
+        return name;
+
+
     }
 
 
