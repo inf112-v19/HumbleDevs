@@ -115,8 +115,8 @@ public class Game {
                         if(!robotMove(rob,((ConveyorBelt) temp).getDirection(),true)){
                             break;
                         }
-                        if(nextPos.getY() > board.getHeight() || nextPos.getY() < 0 ||
-                                nextPos.getX() > board.getWidth() || nextPos.getX() < 0){
+                        if(nextPos.getY() > board.getHeight() - 1 || nextPos.getY() < 0 ||
+                                nextPos.getX() > board.getWidth() - 1 || nextPos.getX() < 0){
                             rob.die();
                             updateBoard(rob.getPosition(),null);
                             break;

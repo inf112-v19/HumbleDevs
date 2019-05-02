@@ -7,6 +7,7 @@ import inf112.skeleton.app.gameObjects.Items.IItem;
 import inf112.skeleton.app.gameObjects.Items.ItemFactory;
 import inf112.skeleton.app.gameObjects.Robot;
 
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -215,54 +216,60 @@ public class Board implements IBoard {
         int index = toIndex(x, y);
         map.get(index).removeElements();
     }
+    public boolean legalPosition(Position pos) {
+        if (pos.getX() < 0 || pos.getX() > width - 1 || pos.getY() < 0 || pos.getY() > height - 1) {
+            return false;
+        }
+        return true;
+    }
 
-    public Position getRandomPositionNextToPosition(Position pos){
+        public Position getRandomPositionNextToPosition(Position pos){
         Random rng = new Random();
         while(true){
             Position testPos = new Position(pos.getX(),pos.getY());
             int random = rng.nextInt(7);
             if(random == 0){
                 testPos.move(Direction.EAST);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if(random == 1){
                 testPos.move(Direction.SOUTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if(random == 2){
                 testPos.move(Direction.NORTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if(random == 3){
                 testPos.move(Direction.WEST);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if (random == 4){
                 testPos.move(Direction.EAST);
                 testPos.move(Direction.NORTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if (random == 5){
                 testPos.move(Direction.EAST);
                 testPos.move(Direction.SOUTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else if (random == 6){
                 testPos.move(Direction.WEST);
                 testPos.move(Direction.NORTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             } else {
                 testPos.move(Direction.WEST);
                 testPos.move(Direction.SOUTH);
-                if(isFree(testPos)){
+                if(legalPosition(testPos) && isFree(testPos)){
                     return testPos;
                 }
             }
