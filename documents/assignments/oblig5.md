@@ -93,6 +93,5 @@ alle fått en bedre forståelse for spillet, og prosessen med å forstå koden h
 - [ ] Multiplayer over LAN eller Internet 
 - [ ] Power down
 - [x] Samlebånd som går i dobbelt tempo
-- [ ] Options-kort
 - [ ] Plassere flagg selv før spillet starter
 - [ ] Sette sammen ulike brett til større spillflate

@@ -41,20 +41,20 @@ public class ItemTest {
         assertEquals(pit.getName(), "Pit");
     }
 
-    //LaserShoot
+    //LaserStart
     @Test
     public void TestthatWeCanMakeALaserShoot() {
         Direction dir = Direction.SOUTH;
         int harm = 6;
 
-        LaserShoot lS = new LaserShoot(dir, harm);
+        LaserStart lS = new LaserStart(dir, harm);
 
         //Test to see if direction works
         assertEquals(lS.getDirection(), Direction.SOUTH);
         //Test to check damage
         assertEquals(harm, 6);
         // Test name
-        assertEquals(lS.getName(), "LaserShoot");
+        assertEquals(lS.getName(), "LaserStart");
     }
 
     //CollectionBand
