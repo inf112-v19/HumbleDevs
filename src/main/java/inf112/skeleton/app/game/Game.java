@@ -84,7 +84,7 @@ public class Game {
      */
     public void phase(int nr) {
         int[] prio = findPriority(nr);
-        for (int x = robots.length - 1; x >= 0; x--) {
+        for (int x = prio.length-1; x >= 0; x--) {
             int robot = prio[x];
             robotDoTurn(robots[robot], nr);
 
@@ -351,7 +351,7 @@ public class Game {
                     }
                     board.insertRobot(rob.getPosition(),rob);
 
-//                  GameScreen.updateBoard(rob);
+                  GameScreen.updateBoard(rob);
                 }
             }
         }
@@ -368,7 +368,7 @@ public class Game {
             ArrayList<IItem> items = board.getItems(rob.getPosition());
             for (IItem item : items) {
                 if (item instanceof RepairTool) {
-                    rob.makeBackup(rob.getPosition());
+                    rob.makeBackup(new Position(rob.getPosition().getX(), rob.getPosition().getY()));
                     rob.repairDamage();
                     if (((RepairTool) item).wrenchAndHammer()) {
                         // Draw option card
@@ -394,9 +394,6 @@ public class Game {
             if (robot.visitedFlags() == 4) {
                 return robot;
             }
-        }
-        if(robotsAlive == 0){
-
         }
         // Win condition #2: Be the only robot alive
         if(robotsAlive == 1){
@@ -486,7 +483,7 @@ public class Game {
         }
         int xPos = pos.getX();
         int yPos = pos.getY();
-        if (xPos > board.getWidth() || xPos < 0 || yPos < 0 || yPos > board.getHeight()) {
+        if (xPos > board.getWidth() - 1  || xPos < 0 || yPos < 0 || yPos > board.getHeight() - 1) {
             if (cb) {
                 return true;
             } else {

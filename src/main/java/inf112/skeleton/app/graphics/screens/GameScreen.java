@@ -17,10 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import inf112.skeleton.app.board.Board;
 import inf112.skeleton.app.board.Direction;
@@ -48,8 +45,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public BitmapFont font;
     public static Table table;
     private static ProgramCardDeck programCardDeck;
+
     private static Map<Robot, ArrayList> map;
-    private static int playerCounter;
+    private static Map<Robot, ArrayList<Image>> cardMap;
+
+
+    private static int currentRobot;
     private static ArrayList<ProgramCard> selectedCards = new ArrayList<>();
     private static Skin skin;
     private static AssetManager assetManager;
@@ -110,6 +111,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.playerCounter = 0;
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
+        cardMap = new HashMap<>();
 
 
         tiledMap = new TmxMapLoader().load("assets/maps/Level1.tmx");
@@ -201,9 +203,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             selectedCards.clear();
 
 
-            if (playerCounter == game.getRobots().length) {
+            if (currentRobot == game.getRobots().length) {
                 table.clear();
-                for (int i = 0; i < playerCounter; i++) {
+                for (int i = 0; i < currentRobot; i++) {
                     ProgramCard[] cards = (ProgramCard[]) map.get(game.getRobots()[i]).toArray(new ProgramCard[5]);
                     game.getRobots()[i].setCards(cards);
                 }
@@ -221,12 +223,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * Adds a players card to a hashmap, where the player itself is the key
      */
     public static void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
-        map.put(game.getRobots()[playerCounter], list);
-        playerCounter++;
+        map.put(game.getRobots()[currentRobot], list);
+        currentRobot++;
+    }
+
+    public static void deleteCard (final Robot robot, final ProgramCard card) {
+        sequenceAction.addAction(Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < robot.getCards().length; i++) {
+                    if(robot.getCards()[i] != null && robot.getCards()[i].equals(card)) {
+                        robot.getCards()[i] = null;
+                        //System.out.println(i + " We deleted a card from: " + robot.getName() + ". The card had move: " + card.getMove());
+                        return;
+                    }
+                }
+                }
+        }));
     }
 
 
-    private static void drawLifeTokens() {
 
     }
 
@@ -248,14 +264,32 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
 
             table.row();
-            ArrayList cardList = map.get(game.getRobots()[i]);
-            for (int j = 0; j < cardList.size(); j++) {
-                table.pad(10, 10, 10, 10);
 
-                ProgramCard card = (ProgramCard) cardList.get(j);
-                Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
-                Image img = new Image(texture);
-                table.add(img);
+            if (game.getRobots()[i].isPoweredDown()) {
+                Label poweredDown1 = new Label("Powered", skin);
+                Label poweredDown2 = new Label("Down", skin);
+                table.add(poweredDown1);
+                table.add(poweredDown2);
+            } else {
+                ProgramCard[] arr = game.getRobots()[i].getCards();
+
+
+                for (int j = 0; j < arr.length; j++) {
+                    table.pad(10, 10, 10, 10);
+
+                    //ProgramCard card = (ProgramCard) cardList.get(j);
+                    ProgramCard card = arr[j];
+
+                    if (card == null) {
+                        continue;
+                    }
+                   // System.out.println("Drawing card number: " + j);
+
+
+                    Texture texture = assetManager.getTexture(card.getActionAndMovement(card.getAction(), card.getMove()));
+                    Image img = new Image(texture);
+                    table.add(img);
+                }
             }
             table.row();
         }
@@ -282,18 +316,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static void presentCards() {
         table.clear();
 
-        if (game.getRobots()[playerCounter] instanceof AI) {
-            game.getRobots()[playerCounter].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[playerCounter].getDamageTokens()));
-            ProgramCard[] pc = game.getRobots()[playerCounter].getCards();
+        if (game.getRobots()[currentRobot] instanceof AI) {
+            game.getRobots()[currentRobot].chooseCards(programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()));
+            ProgramCard[] pc = game.getRobots()[currentRobot].getCards();
             ArrayList<ProgramCard> pcList = new ArrayList<>(Arrays.asList(pc));
             addAllCardsFromAI(pcList);
             return;
         }
-
-        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[playerCounter].getDamageTokens()); // 9 cards here
+        final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
-        Label playerLabel = new Label("Det er " + game.getRobots()[playerCounter].getName() + " sin tur", skin);
+        Label playerLabel = new Label("Det er " + game.getRobots()[currentRobot].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
 
         for (int i = 0; i < cards.length; i++) {
@@ -315,6 +348,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             table.add(img).padBottom(20);
             table.row();
         }
+        table.row();
+
+        TextButton powerDownButton = new TextButton("Power Down", skin);
+        powerDownButton.setHeight(75);
+        powerDownButton.setWidth(100);
+        table.add(powerDownButton);
+
+        powerDownButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.getRobots()[currentRobot].powerDown();
+                selectedCards.clear();
+                for (int i = 0; i < 5; i++) {
+                    ProgramCard nullCard = new ProgramCard(0, 0, null);
+                    addCardToSelected(nullCard);
+                }
+            }
+        });
+
+
     }
     /**
      * This method will update the position and direction of a robot on the board
@@ -409,7 +462,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         sequenceAction.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {
-                playerCounter = 0;
+                currentRobot = 0;
                 GameScreen.presentCards();
             }
         }));

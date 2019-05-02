@@ -166,7 +166,6 @@ public class Board implements IBoard {
             ArrayList<IItem> items = getItems(pos);
             for(IItem item : items){
                 if(item instanceof Dock){
-                    System.out.println(item);
                     docks[((Dock) item).getNumber() - 1] = getPositionFromIndex(x);
                 }
             }
