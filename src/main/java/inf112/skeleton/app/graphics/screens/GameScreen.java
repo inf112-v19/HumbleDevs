@@ -60,9 +60,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
-    private SequenceAction[] parallellAction;
     private static Game game;
-    private static boolean aRobotIsDead = false;
     // Variables necessary for animation of laser shot
     private static AnimatedActor laserShotActor;
     private Texture laserShotSheet;
@@ -408,13 +406,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             AlphaAction a0 = Actions.fadeOut(STEP_DELAY/3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
-
-            sequenceAction.addAction(Actions.run(new Runnable() {
-                @Override
-                public void run() {
-                    aRobotIsDead = true;
-                }
-            }));
         }
 
         // Add move action

@@ -23,7 +23,6 @@ public class MainScreen implements Screen {
     protected Stage stage;
     private Viewport viewport;
     private OrthographicCamera camera;
-    private Texture texture;
     protected static Skin skin;
     protected static Skin defaultSkin;
     final GUI gui;
