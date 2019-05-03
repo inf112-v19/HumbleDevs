@@ -56,7 +56,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private static Skin skin;
     private static AssetManager assetManager;
     private final static int TILE_SIZE = 64;
-    private final static float STEP_DELAY = 0.1f; // in seconds
+    private final static float STEP_DELAY = 0.2f; // in seconds
     // An actions sequence for turnbased movement
     private static SequenceAction sequenceAction;
     // An action sequence for parallell movement (conveyorbelt)
@@ -144,7 +144,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 walkFrames[index++] = tmp[i][j];
             }
         }
-        laserShotActor = new AnimatedActor(new Animation<>(1f*STEP_DELAY, walkFrames));
+        laserShotActor = new AnimatedActor(new Animation<>(0.5f*STEP_DELAY, walkFrames));
         laserShotActor.setOrigin(TILE_SIZE/2, TILE_SIZE/2);
         laserShotActor.setSize(TILE_SIZE, TILE_SIZE);
         laserShotActor.setScale(1, 1);
@@ -388,7 +388,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Toggle robot visibility: Die, fade out
         if(robot.isDestroyed()) {
-            AlphaAction a0 = Actions.fadeOut(STEP_DELAY /3);
+            AlphaAction a0 = Actions.fadeOut(STEP_DELAY/3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
 
@@ -416,7 +416,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         // Toggle robot visibility: Respawn, fade in
         if (!robot.isDestroyed()) {
-            AlphaAction a0 = Actions.fadeIn(STEP_DELAY);
+            AlphaAction a0 = Actions.fadeIn(STEP_DELAY/3);
             a0.setActor(curActor);
             sequenceAction.addAction(a0);
         }
@@ -460,8 +460,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         // FIRE!
         MoveToAction a1 = Actions.moveTo(toX*TILE_SIZE, toY*TILE_SIZE);
         a1.setActor(laserShotActor);
-        a1.setDuration(STEP_DELAY * steps);
-        a1.setInterpolation(Interpolation.smooth);
+        a1.setDuration(STEP_DELAY * steps / 3);
+        a1.setInterpolation(Interpolation.linear);
         sequenceAction.addAction(a1);
 
         // Remove shot from board
