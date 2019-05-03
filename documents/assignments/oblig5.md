@@ -100,4 +100,16 @@ alle fått en bedre forståelse for spillet, og prosessen med å forstå koden h
 - [ ] Multiplayer over LAN eller Internet
 
 
+**Class Diagram**
 
+Kun de mest essensielle klassene er tatt med her.
+* Første kolonne er grafikk-klassene; GUI er en slags "Graphic main", som lager en MainScreen, som 
+igjen lager en GameScreen når spillet skal starte.
+* Game styrer spillogikk/forretningsregler, spillets gang der den bruker Board og Robot.
+  * Board, Square og IItem er klasser for å representere brettet. Board inneholder en Square i hver posisjon som igjen 
+inneholder en liste av IItems og evnt. en Robot. 
+  * Robot kan være enten en Player eller AI, og har en liste av ProgramCard (s).
+
+
+
+![Class diagram second iteration](../classDiagrams/classDiagramIteration4.png)
