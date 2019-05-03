@@ -1,6 +1,7 @@
 package inf112.skeleton.app.graphics.screens;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -46,7 +47,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static Table table;
     private static ProgramCardDeck programCardDeck;
     public static boolean newGame;
-    public static boolean click;
 
     public static Map<Robot, ArrayList> map;
 
@@ -113,7 +113,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         this.programCardDeck = new ProgramCardDeck();
         this.sequenceAction = new SequenceAction();
         newGame = false;
-        click = false;
 
 
         tiledMap = new TmxMapLoader().load(AssetManager.getTmxMap(tmxMap));
@@ -532,9 +531,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         butt3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gui.create();
+
                 newGame = true;
-                click = true;
+                gui.create();
             }
         });
 

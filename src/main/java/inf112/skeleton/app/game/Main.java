@@ -18,9 +18,12 @@ public class Main {
         cfg.width = 1100;
         cfg.height = 768;
         Game game = new Game();
+        GUI gui = new GUI(game);
 
-        LwjglApplication lw = new LwjglApplication(new GUI(game), cfg);
+        LwjglApplication lw = new LwjglApplication(gui, cfg);
+
         while(true) {
+            // Loop for one whole game
             while(true) {
                 while (true) {
                     System.out.print("");
@@ -30,6 +33,7 @@ public class Main {
                 if(gameFinished != null) {
                     System.out.println("Winner is " + gameFinished.getName());
                     GameScreen.checkForEndScreen();
+                    readyToLaunch = false;
                     break;
                 }
                 game.round();
@@ -40,12 +44,15 @@ public class Main {
                 }
             }
 
+            // Wait for user to start new game
             while(true) {
-                if(GameScreen.click) break;
-                System.out.println("ajsfdsdfsd");
+                System.out.print("");
+                if(GameScreen.newGame) break;
             }
-            System.out.println("ajsfdsdfsd");
-            if (!GameScreen.newGame) break;
+            // Start new game
+            game = new Game();
+            gui.newGame(game);
+
         }
     }
 }

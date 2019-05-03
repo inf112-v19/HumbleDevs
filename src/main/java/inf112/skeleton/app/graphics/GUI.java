@@ -17,6 +17,10 @@ public class GUI extends com.badlogic.gdx.Game {
 
     }
 
+    public void newGame(Game game) {
+        this.game = game;
+    }
+
     @Override
     public void create() {
         batch = new SpriteBatch();
