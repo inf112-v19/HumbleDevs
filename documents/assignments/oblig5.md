@@ -7,7 +7,7 @@ og om hvilket læringsutbytte vi har hatt.
  
 **Tester**
 
-Vi har en høy dekningsgrad av testene og er fornøyde med dette. Målet har vært å ha en dekningsgrad på 100% i de mest sentrale
+Vi har en relativt høy dekningsgrad av testene og er fornøyde med dette. Målet har vært å ha en svært høy dekningsgrad i de mest sentrale
 klassene. En så høy dekningsgrad har vist seg å være svært viktig, fordi mange bugs har blitt funnet etter at vi bestemte oss
 for det. Testene har vært viktige for oss gjennom hele perioden. Vi kom sent i gang med grafikken og kunne dermed ikke prøve
 spillmekanismene underveis. Vi har derfor vært avhengige av gode tester for å sjekke om det vi har gjort er riktig. Det er i
