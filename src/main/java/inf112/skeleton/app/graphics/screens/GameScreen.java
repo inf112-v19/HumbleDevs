@@ -575,11 +575,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     }
 
 
-
-    public void update(float delta) {
-        stage.act(delta);
-    }
-
     @Override
     public void show() {
 
@@ -595,19 +590,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-        //Act out the sequenced actions for robots
+        // Act out the sequenced actions for robots
         if(sequenceAction.act(delta)); // action was completed
 
-        // Shoot laser
-//        laserShotStateTime += delta;
-//        TextureRegion currentFrame = laserShotAnimation.getKeyFrame(laserShotStateTime, true);
-//        laserBatch.begin();
-//        laserBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
-//        laserBatch.end();
-
-        //stage
-        update(delta);
-        stage.draw(); // important
+        // Act out actors on stage
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
