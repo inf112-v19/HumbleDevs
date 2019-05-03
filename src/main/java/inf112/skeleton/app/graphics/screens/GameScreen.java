@@ -267,6 +267,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             Label nameLabel = new Label(game.getRobots()[i].getName(), skin);
             table.add(nameLabel);
 
+            // Number of flags a player has visited
+            int flagsVisited = game.getRobots()[i].visitedFlags();
+            Label flagsVisitedLabel = new Label(flagsVisited + " flags", skin);
+            table.row();
+            table.add(flagsVisitedLabel);
+
             // Drawing the life tokens for a player
             for (int j = 0; j < game.getRobots()[i].getLifeTokens(); j++) {
                 Image lifeToken = new Image(assetManager.getTexture("lifeIcon"));
