@@ -155,12 +155,10 @@ public class Game {
                                 if (rotate.equals(Action.LEFTTURN)) {
                                     rob.rotateLeft();
                                     updateBoard(rob.getPosition(),rob.getPosition());
-//                                    GameScreen.updateBoard(rob);
                                 }
                                 if (rotate.equals(Action.RIGHTTURN)) {
                                     rob.rotateRight();
                                     updateBoard(rob.getPosition(),rob.getPosition());
-//                                    GameScreen.updateBoard(rob);
                                 }
                             }
                         }
@@ -175,11 +173,9 @@ public class Game {
                     if (rotation == Action.LEFTTURN) {
                         rob.rotateLeft();
                         updateBoard(rob.getPosition(),rob.getPosition());
-//                        GameScreen.updateBoard(rob);
                     } else {
                         rob.rotateRight();
                         updateBoard(rob.getPosition(),rob.getPosition());
-//                        GameScreen.updateBoard(rob);
                     }
                 }
             }
@@ -448,16 +444,13 @@ public class Game {
         if (action == Action.LEFTTURN) {
             rob.rotateLeft();
             updateBoard(rob.getPosition(),rob.getPosition());
-//            GameScreen.updateBoard(rob);
         } else if (action == Action.RIGHTTURN) {
             rob.rotateRight();
             updateBoard(rob.getPosition(),rob.getPosition());
-//            GameScreen.updateBoard(rob);
         } else if (action == Action.UTURN) {
             rob.rotateRight();
             rob.rotateRight();
             updateBoard(rob.getPosition(),rob.getPosition());
-//            GameScreen.updateBoard(rob);
         } else if (action == Action.MOVEFORWARD) {
             int move = card.getMove();
             while (move > 0) {

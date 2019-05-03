@@ -587,29 +587,6 @@ public class GameTest {
         game.robotMove(rob,Direction.EAST,false);
         assertEquals(new Position(2,2), rob.getPosition());
     }
-//    @Test
-//    public void testInitializePlayers(){
-//        ArrayList<String> names = new ArrayList<String>();
-//        names.add("Kåre");
-//        names.add("Alf");
-//        names.add("Per");
-//
-//        game.initializePlayers(5,names);
-//        Robot[] robs = game.getRobots();
-//        int players = 0;
-//        int ais = 0;
-//        for(int x = 0; x < 5; x++){
-//            Robot rob = robs[x];
-//            if(rob instanceof Player){
-//                players++;
-//            } else {
-//                ais++;
-//            }
-//        }
-//        assertEquals(5,robs.length);
-//        assertEquals(3,players);
-//        assertEquals(2,ais);
-//    }
 
     @Test
     public void testOccupiedBackUp(){

@@ -28,7 +28,6 @@ public class MainScreen implements Screen {
     protected static Skin defaultSkin;
     final GUI gui;
     Table mainTable;
-    Table nextTable;
     ArrayList<String> playerNames;
     Game game;
     SelectBox<String> levelSelected;
@@ -71,9 +70,6 @@ public class MainScreen implements Screen {
         Label title = new Label("Welcome to the Robo Rally Game!", skin);
         title.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(1), Actions.fadeIn(1))));
 
-        nextTable = new Table();
-        nextTable.setFillParent(true);
-        nextTable.bottom();
 
         // Map thumbnails
         Image level1 = new Image(AssetManager.getTexture("level1"));
@@ -90,7 +86,7 @@ public class MainScreen implements Screen {
         thumbnailTable.row();
 
         // Creating the dropdown for levels
-        levelSelected = new SelectBox<>(skin);
+        levelSelected = new SelectBox<>(defaultSkin);
         levelSelected.setItems("level1", "level2", "level3");
         levelSelected.setSelected("level1");
         levelSelected.setPosition(100, 100);
@@ -141,8 +137,8 @@ public class MainScreen implements Screen {
         mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
         mainTable.add(playButton);
+        mainTable.add(exitButton);
         mainTable.add(thumbnailTable);
-        nextTable.add(exitButton);
 
         //Add listeners to buttons
         playButton.addListener(new ClickListener(){
@@ -167,7 +163,6 @@ public class MainScreen implements Screen {
         //Add table to stage
 
         stage.addActor(mainTable);
-        stage.addActor(nextTable);
     }
 
 

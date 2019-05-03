@@ -91,7 +91,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         @Override
         public void draw(Batch batch, float alpha) {
             super.draw(batch, alpha);
-            // draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
             batch.draw(currentRegion, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation());
         }
 
