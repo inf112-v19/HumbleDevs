@@ -126,8 +126,8 @@ public class BoardTest {
         insertElementByTileIdCreatesCorrectItem(39, new ConveyorBelt(Direction.WEST, 1));
         insertElementByTileIdCreatesCorrectItem(40, new ConveyorBelt(Direction.EAST, 1));
 
-        insertElementByTileIdCreatesCorrectItem(35, new RepairTool(true));
-        insertElementByTileIdCreatesCorrectItem(36, new RepairTool(false));
+        insertElementByTileIdCreatesCorrectItem(35, new RepairTool());
+        insertElementByTileIdCreatesCorrectItem(36, new RepairTool());
 
         insertElementByTileIdCreatesCorrectItem(41, new Gear(Action.LEFTTURN));
         insertElementByTileIdCreatesCorrectItem(42, new Gear(Action.RIGHTTURN));
@@ -172,16 +172,11 @@ public class BoardTest {
         if (actualItem instanceof Wall) wallHasCorrectProperties((Wall) expectedItem, (Wall) actualItem);
         if (actualItem instanceof Gear) gearHasCorrectProperties((Gear) expectedItem, (Gear) actualItem);
         if (actualItem instanceof Laser) laserHasCorrectProperties((Laser) expectedItem, (Laser) actualItem);
-        if (actualItem instanceof RepairTool) repairToolHasCorrectProperties((RepairTool) expectedItem, (RepairTool) actualItem);
         if (actualItem instanceof Dock) dockHasCorrectProperties((Dock) expectedItem, (Dock) actualItem);
     }
 
     private void dockHasCorrectProperties(Dock expectedItem, Dock actualItem) {
         assertEquals(expectedItem.getNumber(), expectedItem.getNumber());
-    }
-
-    private void repairToolHasCorrectProperties(RepairTool expectedItem, RepairTool actualItem) {
-        assertEquals(expectedItem.wrenchAndHammer(), actualItem.wrenchAndHammer());
     }
 
     public void flagHasCorrectProperties(Flag expected, Flag actual) {

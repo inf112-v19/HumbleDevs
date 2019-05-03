@@ -6,25 +6,11 @@ package inf112.skeleton.app.gameObjects.Items;
  * option card.
  */
 public class RepairTool implements IItem {
-    //private boolean wrench; //Removes one damage token
-    private boolean wrenchAndHammer; //Removes one damage token and receives an option card
 
-    // Constructor sets if it is a wrench or a wrenchAndHammer.
-    public RepairTool(boolean wrenchAndHammer) {
-        this.wrenchAndHammer = wrenchAndHammer;
+    public RepairTool() {
     }
-
     @Override
     public String getName() {
-        if (wrenchAndHammer = true)
-            return "Wrench and hammer";
-        else return "Wrench";
-    }
-
-    /**
-     * @return true if it is wrench and hammer, false otherwise
-     */
-    public boolean wrenchAndHammer() {
-        return wrenchAndHammer;
+        return "Wrench";
     }
 }

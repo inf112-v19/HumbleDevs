@@ -125,9 +125,5 @@ public class AssetManager {
         String name = randomNames.get(idx);
         randomNames.remove(idx);
         return name;
-
-
     }
-
-
 }

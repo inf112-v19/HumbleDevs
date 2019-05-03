@@ -20,10 +20,6 @@ public class GUI extends com.badlogic.gdx.Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        //For testing purposes
-        Player player = new Player(0, null, 0, 0, "Joachim", null);
-        Player[] arr = player.getSomePlayers();
-        //
 
         this.setScreen(new MainScreen(this, game));
         //this.setScreen(new MainScreen(this));
