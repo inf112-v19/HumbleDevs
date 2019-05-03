@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is used to easily manage and retrieve assets
+ */
+
 public class AssetManager {
     private static Map<String, Texture> textureMap;
     private static Map<Integer, String> intMap;
@@ -107,18 +111,36 @@ public class AssetManager {
 
     }
 
+    /**
+     * @param index
+     * @return the path to the index specified
+     */
     public static String getTextureByIndex (int index) {
         return intMap.get(index);
     }
 
+    /**
+     *
+     * @param name
+     * @return the Texture from a given string
+     */
     public static Texture getTexture (String name) {
         return textureMap.get(name);
     }
 
+    /**
+     *
+     * @param name
+     * @return the path to a given Tiled-map
+     */
     public static String getTmxMap (String name) {
         return tmxMap.get(name);
     }
 
+    /**
+     *
+     * @return a random name (String) to be used by an AI
+     */
     public static String getNewRandomName() {
         if (randomNames.isEmpty()) return "NoMoreNames:(";
         int idx = (int) (Math.random() * randomNames.size());

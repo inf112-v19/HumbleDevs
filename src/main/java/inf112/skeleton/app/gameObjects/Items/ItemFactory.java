@@ -3,6 +3,10 @@ package inf112.skeleton.app.gameObjects.Items;
 import inf112.skeleton.app.board.Direction;
 import inf112.skeleton.app.card.Action;
 
+/**
+ * This class creates an Item in the game from a given ID specified by the Tiled map.
+ */
+
 public abstract class ItemFactory {
 
     public static IItem getItem(int id) {

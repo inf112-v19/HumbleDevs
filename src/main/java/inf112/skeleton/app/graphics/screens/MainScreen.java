@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -41,7 +40,6 @@ public class MainScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
         defaultSkin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
-        texture = new Texture(Gdx.files.internal("assets/UI/frontRobot.png"));
 
         AssetManager assetManager = new AssetManager();
         batch = new SpriteBatch();
@@ -79,11 +77,10 @@ public class MainScreen implements Screen {
 
         // Map thumbnails
         Image level1 = new Image(AssetManager.getTexture("level1"));
-        level1.setName("tyole");
         Image level2 = new Image(AssetManager.getTexture("level2"));
         Image level3 = new Image(AssetManager.getTexture("level3"));
 
-
+        // Adding the thumbnails to the table
         Table thumbnailTable = new Table();
         thumbnailTable.add(level1).height(level1.getPrefHeight() / 10).width(level1.getPrefWidth() / 10).size(90).padBottom(3).padTop(100);
         thumbnailTable.row();
@@ -92,6 +89,7 @@ public class MainScreen implements Screen {
         thumbnailTable.add(level3).height(level3.getPrefHeight() / 10).width(level3.getPrefWidth() / 10).size(90).padBottom(3);
         thumbnailTable.row();
 
+        // Creating the dropdown for levels
         levelSelected = new SelectBox<>(skin);
         levelSelected.setItems("level1", "level2", "level3");
         levelSelected.setSelected("level1");
@@ -139,12 +137,10 @@ public class MainScreen implements Screen {
         selectBoxPlayers.setItems(1, 2, 3, 4, 5, 6);
         selectBoxRobots.setItems(0, 1, 2, 3, 4, 5, 6);
 
-
         // Add boxes to mainTable
         mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
         mainTable.add(playButton);
-        //mainTable.add(exitButton);
         mainTable.add(thumbnailTable);
         nextTable.add(exitButton);
 
@@ -175,10 +171,14 @@ public class MainScreen implements Screen {
     }
 
 
-
+    /**
+     * Used to get the name from a player
+     * @param idx
+     * @param players
+     * @param robots
+     */
     public void helper(int idx, final int players, final int robots) {
         mainTable.clear();
-        // OVERSKRIFT: VELG NAVN TIL SPILLER i
         Label label = new Label("Skriv inn navnet til spiller " + idx, skin);
         final TextField tf = new TextField("", skin);
         tf.setMaxLength(6);
@@ -202,8 +202,7 @@ public class MainScreen implements Screen {
     public void setNames(int players, int robots) {
 
         if (index - 1 == players) {
-            // Her kan vi starte spillet evt
-
+            // If every player has entered their name, start the game!
             customCreate(robots);
         } else {
             helper(index, players, robots);
@@ -211,6 +210,10 @@ public class MainScreen implements Screen {
         }
     }
 
+    /**
+     * Called when every player has entered their name
+     * @param robots
+     */
     public void customCreate(int robots) {
         gui.setScreen(new GameScreen(gui, game, playerNames, robots, levelSelected.getSelected()));
     }
@@ -223,9 +226,6 @@ public class MainScreen implements Screen {
         stage.act();
         stage.draw();
 
-        batch.begin();
-        batch.draw(texture, 0, 20, 110, 160);
-        batch.end();
     }
 
     @Override

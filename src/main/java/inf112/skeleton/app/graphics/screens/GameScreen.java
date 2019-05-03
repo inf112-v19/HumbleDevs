@@ -101,7 +101,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
-
     public GameScreen(GUI gui, Game game, ArrayList<String> playerNames, int robots, String tmxMap) {
         this.gui = gui;
         this.game = game;
@@ -151,9 +150,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stage.addActor(laserShotActor);
         laserShotActor.setVisible(false);
 
-
-
-
         font = new BitmapFont();
         //Important: makes us able to click on our stage and process inputs/events
         Gdx.input.setInputProcessor(stage);
@@ -168,7 +164,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         createCardTable(table);
     }
 
-
+    /**
+     * Creates the table for the cards to be placed in
+     * @param table
+     */
     public static void createCardTable(Table table) {
         table.setWidth(332);
         table.setHeight(600); //temp
@@ -178,12 +177,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stage.addActor(table);
     }
 
+    /**
+     * Automatically adds all cards from an AI to the game
+     * @param pcList
+     */
     public static void addAllCardsFromAI(ArrayList<ProgramCard> pcList) {
         for (ProgramCard pc : pcList) {
             addCardToSelected(pc);
         }
     }
-
 
     /**
      * Helper method to add a card to a players deck of cards
@@ -212,7 +214,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                     game.getRobots()[i].setCards(cards);
                 }
 
-                drawHUD(map);
+                drawHUD();
                 Main.readyToLaunch = true;
                 return;
             }
@@ -220,15 +222,20 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }
     }
 
-
     /**
-     * Adds a players card to a hashmap, where the player itself is the key
+     * Adds a robots deck of cards to a hashmap, where the robot itself is the key
      */
     public static void addPlayerWithCardsToHashmap (ArrayList<ProgramCard> list) {
         map.put(game.getRobots()[currentRobot], list);
         currentRobot++;
     }
 
+    /**
+     * Deleted a card from the game when its used
+     * Also sets opacity for a card that is used in the HUD
+     * @param robot
+     * @param card
+     */
     public static void deleteCard (final Robot robot, final ProgramCard card) {
         sequenceAction.addAction(Actions.run(new Runnable() {
             @Override
@@ -244,36 +251,38 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         }));
     }
 
-
-
-    public static void drawHUD(Map<Robot, ArrayList> map) {
+    /**
+     * This method draws the HUD to be seen while the game is being played
+     * This includes a players name, health and cards
+     */
+    public static void drawHUD() {
         table.clear();
         table.top();
 
         table.pad(0, 0, 0, 0);
+        // Outer loop that goes through all robots
         for (int i = 0; i < game.getRobots().length; i++) {
             Image robot = new Image(new Texture(Gdx.files.internal(game.getRobots()[i].getPath())));
             table.add(robot);
             Label nameLabel = new Label(game.getRobots()[i].getName(), skin);
             table.add(nameLabel);
 
+            // Drawing the life tokens for a player
             for (int j = 0; j < game.getRobots()[i].getLifeTokens(); j++) {
                 Image lifeToken = new Image(assetManager.getTexture("lifeIcon"));
                 table.add(lifeToken);
             }
 
             table.row();
-
+            // Checking if a player is powered down (in that case should have no cards and only a label displaying that the robot is powered down)
             if (game.getRobots()[i].isPoweredDown()) {
                 Label poweredDown1 = new Label("Powered", skin);
                 Label poweredDown2 = new Label("Down", skin);
                 table.add(poweredDown1);
                 table.add(poweredDown2);
             } else {
-
+                // Else we draw the cards for the current player
                 ProgramCard[] arr = game.getRobots()[i].getCards();
-
-
                 for (int j = 0; j < arr.length; j++) {
                     table.pad(10, 10, 10, 10);
                     ProgramCard card = arr[j];
@@ -301,7 +310,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         sequenceAction.addAction(Actions.run(new Runnable() {
             @Override
             public void run() {
-                drawHUD(map);
+                drawHUD();
             }
         }));
     }
@@ -321,16 +330,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             addAllCardsFromAI(pcList);
             return;
         }
+
         Texture robotTexture = new Texture(game.getRobots()[currentRobot].getPath());
         Image robotImage = new Image(robotTexture);
         table.add(robotImage).height(robotImage.getPrefHeight()).width(robotImage.getPrefWidth());
         table.row();
+
 
         final ProgramCard[] cards = programCardDeck.getRandomCards(9 - game.getRobots()[currentRobot].getDamageTokens()); // 9 cards here
         final Set<ProgramCard> pickedCards = new HashSet<>();
         Label infoLabel = new Label("Velg 5 kort", skin);
         Label playerLabel = new Label("Det er " + game.getRobots()[currentRobot].getName() + " sin tur", skin);
         table.add(infoLabel); table.row(); table.add(playerLabel); table.row();
+
 
         for (int i = 0; i < cards.length; i++) {
             // Her kan vi hente retning av kort og bruke assetmanager til å hente riktig bilde cards[i].getMove();
@@ -381,7 +393,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
      * @param robot
      */
     public static void updateBoard(final Robot robot) {
-
+        // Every time we update the board, we check if a robot has won
         checkForEndScreen();
 
         Image curActor = (Image) stage.getActors().get(robot.getId());
@@ -511,26 +523,26 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public static void drawEndScreen (Robot robot) {
         Image robotImage = new Image(new Texture(Gdx.files.internal(robot.getPath())));
-        Button butt = new Button(MainScreen.skin);
-        Button butt2 = new Button(MainScreen.skin);
-        Button butt3 = new Button(MainScreen.skin);
+        Button background = new Button(MainScreen.skin);
+        Button exitButton = new Button(MainScreen.skin);
+        Button newGameButton = new Button(MainScreen.skin);
         Label lab = new Label("WINNER IS", MainScreen.skin);
         Label lab2 = new Label("Exit", MainScreen.skin);
         Label lab3 = new Label("New Game", MainScreen.skin);
-        butt.add(lab);
-        butt.setColor(1,0,0,1);
-        butt.add(robotImage);
-        butt.setSize(300,300);
-        butt.setPosition(290,240);
+        background.add(lab);
+        background.setColor(1,0,0,1);
+        background.add(robotImage);
+        background.setSize(300,300);
+        background.setPosition(290,240);
 
-        butt2.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        butt3.addListener(new ClickListener(){
+        newGameButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
@@ -539,19 +551,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
             }
         });
 
-        butt2.add(lab2);
-        butt2.setSize(200,100);
-        butt2.setPosition(340,200);
-        butt2.setColor(0,0,1,1);
+        exitButton.add(lab2);
+        exitButton.setSize(200,100);
+        exitButton.setPosition(340,200);
+        exitButton.setColor(0,0,1,1);
 
-        butt3.add(lab3);
-        butt3.setSize(200,100);
-        butt3.setPosition(340,470);
-        butt3.setColor(0,1,0,1);
+        newGameButton.add(lab3);
+        newGameButton.setSize(200,100);
+        newGameButton.setPosition(340,470);
+        newGameButton.setColor(0,1,0,1);
 
-        stage.addActor(butt);
-        stage.addActor(butt2);
-        stage.addActor(butt3);
+        stage.addActor(background);
+        stage.addActor(exitButton);
+        stage.addActor(newGameButton);
     }
 
     /**
