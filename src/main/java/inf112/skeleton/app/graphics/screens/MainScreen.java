@@ -92,14 +92,14 @@ public class MainScreen implements Screen {
         thumbnailTable.add(level3).height(level3.getPrefHeight() / 10).width(level3.getPrefWidth() / 10).size(90).padBottom(3);
         thumbnailTable.row();
 
-        levelSelected = new SelectBox<>(skin);
+        levelSelected = new SelectBox<>(defaultSkin);
         levelSelected.setItems("level1", "level2", "level3");
         levelSelected.setSelected("level1");
         levelSelected.setPosition(100, 100);
 
         thumbnailTable.add(levelSelected);
 
-        maxRobots.setPosition(35, 205);
+        maxRobots.setPosition(65, 205);
         maxRobots.setHeight(20);
         maxRobots.setWidth(120);
         maxRobots.setColor(Color.GREEN);
@@ -109,12 +109,12 @@ public class MainScreen implements Screen {
         title.setWidth(310);
         title.setFontScale(1,1);
 
-        dplayer.setPosition(35, 275);
+        dplayer.setPosition(65, 275);
         dplayer.setHeight(20);
         dplayer.setWidth(100);
         dplayer.setColor(Color.BLUE);
 
-        dcomputer.setPosition(100, 275);
+        dcomputer.setPosition(130, 275);
         dcomputer.setHeight(20);
         dcomputer.setWidth(90);
         dcomputer.setColor(Color.PINK);
