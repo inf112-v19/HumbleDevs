@@ -24,10 +24,12 @@ public class MainScreen implements Screen {
     protected Stage stage;
     private Viewport viewport;
     private OrthographicCamera camera;
+    private Texture texture;
     protected static Skin skin;
     protected static Skin defaultSkin;
     final GUI gui;
     Table mainTable;
+    Table nextTable;
     ArrayList<String> playerNames;
     Game game;
     SelectBox<String> levelSelected;
@@ -39,6 +41,7 @@ public class MainScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("assets/UI/skin/star-soldier-ui.json"));
         defaultSkin = new Skin(Gdx.files.internal("assets/UI/uiskin.json"));
+        texture = new Texture(Gdx.files.internal("assets/UI/frontRobot.png"));
 
         AssetManager assetManager = new AssetManager();
         batch = new SpriteBatch();
@@ -54,6 +57,10 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
+        final Dialog maxRobots = new Dialog("Max 6 players!", defaultSkin);
+        final Dialog dplayer = new Dialog("Players", defaultSkin);
+        final Dialog dcomputer = new Dialog("AIs", defaultSkin);
+
         //Stage should control input:
         Gdx.input.setInputProcessor(stage);
 
@@ -65,9 +72,10 @@ public class MainScreen implements Screen {
         mainTable.top();
         Label title = new Label("Welcome to the Robo Rally Game!", skin);
         title.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(1), Actions.fadeIn(1))));
-        final Dialog maxRobots = new Dialog("Max 6 players", defaultSkin);
-        final Dialog dplayer = new Dialog("Players", defaultSkin);
-        final Dialog dcomputer = new Dialog("AIs", defaultSkin);
+
+        nextTable = new Table();
+        nextTable.setFillParent(true);
+        nextTable.bottom();
 
         // Map thumbnails
         Image level1 = new Image(AssetManager.getTexture("level1"));
@@ -84,16 +92,16 @@ public class MainScreen implements Screen {
         thumbnailTable.add(level3).height(level3.getPrefHeight() / 10).width(level3.getPrefWidth() / 10).size(90).padBottom(3);
         thumbnailTable.row();
 
-        levelSelected = new SelectBox<>(defaultSkin);
+        levelSelected = new SelectBox<>(skin);
         levelSelected.setItems("level1", "level2", "level3");
         levelSelected.setSelected("level1");
         levelSelected.setPosition(100, 100);
 
         thumbnailTable.add(levelSelected);
 
-        maxRobots.setPosition(10, 195);
+        maxRobots.setPosition(35, 205);
         maxRobots.setHeight(20);
-        maxRobots.setWidth(110);
+        maxRobots.setWidth(120);
         maxRobots.setColor(Color.GREEN);
 
         title.setPosition(10, 300);
@@ -101,12 +109,12 @@ public class MainScreen implements Screen {
         title.setWidth(310);
         title.setFontScale(1,1);
 
-        dplayer.setPosition(10, 280);
+        dplayer.setPosition(35, 275);
         dplayer.setHeight(20);
         dplayer.setWidth(100);
         dplayer.setColor(Color.BLUE);
 
-        dcomputer.setPosition(110, 280);
+        dcomputer.setPosition(100, 275);
         dcomputer.setHeight(20);
         dcomputer.setWidth(90);
         dcomputer.setColor(Color.PINK);
@@ -136,8 +144,9 @@ public class MainScreen implements Screen {
         mainTable.add(selectBoxPlayers);
         mainTable.add(selectBoxRobots);
         mainTable.add(playButton);
-        mainTable.add(exitButton);
+        //mainTable.add(exitButton);
         mainTable.add(thumbnailTable);
+        nextTable.add(exitButton);
 
         //Add listeners to buttons
         playButton.addListener(new ClickListener(){
@@ -162,6 +171,7 @@ public class MainScreen implements Screen {
         //Add table to stage
 
         stage.addActor(mainTable);
+        stage.addActor(nextTable);
     }
 
 
@@ -212,6 +222,10 @@ public class MainScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        batch.begin();
+        batch.draw(texture, 0, 20, 110, 160);
+        batch.end();
     }
 
     @Override
