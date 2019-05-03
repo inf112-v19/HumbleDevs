@@ -370,7 +370,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 }
             }
         });
-        game.startRobots();
+        if (currentRobot == game.getRobots().length){
+            game.startRobots();
+        }
     }
 
     /**

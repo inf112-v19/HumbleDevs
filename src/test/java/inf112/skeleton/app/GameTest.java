@@ -636,7 +636,6 @@ public class GameTest {
             assertTrue(!rob.isPoweredDown());
         }
     }
-
     @Test
     public void testOnlyRobotAlive(){
         Robot rob = robs[0];
